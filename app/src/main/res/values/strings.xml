@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">SDW Remote</string>
+    <string name="name">UserName</string>
+    <string name="password">PassWord</string>
+
+    <string name="main_title">Smart Displays Remote</string>
+    <string name="get_config">Fetching Wall\'s datas</string>
+    <string name="google_plus_title">google plus</string>
+    <string name="google_maps_title">google maps</string>
+    <string name="google_messenger_title">google messenger</string>
+    <string name="header_title">Title Header</string>
+    <string name="header_sample">Header smaple</string>
+    <string name="footer_sample">footer Sample</string>
+    <string name="footer_button_close">btn close</string>
+    <string name="footer_button_confirm">confi</string>
+</resources>
