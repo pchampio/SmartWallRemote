@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.Gravity
 import android.view.View
 import android.view.ViewManager
-import android.view.animation.AnimationUtils
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.OnItemClickListener
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
@@ -94,13 +93,7 @@ class MainActivityUi(val wallItem: WallItem) : AnkoComponent<MainActivity> {
 
                 override fun onPanelStateChanged(_1: View?, _2: PanelState?, newState: PanelState?) {
                     isTouchEnabled = newState != PanelState.EXPANDED
-
-                    if (isTouchEnabled == false) {
-                        re?.let { runLayoutAnimation(it) }
-                        re?.visibility = View.VISIBLE
-                    } else {
-                        re?.visibility = View.GONE
-                    }
+                    re?.scrollBy(0, 1)
                 }
 
             })
@@ -166,7 +159,7 @@ class MainActivityUi(val wallItem: WallItem) : AnkoComponent<MainActivity> {
             // Slider Content
             verticalLayout {
 
-                linearLayout() {
+                linearLayout {
 
                     gravity = Gravity.CENTER
 
@@ -175,10 +168,6 @@ class MainActivityUi(val wallItem: WallItem) : AnkoComponent<MainActivity> {
                         textSize = 24f
                         padding = dip(10)
                         gravity = Gravity.CENTER
-
-                        onClick {
-                            panelState = PanelState.COLLAPSED
-                        }
                     }
 
                     button("test"){
@@ -189,16 +178,26 @@ class MainActivityUi(val wallItem: WallItem) : AnkoComponent<MainActivity> {
                 }
 
 
-
                 // http://tutos-android-france.com/material-design-recyclerview-et-cardview/
-                re = recyclerView() {
+                re = recyclerView {
                     // layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
                     layoutManager = GridLayoutManager(context, 2)
                     adapter = adapterVid
-                    layoutAnimation = AnimationUtils.loadLayoutAnimation(ctx, R.anim.layout_animation_fall_down)
-                    visibility = View.GONE
-
                 }
+
+                // disable the slidingUpPanelLayout if the user is not at the top
+                re?.addOnScrollListener(object: RecyclerView.OnScrollListener() {
+                    override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+                        super.onScrolled(recyclerView, dx, dy)
+//                        if (recyclerView?.computeVerticalScrollOffset() ?: 10 < 5 && dy < 5){
+//                            panelState = PanelState.COLLAPSED
+//                        }
+                        if (recyclerView != null && recyclerView.computeVerticalScrollOffset() == 0) {
+                            isTouchEnabled = true
+                        }
+                    }
+
+                })
 
             }
 
@@ -206,12 +205,4 @@ class MainActivityUi(val wallItem: WallItem) : AnkoComponent<MainActivity> {
         }
     }
 
-    private fun runLayoutAnimation(recyclerView: RecyclerView) {
-        val context = recyclerView.context
-        val controller = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_animation_fall_down)
-
-        recyclerView.layoutAnimation = controller
-        recyclerView.adapter.notifyDataSetChanged()
-        recyclerView.scheduleLayoutAnimation()
-    }
 }
