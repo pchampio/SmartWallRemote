@@ -57,7 +57,7 @@ public class SimpleAdapter extends BaseAdapter {
     switch (position) {
       case 0:
         viewHolder.textView.setText(context.getString(R.string.google_plus_title));
-        viewHolder.imageView.setImageResource(R.drawable.ic_launcher_foreground);
+        viewHolder.imageView.setImageResource(R.drawable.ic_launcher_background);
         break;
       case 1:
         viewHolder.textView.setText(context.getString(R.string.google_maps_title));

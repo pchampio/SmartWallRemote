@@ -6,15 +6,19 @@ package sdw.drakirus.xyz.smartwallremote.view;
 
 class VideoData {
     private String text;
+    private String duration;
     private String imageUrl;
 
-    public VideoData(String text, String imageUrl) {
+    public VideoData(String text,String duration, String imageUrl) {
         this.text = text;
+        this.duration = duration;
         this.imageUrl = imageUrl;
     }
 
     public String getText() {
         return text;
     }
+    public String getDuration() { return duration; }
+    public String getUrl() { return imageUrl;}
 }
 
