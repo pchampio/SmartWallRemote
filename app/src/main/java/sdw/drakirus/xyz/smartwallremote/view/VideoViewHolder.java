@@ -1,5 +1,6 @@
 package sdw.drakirus.xyz.smartwallremote.view;
 
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
@@ -14,6 +15,7 @@ import sdw.drakirus.xyz.smartwallremote.R;
 
 public class VideoViewHolder extends RecyclerView.ViewHolder{
 
+    private TextView durationView;
     private TextView textViewView;
     private ImageView imageView;
     private LinearLayout layout;
@@ -23,15 +25,18 @@ public class VideoViewHolder extends RecyclerView.ViewHolder{
         super(itemView);
 
         //c'est ici que l'on fait nos findView
+        durationView = (TextView) itemView.findViewById(R.id.duration);
         textViewView = (TextView) itemView.findViewById(R.id.text);
         imageView = (ImageView) itemView.findViewById(R.id.image);
         layout = (LinearLayout) itemView.findViewById(R.id.layout);
+
     }
 
     //puis ajouter une fonction pour remplir la cellule en fonction d'un Video
     public void bind(final VideoData videoItem, final VideoChooserAdapter.OnItemClickListener listener){
         textViewView.setText(videoItem.getText());
-        // la meme avec l'image view
+        durationView.setText(videoItem.getDuration());
+        //imageView.setImageURI(Uri.parse(videoItem.getUrl()));
 
         layout.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
