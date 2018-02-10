@@ -39,6 +39,7 @@ public class SimpleAdapter extends BaseAdapter {
 
   @Override
   public View getView(int position, View convertView, ViewGroup parent) {
+
     ViewHolder viewHolder;
     View view = convertView;
 
