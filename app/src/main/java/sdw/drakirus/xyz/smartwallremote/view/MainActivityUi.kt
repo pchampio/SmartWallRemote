@@ -61,19 +61,19 @@ class MainActivityUi(val wallItem: WallItem) : AnkoComponent<MainActivity> {
 
             val adapterVid = VideoChooserAdapter (
                     listOf(
-                            VideoData("name 1", "url"),
-                            VideoData("name 2", "url"),
-                            VideoData("name 3", "url"),
-                            VideoData("name 4", "url"),
-                            VideoData("name 5", "url"),
-                            VideoData("name 6", "url"),
-                            VideoData("name 7", "url"),
-                            VideoData("name 8", "url"),
-                            VideoData("name 9", "url"),
-                            VideoData("name 10", "url"),
-                            VideoData("name 11", "url"),
-                            VideoData("name 12", "url"),
-                            VideoData("name 13", "url")
+                            VideoData("name 1", "00:00:00","http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
+                            VideoData("name 2", "00:00:00","http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
+                            VideoData("name 3", "00:00:00","http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
+                            VideoData("name 4", "00:00:00","http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
+                            VideoData("name 5 extrèmement t", "00:00:00","http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
+                            VideoData("name 6", "00:00:00","http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
+                            VideoData("name 7", "00:00:00","http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
+                            VideoData("name 8", "00:00:00","http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
+                            VideoData("name 9", "00:00:00","http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
+                            VideoData("name 10", "00:00:00","http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
+                            VideoData("name 11", "00:00:00","http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
+                            VideoData("name 12", "00:00:00","http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
+                            VideoData("name 13", "00:00:00","http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg")
                     ),
                     object : VideoChooserAdapter.OnItemClickListener {
                         override fun onItemClick(item: VideoData) {
