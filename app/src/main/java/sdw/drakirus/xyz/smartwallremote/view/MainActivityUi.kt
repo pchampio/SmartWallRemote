@@ -19,8 +19,10 @@ import org.jetbrains.anko.sdk25.coroutines.onClick
 import sdw.drakirus.xyz.smartwallremote.MainActivity
 import sdw.drakirus.xyz.smartwallremote.R
 import sdw.drakirus.xyz.smartwallremote.json.WallItem
-
-
+import sdw.drakirus.xyz.smartwallremote.view.scenario.ScenarioChooserAdapter
+import sdw.drakirus.xyz.smartwallremote.view.scenario.ScenarioData
+import sdw.drakirus.xyz.smartwallremote.view.video.VideoChooserAdapter
+import sdw.drakirus.xyz.smartwallremote.view.video.VideoData
 
 
 /**
@@ -39,7 +41,14 @@ class MainActivityUi(val wallItem: WallItem) : AnkoComponent<MainActivity> {
     override fun createView(ui: AnkoContext<MainActivity>) = with(ui) {
 
 
-        val adapter_scenario = SimpleAdapter(ctx)
+        val adapter_scenario = ScenarioChooserAdapter(ctx,
+                listOf(
+                        ScenarioData("test"),
+                        ScenarioData("test"),
+                        ScenarioData("test"),
+                        ScenarioData("test"),
+                        ScenarioData("test")
+                ))
         var re :RecyclerView? = null
 
         // https://github.com/orhanobut/dialogplus
@@ -59,21 +68,21 @@ class MainActivityUi(val wallItem: WallItem) : AnkoComponent<MainActivity> {
         // https://github.com/umano/AndroidSlidingUpPanel
         slidingUpPanelLayout(ctx) {
 
-            val adapterVid = VideoChooserAdapter (
+            val adapterVid = VideoChooserAdapter(
                     listOf(
-                            VideoData("name 1", "00:00:00","http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
-                            VideoData("name 2", "00:00:00","http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
-                            VideoData("name 3", "00:00:00","http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
-                            VideoData("name 4", "00:00:00","http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
-                            VideoData("name 5 extrèmement t", "00:00:00","http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
-                            VideoData("name 6", "00:00:00","http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
-                            VideoData("name 7", "00:00:00","http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
-                            VideoData("name 8", "00:00:00","http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
-                            VideoData("name 9", "00:00:00","http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
-                            VideoData("name 10", "00:00:00","http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
-                            VideoData("name 11", "00:00:00","http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
-                            VideoData("name 12", "00:00:00","http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
-                            VideoData("name 13", "00:00:00","http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg")
+                            VideoData("name 1", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
+                            VideoData("name 2", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
+                            VideoData("name 3", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
+                            VideoData("name 4", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
+                            VideoData("name 5 extrèmement t", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
+                            VideoData("name 6", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
+                            VideoData("name 7", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
+                            VideoData("name 8", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
+                            VideoData("name 9", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
+                            VideoData("name 10", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
+                            VideoData("name 11", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
+                            VideoData("name 12", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
+                            VideoData("name 13", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg")
                     ),
                     object : VideoChooserAdapter.OnItemClickListener {
                         override fun onItemClick(item: VideoData) {
