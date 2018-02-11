@@ -180,7 +180,7 @@ class MainActivityUi(val wallItem: WallItem) : AnkoComponent<MainActivity> {
 
                 // http://tutos-android-france.com/material-design-recyclerview-et-cardview/
                 re = recyclerView {
-                    // layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
+//                     layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
                     layoutManager = GridLayoutManager(context, 2)
                     adapter = adapterVid
                 }
