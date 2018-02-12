@@ -1,16 +1,10 @@
-package sdw.drakirus.xyz.smartwallremote.view.video;
+package sdw.drakirus.xyz.smartwallremote.component.video;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.StrictMode;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import java.io.IOException;
-import java.net.URL;
 
 import sdw.drakirus.xyz.smartwallremote.R;
 
@@ -42,19 +36,19 @@ public class VideoViewHolder extends RecyclerView.ViewHolder{
         textViewView.setText(videoItem.getText());
         durationView.setText(videoItem.getDuration());
 
-//        imageView.setImageResource(videoItem.getImage());
+        imageView.setImageResource(videoItem.getImage());
 
-        Bitmap bmp = null;
-        try {
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-
-            URL url = new URL("http://image10.bizrate-images.com/resize?sq=60&uid=2216744464");
-            bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        imageView.setImageBitmap(bmp);
+//        Bitmap bmp = null;
+//        try {
+//            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+//            StrictMode.setThreadPolicy(policy);
+//
+//            URL url = new URL("http://image10.bizrate-images.com/resize?sq=60&uid=2216744464");
+//            bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        imageView.setImageBitmap(bmp);
 
         layout.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {

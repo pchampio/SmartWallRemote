@@ -1,6 +1,4 @@
-package sdw.drakirus.xyz.smartwallremote.view.video;
-
-import android.graphics.drawable.Drawable;
+package sdw.drakirus.xyz.smartwallremote.component.video;
 
 import sdw.drakirus.xyz.smartwallremote.R;
 

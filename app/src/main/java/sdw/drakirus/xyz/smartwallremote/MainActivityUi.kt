@@ -1,4 +1,4 @@
-package sdw.drakirus.xyz.smartwallremote.view
+package sdw.drakirus.xyz.smartwallremote
 
 import android.content.ContentValues.TAG
 import android.content.Context
@@ -19,13 +19,11 @@ import org.jetbrains.anko.custom.ankoView
 import org.jetbrains.anko.recyclerview.v7.recyclerView
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import org.jetbrains.anko.sdk25.coroutines.onQueryTextListener
-import sdw.drakirus.xyz.smartwallremote.MainActivity
-import sdw.drakirus.xyz.smartwallremote.R
+import sdw.drakirus.xyz.smartwallremote.component.scenario.ScenarioChooserAdapter
+import sdw.drakirus.xyz.smartwallremote.component.scenario.ScenarioData
+import sdw.drakirus.xyz.smartwallremote.component.video.VideoChooserAdapter
+import sdw.drakirus.xyz.smartwallremote.component.video.VideoData
 import sdw.drakirus.xyz.smartwallremote.json.WallItem
-import sdw.drakirus.xyz.smartwallremote.view.scenario.ScenarioChooserAdapter
-import sdw.drakirus.xyz.smartwallremote.view.scenario.ScenarioData
-import sdw.drakirus.xyz.smartwallremote.view.video.VideoChooserAdapter
-import sdw.drakirus.xyz.smartwallremote.view.video.VideoData
 
 
 /**
@@ -41,23 +39,39 @@ class MainActivityUi(val wallItem: WallItem) : AnkoComponent<MainActivity> {
     private val rows = wallItem.rows
     private val cols = wallItem.cols
 
+    private val scenarioList =
+            listOf(
+                    ScenarioData("test"),
+                    ScenarioData("test"),
+                    ScenarioData("test"),
+                    ScenarioData("test"),
+                    ScenarioData("test")
+            )
+
+    private val videoList =
+            listOf(
+                    VideoData("name 1", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
+                    VideoData("name 2", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
+                    VideoData("name 3", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
+                    VideoData("name 4", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
+                    VideoData("name 5 extrèmement ; ccdd,dc,dc,d,ckldckdc,kdc,kdct", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
+                    VideoData("name 6", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
+                    VideoData("name 7", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
+                    VideoData("name 8", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
+                    VideoData("name 9", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
+                    VideoData("name 10", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
+                    VideoData("name 11", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
+                    VideoData("name 12", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
+                    VideoData("name 13", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg")
+            )
+
+
+
     override fun createView(ui: AnkoContext<MainActivity>) = with(ui) {
-
-
-        val adapter_scenario = ScenarioChooserAdapter(ctx,
-                listOf(
-                        ScenarioData("test"),
-                        ScenarioData("test"),
-                        ScenarioData("test"),
-                        ScenarioData("test"),
-                        ScenarioData("test")
-                ))
-
-        var re :RecyclerView? = null
 
         // https://github.com/orhanobut/dialogplus
         val dialog_scenario = DialogPlus.newDialog(ctx)
-                .setAdapter(adapter_scenario)
+                .setAdapter(ScenarioChooserAdapter(ctx, scenarioList))
                 .setGravity(Gravity.CENTER)
                 .setOnItemClickListener(object : OnItemClickListener {
                     override fun onItemClick(dialog: DialogPlus, item: Any, view: View, position: Int) {
@@ -72,27 +86,10 @@ class MainActivityUi(val wallItem: WallItem) : AnkoComponent<MainActivity> {
         // https://github.com/umano/AndroidSlidingUpPanel
         slidingUpPanelLayout(ctx) {
 
-            val adapterVid = VideoChooserAdapter(
-                    listOf(
-                            VideoData("name 1", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
-                            VideoData("name 2", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
-                            VideoData("name 3", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
-                            VideoData("name 4", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
-                            VideoData("name 5 extrèmement ; ccdd,dc,dc,d,ckldckdc,kdc,kdct", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
-                            VideoData("name 6", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
-                            VideoData("name 7", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
-                            VideoData("name 8", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
-                            VideoData("name 9", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
-                            VideoData("name 10", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
-                            VideoData("name 11", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
-                            VideoData("name 12", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
-                            VideoData("name 13", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg")
-                    ),
-                    object : VideoChooserAdapter.OnItemClickListener {
-                        override fun onItemClick(item: VideoData) {
-                            toast("Item Clicked" + item.text)
-                            panelState = PanelState.COLLAPSED
-                        }
+            val adapterVid = VideoChooserAdapter(videoList,
+                    VideoChooserAdapter.OnItemClickListener { item ->
+                        toast("Item Clicked" + item.text)
+                        panelState = PanelState.COLLAPSED
                     }
             )
 
@@ -106,7 +103,6 @@ class MainActivityUi(val wallItem: WallItem) : AnkoComponent<MainActivity> {
 
                 override fun onPanelStateChanged(_1: View?, _2: PanelState?, newState: PanelState?) {
                     isTouchEnabled = newState != PanelState.EXPANDED
-                    re?.scrollBy(0, 1)
                 }
 
             })
@@ -156,7 +152,7 @@ class MainActivityUi(val wallItem: WallItem) : AnkoComponent<MainActivity> {
                                     }
 
                                     onClick {
-                                        ui.owner.selectedScreen(ui, row, col)
+                                        ui.owner.selectedScreen(row, col)
                                     }
 
                                 }.lparams (width = matchParent, weight = 1F)
@@ -188,6 +184,9 @@ class MainActivityUi(val wallItem: WallItem) : AnkoComponent<MainActivity> {
                         textSize = 24f
                         padding = dip(10)
                         gravity = Gravity.CENTER
+                        onClick {
+
+                        }
                     }
 
                     button("test"){
@@ -197,42 +196,30 @@ class MainActivityUi(val wallItem: WallItem) : AnkoComponent<MainActivity> {
                     }
                 }
 
-                val se = searchView {
+                searchView {
 
                     onQueryTextListener {
                         onQueryTextSubmit(listener = { s ->
                             Log.d(TAG, "submit= " + s)
-                            return@onQueryTextSubmit true
+                            true
                         })
                     }
                 }
-//                val queryTextListener = object : SearchView.OnQueryTextListener {
-//                    override fun onQueryTextSubmit(s: String): Boolean {
-//                        return true
-//                    }
-//
-//                    override fun onQueryTextChange(s: String): Boolean {
-//                        return true
-//                    }
-//                }
-//                se.setOnQueryTextListener(queryTextListener)
 
                 // http://tutos-android-france.com/material-design-recyclerview-et-cardview/
-                re = recyclerView {
+                recyclerView {
                     //                     layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
                     layoutManager = GridLayoutManager(context, 2)
                     adapter = adapterVid
                 }
-
-                // disable the slidingUpPanelLayout if the user is not at the top
-                re?.addOnScrollListener(object: RecyclerView.OnScrollListener() {
+                .addOnScrollListener(object: RecyclerView.OnScrollListener() {
+                    // disable the slidingUpPanelLayout if the user is not at the top
                     override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
                         super.onScrolled(recyclerView, dx, dy)
                         if (panelState == PanelState.EXPANDED){
                             isTouchEnabled = recyclerView != null && recyclerView.computeVerticalScrollOffset() == 0
                         }
                     }
-
                 })
 
             }

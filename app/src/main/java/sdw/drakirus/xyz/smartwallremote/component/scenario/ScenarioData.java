@@ -1,4 +1,4 @@
-package sdw.drakirus.xyz.smartwallremote.view.scenario;
+package sdw.drakirus.xyz.smartwallremote.component.scenario;
 
 /**
  * Created by drakirus (p.champion) on 10/02/18.

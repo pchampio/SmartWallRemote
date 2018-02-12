@@ -1,4 +1,4 @@
-package sdw.drakirus.xyz.smartwallremote.view.scenario;
+package sdw.drakirus.xyz.smartwallremote.component.scenario;
 
 import android.widget.ImageView;
 import android.widget.TextView;

@@ -9,7 +9,6 @@ import com.github.kittinunf.result.Result
 import org.jetbrains.anko.*
 import org.jetbrains.anko.appcompat.v7.Appcompat
 import sdw.drakirus.xyz.smartwallremote.json.WallConfig
-import sdw.drakirus.xyz.smartwallremote.view.MainActivityUi
 
 
 class MainActivity : AppCompatActivity(), AnkoLogger {
@@ -23,10 +22,11 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         FuelManager.instance.basePath = baseUrl
-        initView()
+
+        chooseWall()
     }
 
-    fun initView() {
+    fun chooseWall() {
         val getConfigDialog = indeterminateProgressDialog(R.string.get_config)
         getConfigDialog.setCancelable(false)
         getConfigDialog.show()
@@ -50,8 +50,8 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
                     getConfigDialog.cancel()
                     warn(result.error)
                     alert(Appcompat, "\nWould you like to try again ?\n" , result.error.exception.message) {
-                        positiveButton("Yes") { initView() }
-                        negativeButton("No") { finish() }
+                        positiveButton("Yes") { chooseWall() }
+                        negativeButton("Exit") { finish() }
                     }.show()
                 }
             }
@@ -60,8 +60,8 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
 
     }
 
-    fun selectedScreen(ui: AnkoContext<MainActivity>, name: Int?, password: Int?) {
-        ui.doAsync {
+    fun selectedScreen( name: Int?, password: Int?) {
+        doAsync {
             Thread.sleep(500)
             activityUiThreadWithContext {
                 toast(name.toString() + " " + password.toString())
