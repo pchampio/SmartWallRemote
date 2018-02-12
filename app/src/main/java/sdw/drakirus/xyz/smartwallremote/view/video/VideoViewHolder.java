@@ -35,7 +35,7 @@ public class VideoViewHolder extends RecyclerView.ViewHolder{
     public void bind(final VideoData videoItem, final VideoChooserAdapter.OnItemClickListener listener){
         textViewView.setText(videoItem.getText());
         durationView.setText(videoItem.getDuration());
-        //imageView.setImageURI(Uri.parse(videoItem.getUrl()));
+        imageView.setImageResource(videoItem.getImage());
 
         layout.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {

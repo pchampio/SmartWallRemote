@@ -4,9 +4,11 @@ import android.content.Context
 import android.graphics.Color
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewManager
+import android.widget.SearchView
 import com.orhanobut.dialogplus.DialogPlus
 import com.orhanobut.dialogplus.OnItemClickListener
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
@@ -16,6 +18,8 @@ import org.jetbrains.anko.cardview.v7.cardView
 import org.jetbrains.anko.custom.ankoView
 import org.jetbrains.anko.recyclerview.v7.recyclerView
 import org.jetbrains.anko.sdk25.coroutines.onClick
+import org.jetbrains.anko.sdk25.coroutines.onQueryTextFocusChange
+import org.jetbrains.anko.sdk25.coroutines.onQueryTextListener
 import sdw.drakirus.xyz.smartwallremote.MainActivity
 import sdw.drakirus.xyz.smartwallremote.R
 import sdw.drakirus.xyz.smartwallremote.json.WallItem
@@ -74,7 +78,7 @@ class MainActivityUi(val wallItem: WallItem) : AnkoComponent<MainActivity> {
                             VideoData("name 2", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
                             VideoData("name 3", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
                             VideoData("name 4", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
-                            VideoData("name 5 extrèmement t", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
+                            VideoData("name 5 extrèmement ; ccdd,dc,dc,d,ckldckdc,kdc,kdct", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
                             VideoData("name 6", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
                             VideoData("name 7", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
                             VideoData("name 8", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
@@ -173,7 +177,7 @@ class MainActivityUi(val wallItem: WallItem) : AnkoComponent<MainActivity> {
                     gravity = Gravity.CENTER
 
                     textView("Get Video"){
-                        textColor = Color.RED
+                        textColor = Color.WHITE
                         textSize = 24f
                         padding = dip(10)
                         gravity = Gravity.CENTER
@@ -185,6 +189,11 @@ class MainActivityUi(val wallItem: WallItem) : AnkoComponent<MainActivity> {
                         }
                     }
                 }
+
+                searchView {
+
+                                    }
+
 
 
                 // http://tutos-android-france.com/material-design-recyclerview-et-cardview/
