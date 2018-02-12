@@ -1,10 +1,10 @@
-package sdw.drakirus.xyz.smartwallremote.view;
+package sdw.drakirus.xyz.smartwallremote.view.video;
 
 /**
  * Created by drakirus (p.champion) on 28/01/18.
  */
 
-class VideoData {
+public class VideoData {
     private String text;
     private String duration;
     private String imageUrl;
