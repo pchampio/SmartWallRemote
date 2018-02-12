@@ -16,6 +16,7 @@ import org.jetbrains.anko.cardview.v7.cardView
 import org.jetbrains.anko.custom.ankoView
 import org.jetbrains.anko.recyclerview.v7.recyclerView
 import org.jetbrains.anko.sdk25.coroutines.onClick
+import org.jetbrains.anko.support.v4.space
 import sdw.drakirus.xyz.smartwallremote.MainActivity
 import sdw.drakirus.xyz.smartwallremote.R
 import sdw.drakirus.xyz.smartwallremote.json.WallItem
@@ -49,6 +50,7 @@ class MainActivityUi(val wallItem: WallItem) : AnkoComponent<MainActivity> {
                         ScenarioData("test"),
                         ScenarioData("test")
                 ))
+
         var re :RecyclerView? = null
 
         // https://github.com/orhanobut/dialogplus
@@ -93,7 +95,7 @@ class MainActivityUi(val wallItem: WallItem) : AnkoComponent<MainActivity> {
             )
 
             setGravity(Gravity.BOTTOM)
-            backgroundColor = Color.DKGRAY
+            backgroundColor = Color.WHITE
             shadowHeight = 0
 
             addPanelSlideListener(object : SlidingUpPanelLayout.PanelSlideListener {
@@ -130,14 +132,21 @@ class MainActivityUi(val wallItem: WallItem) : AnkoComponent<MainActivity> {
                                     useCompatPadding = true
                                     radius = 7f
 
+                                    background = resources.getDrawable(R.drawable.test)
 
                                     verticalLayout {
-                                        val screenItem = wallItem.getCheckBoxAt(col, row)
-                                        if (screenItem != null){
-                                            screenItem.checkBox == checkBox()
-                                        } else {
-                                            backgroundColor = Color.DKGRAY
-                                        }
+                                        linearLayout {
+
+                                            val screenItem = wallItem.getCheckBoxAt(col, row)
+                                            if (screenItem != null){
+                                                screenItem.checkBox == checkBox()
+                                                backgroundColor = Color.WHITE
+                                            } else {
+                                                backgroundColor = Color.DKGRAY
+                                            }
+
+                                            space()
+                                        }.lparams(height = matchParent, width = matchParent)
 
                                     }.lparams{
                                         width = matchParent
@@ -189,7 +198,7 @@ class MainActivityUi(val wallItem: WallItem) : AnkoComponent<MainActivity> {
 
                 // http://tutos-android-france.com/material-design-recyclerview-et-cardview/
                 re = recyclerView {
-//                     layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
+                    //                     layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
                     layoutManager = GridLayoutManager(context, 2)
                     adapter = adapterVid
                 }
@@ -198,11 +207,8 @@ class MainActivityUi(val wallItem: WallItem) : AnkoComponent<MainActivity> {
                 re?.addOnScrollListener(object: RecyclerView.OnScrollListener() {
                     override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
                         super.onScrolled(recyclerView, dx, dy)
-//                        if (recyclerView?.computeVerticalScrollOffset() ?: 10 < 5 && dy < 5){
-//                            panelState = PanelState.COLLAPSED
-//                        }
-                        if (recyclerView != null && recyclerView.computeVerticalScrollOffset() == 0) {
-                            isTouchEnabled = true
+                        if (panelState == PanelState.EXPANDED){
+                            isTouchEnabled = recyclerView != null && recyclerView.computeVerticalScrollOffset() == 0
                         }
                     }
 
@@ -211,7 +217,11 @@ class MainActivityUi(val wallItem: WallItem) : AnkoComponent<MainActivity> {
             }
 
 
+
         }
+
     }
+
+
 
 }
