@@ -21,11 +21,11 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
 
     val scenarioList =
             listOf(
-                    ScenarioData("test"),
-                    ScenarioData("test"),
-                    ScenarioData("test"),
-                    ScenarioData("test"),
-                    ScenarioData("test")
+                    ScenarioData("test",4,4),
+                    ScenarioData("test",4,4),
+                    ScenarioData("test",4,4),
+                    ScenarioData("test",4,4),
+                    ScenarioData("test",4,4)
             )
 
     val videoList =

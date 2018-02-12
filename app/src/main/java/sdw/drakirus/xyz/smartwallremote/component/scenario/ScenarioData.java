@@ -28,4 +28,5 @@ public class ScenarioData {
     public void setScenarioRows(int scenarioRows) { this.scenarioRows = scenarioRows; }
 
     public Bitmap getScenarioImage() { return scenarioImage; }
-    public void setScenarioImage(Bitmap scenarioImage) { this.scenarioImage = scenarioImage; }}
+    public void setScenarioImage(Bitmap scenarioImage) { this.scenarioImage = scenarioImage; }
+}
