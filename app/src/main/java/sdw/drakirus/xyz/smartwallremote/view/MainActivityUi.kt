@@ -1,9 +1,11 @@
 package sdw.drakirus.xyz.smartwallremote.view
 
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.graphics.Color
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.view.ViewManager
@@ -16,6 +18,7 @@ import org.jetbrains.anko.cardview.v7.cardView
 import org.jetbrains.anko.custom.ankoView
 import org.jetbrains.anko.recyclerview.v7.recyclerView
 import org.jetbrains.anko.sdk25.coroutines.onClick
+import org.jetbrains.anko.sdk25.coroutines.onQueryTextListener
 import sdw.drakirus.xyz.smartwallremote.MainActivity
 import sdw.drakirus.xyz.smartwallremote.R
 import sdw.drakirus.xyz.smartwallremote.json.WallItem
@@ -194,11 +197,25 @@ class MainActivityUi(val wallItem: WallItem) : AnkoComponent<MainActivity> {
                     }
                 }
 
-                searchView {
+                val se = searchView {
 
-                                    }
-
-
+                    onQueryTextListener {
+                        onQueryTextSubmit(listener = { s ->
+                            Log.d(TAG, "submit= " + s)
+                            return@onQueryTextSubmit true
+                        })
+                    }
+                }
+//                val queryTextListener = object : SearchView.OnQueryTextListener {
+//                    override fun onQueryTextSubmit(s: String): Boolean {
+//                        return true
+//                    }
+//
+//                    override fun onQueryTextChange(s: String): Boolean {
+//                        return true
+//                    }
+//                }
+//                se.setOnQueryTextListener(queryTextListener)
 
                 // http://tutos-android-france.com/material-design-recyclerview-et-cardview/
                 re = recyclerView {
