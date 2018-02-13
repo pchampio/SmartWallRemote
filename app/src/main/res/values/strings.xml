@@ -14,4 +14,7 @@
     <string name="footer_button_close">btn close</string>
     <string name="footer_button_confirm">confi</string>
     <string name="video_preview">Video preview</string>
+    <string name="search_video">search video</string>
+    <string name="search_video_hint">Search video</string>
+    <string name="title_activity_video">VideoActivity</string>
 </resources>

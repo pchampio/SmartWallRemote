@@ -101,5 +101,8 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
         }
     }
 
+    fun searchVideo(query: String){
+
+    }
 }
 
