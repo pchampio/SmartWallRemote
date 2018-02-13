@@ -176,6 +176,8 @@ class MainActivityUi(val wallItem: WallItem) : AnkoComponent<MainActivity> {
 
             }
 
+
+
             // Slider Content
             verticalLayout {
 
@@ -184,9 +186,9 @@ class MainActivityUi(val wallItem: WallItem) : AnkoComponent<MainActivity> {
                     gravity = Gravity.CENTER
 
                     textView("Get Video"){
-                        textColor = Color.WHITE
+                        textColor = Color.BLUE
                         textSize = 24f
-                        padding = dip(10)
+                        padding = dip(8)
                         gravity = Gravity.CENTER
                     }
 
@@ -205,6 +207,8 @@ class MainActivityUi(val wallItem: WallItem) : AnkoComponent<MainActivity> {
                             return@onQueryTextSubmit true
                         })
                     }
+
+
                 }
 //                val queryTextListener = object : SearchView.OnQueryTextListener {
 //                    override fun onQueryTextSubmit(s: String): Boolean {

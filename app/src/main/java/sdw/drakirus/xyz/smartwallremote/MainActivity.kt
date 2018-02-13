@@ -10,6 +10,10 @@ import org.jetbrains.anko.*
 import org.jetbrains.anko.appcompat.v7.Appcompat
 import sdw.drakirus.xyz.smartwallremote.json.WallConfig
 import sdw.drakirus.xyz.smartwallremote.view.MainActivityUi
+import android.app.SearchManager
+import android.content.Intent
+
+
 
 
 class MainActivity : AppCompatActivity(), AnkoLogger {
@@ -69,5 +73,8 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
         }
     }
 
+    fun searchVideo(query: String){
+
+    }
 }
 
