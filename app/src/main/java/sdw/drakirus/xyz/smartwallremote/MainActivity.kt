@@ -69,9 +69,9 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
                 is Result.Success -> {
                     getConfigDialog.cancel()
                     if (result.value.wall.size > 1) {
-                         selector("Multiple Walls are available", result.value.wall.map {it.name}, { _, i ->
+                        selector("Multiple Walls are available", result.value.wall.map {it.name}, { _, i ->
                             info("Chosen Wall" + result.value.wall[i])
-                             wall = result.value.wall[i]
+                            wall = result.value.wall[i]
                             MainActivityUi().setContentView(this)
                         })
                     } else {
@@ -90,8 +90,6 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
                 }
             }
         }
-
-
     }
 
     fun selectedScreen( name: Int?, password: Int?) {
