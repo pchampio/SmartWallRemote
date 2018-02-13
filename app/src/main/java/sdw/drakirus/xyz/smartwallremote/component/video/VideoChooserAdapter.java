@@ -1,4 +1,4 @@
-package sdw.drakirus.xyz.smartwallremote.view.video;
+package sdw.drakirus.xyz.smartwallremote.component.video;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;

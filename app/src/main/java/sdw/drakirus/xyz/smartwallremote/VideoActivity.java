@@ -1,4 +1,4 @@
-package sdw.drakirus.xyz.smartwallremote.view.video;
+package sdw.drakirus.xyz.smartwallremote;
 
 import android.app.SearchManager;
 import android.content.Context;
@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import sdw.drakirus.xyz.smartwallremote.R;
+import sdw.drakirus.xyz.smartwallremote.component.video.VideoChooserAdapter;
+import sdw.drakirus.xyz.smartwallremote.component.video.VideoData;
 
 public class VideoActivity extends AppCompatActivity {
 

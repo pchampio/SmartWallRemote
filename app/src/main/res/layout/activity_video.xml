@@ -4,6 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="sdw.drakirus.xyz.smartwallremote.view.video.VideoActivity">
+    tools:context="sdw.drakirus.xyz.smartwallremote.VideoActivity">
 
 </android.support.constraint.ConstraintLayout>

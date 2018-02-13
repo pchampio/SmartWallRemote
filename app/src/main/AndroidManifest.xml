@@ -21,7 +21,7 @@
         </activity>
 
         <!--searchable RB -->
-        <activity android:name=".view.video.VideoActivity">
+        <activity android:name=".VideoActivity">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
