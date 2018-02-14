@@ -5,7 +5,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
+import sdw.drakirus.xyz.smartwallremote.json.GrpScreen;
 import sdw.drakirus.xyz.smartwallremote.json.Layout;
+import sdw.drakirus.xyz.smartwallremote.json.Screen;
 
 /**
  * Created by Hactogeek on 14/02/2018.
@@ -20,25 +22,25 @@ public class UtilsLayout {
         Bitmap scenarioImage = Bitmap.createBitmap(500, 500, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(scenarioImage);
 
-        int widthRed = layout.getWidth();
-        int heightRed = layout.getHeight();
-        Paint paintRed = new Paint();
-        paintRed.setColor(Color.RED);
-        canvas.drawRect(0F, 0F, (float) widthRed, (float) heightRed, paintRed);
+        int width = 500;
+        int height = 500;
+        int widthScreen = (width - layout.getCols()) / layout.getCols();
+        int heightScreen = (height - layout.getRows()) / layout.getRows();
+        Paint paintBackground = new Paint();
+        paintBackground.setColor(Color.WHITE);
+        canvas.drawRect(0F, 0F, (float) width, (float) height, paintBackground);
 
+        Paint paint = new Paint();
 
-        for(int i = 1 ; i <= layout.getGrpScreen().size() ; i++)
-        {
+        for (GrpScreen grpScreen : layout.getGrpScreen()){
+            paint.setColor(grpScreen.getColor());
+            paint.setAlpha(210);
+
+            for (Screen screen : grpScreen.getListScreen()){
+                canvas.drawRect((float)(widthScreen * screen.getCol()),(float)(heightScreen * screen.getRow()), (float)(widthScreen * (screen.getCol()+1)), (float)(heightScreen * (screen.getRow()+1)), paint);
+            }
 
         }
-
-        int widthBlue = 100;
-        int heightBlue = 100;
-        Paint paintBlue = new Paint();
-        paintBlue.setColor(Color.BLUE);
-        canvas.drawRect(0F, 0F, (float) widthBlue, (float) heightBlue, paintBlue);
-
-        canvas.drawRect(500F-100F, 0F, 500F, 100F, paintBlue);
 
         layout.setBitmap(scenarioImage);
 
