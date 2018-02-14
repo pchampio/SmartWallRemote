@@ -1,5 +1,6 @@
 package sdw.drakirus.xyz.smartwallremote
 
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.github.kittinunf.fuel.core.FuelManager
@@ -8,10 +9,8 @@ import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.result.Result
 import org.jetbrains.anko.*
 import org.jetbrains.anko.appcompat.v7.Appcompat
-import sdw.drakirus.xyz.smartwallremote.component.scenario.ScenarioData
 import sdw.drakirus.xyz.smartwallremote.component.video.VideoData
-import sdw.drakirus.xyz.smartwallremote.json.WallConfig
-import sdw.drakirus.xyz.smartwallremote.json.WallItem
+import sdw.drakirus.xyz.smartwallremote.json.*
 
 
 class MainActivity : AppCompatActivity(), AnkoLogger {
@@ -19,13 +18,42 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
     val screensWall = mutableListOf<WallConfig>()
     lateinit var wall: WallItem
 
-    val scenarioList =
+    val listLayout =
             listOf(
-                    ScenarioData("test",4,4),
-                    ScenarioData("test",4,4),
-                    ScenarioData("test",4,4),
-                    ScenarioData("test",4,4),
-                    ScenarioData("test",4,4)
+                    Layout(listOf(GrpScreen(
+                            listOf(
+                                    Screen(1, 1, null)), Color.RED
+                            )), "Name layout 1"
+                    ),
+                    Layout(listOf(
+                            GrpScreen(listOf(
+                                    Screen(0, 0, null),
+                                    Screen(0, 1, null),
+                                    Screen(0, 2, null),
+
+                                    Screen(1, 0, null),
+                                    Screen(1, 1, null),
+                                    Screen(1, 2, null),
+
+                                    Screen(2, 0, null),
+                                    Screen(2, 1, null),
+                                    Screen(2, 2, null)
+                            ), Color.RED),
+                            GrpScreen(listOf(
+                                    Screen(0, 3, null),
+                                    Screen(1, 3, null),
+                                    Screen(2, 3, null)
+                            ), Color.BLUE),
+                            GrpScreen(listOf(
+                                    Screen(3, 0, null),
+                                    Screen(3, 1, null),
+                                    Screen(3, 2, null)
+                            ), Color.YELLOW),
+                            GrpScreen(listOf(
+                                    Screen(3, 3, null)
+                            ), Color.YELLOW)
+                    ), "Name layout 2"
+                    )
             )
 
     val videoList =

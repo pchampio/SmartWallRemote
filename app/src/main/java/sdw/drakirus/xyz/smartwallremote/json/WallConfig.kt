@@ -24,6 +24,16 @@ data class Screen(
 		var checkBox: CheckBox? = null
 )
 
+data class Layout(
+		val grpScreen: List<GrpScreen>,
+		val name: String
+)
+
+data class GrpScreen(
+        val listScreen: List<Screen>,
+        val color: Int
+)
+
 data class Scenario(
 		val name: String,
 		val video: List<Video>

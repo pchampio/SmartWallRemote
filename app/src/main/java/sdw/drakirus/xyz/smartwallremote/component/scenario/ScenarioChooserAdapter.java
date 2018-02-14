@@ -19,13 +19,14 @@ import android.widget.TextView;
 import java.util.List;
 
 import sdw.drakirus.xyz.smartwallremote.R;
+import sdw.drakirus.xyz.smartwallremote.json.Layout;
 
 public class ScenarioChooserAdapter extends BaseAdapter {
 
-    private final List<ScenarioData> scenarioDataList;
+    private final List<Layout> scenarioDataList;
     private LayoutInflater layoutInflater;
 
-    public ScenarioChooserAdapter(Context context, List<ScenarioData> scenarioDataList) {
+    public ScenarioChooserAdapter(Context context, List<Layout> scenarioDataList) {
         layoutInflater = LayoutInflater.from(context);
         this.scenarioDataList = scenarioDataList;
     }
@@ -70,7 +71,7 @@ public class ScenarioChooserAdapter extends BaseAdapter {
         // data bind to viewHolder
 //        viewHolder.imageView.setImageResource(R.drawable.ic_launcher_background);
         viewHolder.imageView.setImageBitmap(bitmap);
-        viewHolder.textView.setText(scenarioDataList.get(position).getScenarioName());
+        viewHolder.textView.setText(scenarioDataList.get(position).getName());
 
         return view;
     }
