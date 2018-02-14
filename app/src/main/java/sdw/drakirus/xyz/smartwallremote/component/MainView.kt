@@ -40,7 +40,7 @@ fun SlidingUpPanelLayout.mainView(ui: AnkoContext<MainActivity>) =
 
             // https://github.com/orhanobut/dialogplus
             val dialog_scenario = DialogPlus.newDialog(context)
-                    .setAdapter(ScenarioChooserAdapter(context, ui.owner.scenarioList))
+                    .setAdapter(ScenarioChooserAdapter(context, ui.owner.listLayout))
                     .setGravity(Gravity.CENTER)
                     .setOnItemClickListener { dialog, item, view, position -> dialog.dismiss() }
                     .setFooter(R.layout.scenario_footer)
