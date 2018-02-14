@@ -16,9 +16,6 @@ import sdw.drakirus.xyz.smartwallremote.json.Screen;
 public class UtilsLayout {
     public static void makeBitmap(Layout layout){
 
-        System.out.println(layout.getGrpScreen());
-
-
         Bitmap scenarioImage = Bitmap.createBitmap(500, 500, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(scenarioImage);
 

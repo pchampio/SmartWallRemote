@@ -2,8 +2,10 @@ package sdw.drakirus.xyz.smartwallremote.component
 
 import android.graphics.Color
 import android.view.Gravity
+import android.widget.Toast
 import com.orhanobut.dialogplus.DialogPlus
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
+import es.dmoral.toasty.Toasty
 import org.jetbrains.anko.*
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import sdw.drakirus.xyz.smartwallremote.MainActivity
@@ -16,9 +18,13 @@ import sdw.drakirus.xyz.smartwallremote.component.scenario.ScenarioChooserAdapte
 
 fun SlidingUpPanelLayout.mainView(ui: AnkoContext<MainActivity>) =
         verticalLayout {
+
+            val wall = ui.owner.wall // reference
+            val layoutOption = ui.owner.getLayoutConfig() // compute
+
             backgroundResource = R.drawable.bg
 
-            textView(ui.owner.wall.name + "'s Remote") {
+            textView(wall.name) {
                 textColor = Color.WHITE
                 textSize = 24f
                 padding = dip(10)
@@ -26,11 +32,11 @@ fun SlidingUpPanelLayout.mainView(ui: AnkoContext<MainActivity>) =
                 gravity = Gravity.CENTER
             }
 
-            for (row in 1..ui.owner.wall.rows) {
+            for (row in 0 until wall.rows) {
                 linearLayout {
                     horizontalPadding = dip(10)
 
-                    for (col in 1..ui.owner.wall.cols) {
+                    for (col in 0 until wall.cols) {
                         screenItem(ui, col, row)
                     }
 
@@ -38,19 +44,30 @@ fun SlidingUpPanelLayout.mainView(ui: AnkoContext<MainActivity>) =
 
             }
 
+            // once the UI is init update the Group's colors
+            if (!layoutOption.isEmpty())
+                wall.updateColorGroup(layoutOption.get(0))
+
             // https://github.com/orhanobut/dialogplus
             val dialog_scenario = DialogPlus.newDialog(context)
-                    .setAdapter(ScenarioChooserAdapter(context, ui.owner.listLayout))
+                    .setAdapter(ScenarioChooserAdapter(context, layoutOption))
                     .setGravity(Gravity.CENTER)
-                    .setOnItemClickListener { dialog, item, view, position -> dialog.dismiss() }
-                    .setFooter(R.layout.scenario_footer)
+                    .setOnItemClickListener { dialog, item, view, position ->
+                        wall.updateColorGroup(layoutOption.get(position))
+                        ui.owner.layoutConfigInUse = position
+                        dialog.dismiss()
+                    }
                     .setHeader(R.layout.scenario_header)
                     .setExpanded(false)
                     .create()
 
-            button("Choose a scenario") {
+            button("Choose a regroupement") {
                 onClick {
-                    dialog_scenario.show()
+                    if (ui.owner.getLayoutConfig().isEmpty()) {
+                        Toasty.error(ui.ctx, "Il n'y a pas de re-groupement\npour cette disposition", Toast.LENGTH_LONG, true).show();
+                    } else {
+                        dialog_scenario.show()
+                    }
                 }
             }
 

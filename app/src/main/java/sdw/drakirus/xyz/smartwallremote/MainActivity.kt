@@ -1,6 +1,5 @@
 package sdw.drakirus.xyz.smartwallremote
 
-import android.graphics.Color
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.github.kittinunf.fuel.core.FuelManager
@@ -10,51 +9,18 @@ import com.github.kittinunf.result.Result
 import org.jetbrains.anko.*
 import org.jetbrains.anko.appcompat.v7.Appcompat
 import sdw.drakirus.xyz.smartwallremote.component.video.VideoData
-import sdw.drakirus.xyz.smartwallremote.json.*
+import sdw.drakirus.xyz.smartwallremote.json.LayoutConfig
+import sdw.drakirus.xyz.smartwallremote.json.Screen
+import sdw.drakirus.xyz.smartwallremote.json.WallConfig
+import sdw.drakirus.xyz.smartwallremote.json.WallItem
 
 
 class MainActivity : AppCompatActivity(), AnkoLogger {
 
-    val screensWall = mutableListOf<WallConfig>()
     lateinit var wall: WallItem
+    lateinit var layoutConfig: LayoutConfig
 
-    val listLayout =
-            listOf(
-                    Layout(1, 1,  listOf(
-                            GrpScreen(listOf(
-                                    Screen(0, 0, null)
-                            ), Color.RED)), "Name layout 1"
-                    ),
-                    Layout(4, 4, listOf(
-                            GrpScreen(listOf(
-                                    Screen(0, 0, null),
-                                    Screen(0, 1, null),
-                                    Screen(0, 2, null),
-
-                                    Screen(1, 0, null),
-                                    Screen(1, 1, null),
-                                    Screen(1, 2, null),
-
-                                    Screen(2, 0, null),
-                                    Screen(2, 1, null),
-                                    Screen(2, 2, null)
-                            ), Color.RED),
-                            GrpScreen(listOf(
-                                    Screen(0, 3, null),
-                                    Screen(1, 3, null),
-                                    Screen(2, 3, null)
-                            ), Color.BLUE),
-                            GrpScreen(listOf(
-                                    Screen(3, 0, null),
-                                    Screen(3, 1, null),
-                                    Screen(3, 2, null)
-                            ), Color.YELLOW),
-                            GrpScreen(listOf(
-                                    Screen(3, 3, null)
-                            ), Color.BLACK)
-                    ), "Name layout 2"
-                    )
-            )
+    var layoutConfigInUse: Int = 0
 
     val videoList =
             listOf(
@@ -82,11 +48,30 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
         super.onCreate(savedInstanceState)
         FuelManager.instance.basePath = baseUrl
 
+        getLayout()
         getAndChooseWall()
+
     }
 
+    fun getLayoutConfig() = layoutConfig.getForWall(wall)
 
-    fun getAndChooseWall() {
+    private fun getLayout() {
+        "layout.json".httpGet().responseObject<LayoutConfig> { request, response, result ->
+            when(result) {
+                is Result.Success -> {
+                    layoutConfig = result.value
+                    info(result.value)
+                }
+                is Result.Failure -> {
+                    toast("Error while fetching the layout information!")
+                    error(result.error)
+                }
+            }
+
+        }
+    }
+
+    private fun getAndChooseWall() {
         val getConfigDialog = indeterminateProgressDialog(R.string.get_config)
         getConfigDialog.setCancelable(false)
         getConfigDialog.show()
@@ -98,7 +83,6 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
                     getConfigDialog.cancel()
                     if (result.value.wall.size > 1) {
                         selector("Multiple Walls are available", result.value.wall.map {it.name}, { _, i ->
-                            info("Chosen Wall" + result.value.wall[i])
                             wall = result.value.wall[i]
                             MainActivityUi().setContentView(this)
                         })
@@ -120,17 +104,24 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
         }
     }
 
-    fun selectedScreen( name: Int?, password: Int?) {
-        doAsync {
-            Thread.sleep(500)
-            activityUiThreadWithContext {
-                toast(name.toString() + " " + password.toString())
-            }
-        }
+    fun toggleGroup(screen: Screen) {
+        wall.screen.filter { it.color == screen.color }.forEach { println(it.checkBox); it.checkBox?.isChecked = it.checkBox?.isChecked?.not() ?: false }
+
+//        getLayoutConfig().get(layoutConfigInUse).grpScreen.
+//                forEach { item: GrpScreen ->
+//                    val test = item.listScreen.all { item.color == screen.color }
+//                    println(test)
+//                    if (test)
+
+//                    if (item.listScreen.get(0).color == screen.color) {
+//                        println("${item.listScreen.get(0).color} == ${screen.color}")
+//                        wall.screen.union(item.listScreen).forEach {
+//                            it.checkBox?.isChecked = !it.checkBox?.isChecked!!
+//                        }
+//                    }
+
+//                }
     }
 
-    fun searchVideo(query: String){
-
-    }
 }
 

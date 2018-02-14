@@ -40,5 +40,6 @@ class MainActivityUi() : AnkoComponent<MainActivity> {
 
         }
 
+
     }
 }
