@@ -20,12 +20,12 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
 
     val listLayout =
             listOf(
-                    Layout(listOf(GrpScreen(
-                            listOf(
-                                    Screen(1, 1, null)), Color.RED
-                            )), "Name layout 1"
+                    Layout(1, 1,  listOf(
+                            GrpScreen(listOf(
+                                    Screen(0, 0, null)
+                            ), Color.RED)), "Name layout 1"
                     ),
-                    Layout(listOf(
+                    Layout(4, 4, listOf(
                             GrpScreen(listOf(
                                     Screen(0, 0, null),
                                     Screen(0, 1, null),
@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
                             ), Color.YELLOW),
                             GrpScreen(listOf(
                                     Screen(3, 3, null)
-                            ), Color.YELLOW)
+                            ), Color.BLACK)
                     ), "Name layout 2"
                     )
             )

@@ -1,5 +1,6 @@
 package sdw.drakirus.xyz.smartwallremote.json
 
+import android.graphics.Bitmap
 import android.widget.CheckBox
 
 data class WallConfig(
@@ -25,8 +26,13 @@ data class Screen(
 )
 
 data class Layout(
+		val cols: Int,
+		val rows: Int,
 		val grpScreen: List<GrpScreen>,
-		val name: String
+		val name: String,
+
+		@Transient
+		var bitmap: Bitmap? = null
 )
 
 data class GrpScreen(
