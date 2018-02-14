@@ -26,6 +26,8 @@ data class Screen(
 )
 
 data class Layout(
+		val width: Int,
+		val height: Int,
 		val grpScreen: List<GrpScreen>,
 		val name: String,
 

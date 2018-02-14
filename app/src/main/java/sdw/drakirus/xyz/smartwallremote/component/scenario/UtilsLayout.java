@@ -20,17 +20,17 @@ public class UtilsLayout {
         Bitmap scenarioImage = Bitmap.createBitmap(500, 500, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(scenarioImage);
 
-
-        for(int i = 1 ; i <= 2 ; i++)
-        {
-
-        }
-
-        int widthRed = 500;
-        int heightRed = 500;
+        int widthRed = layout.getWidth();
+        int heightRed = layout.getHeight();
         Paint paintRed = new Paint();
         paintRed.setColor(Color.RED);
         canvas.drawRect(0F, 0F, (float) widthRed, (float) heightRed, paintRed);
+
+
+        for(int i = 1 ; i <= layout.getGrpScreen().size() ; i++)
+        {
+
+        }
 
         int widthBlue = 100;
         int heightBlue = 100;
