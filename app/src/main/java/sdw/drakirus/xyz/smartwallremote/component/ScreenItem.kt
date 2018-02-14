@@ -18,6 +18,7 @@ fun _LinearLayout.screenItem(ui: AnkoContext<MainActivity>, col: Int, row: Int) 
 
                 cardElevation = 5F
                 useCompatPadding = true
+//                cardBackgroundColor = Color.BLUE
                 radius = 7f
 
                 if (col == 1 && row == 1) {
