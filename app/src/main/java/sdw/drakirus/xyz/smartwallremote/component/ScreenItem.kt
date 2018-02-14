@@ -20,60 +20,19 @@ fun _LinearLayout.screenItem(ui: AnkoContext<MainActivity>, col: Int, row: Int) 
                 useCompatPadding = true
                 radius = 7f
 
-                if (col == 1 && row == 1) {
-                    background = colorBorderBuilder(ui, Color.RED, "top-left")
-                }
-                if (col == 1 && row == 2) {
-                    background = colorBorderBuilder(ui, Color.RED, "left")
-                }
-                if (col == 1 && row == 3) {
-                    background = colorBorderBuilder(ui, Color.RED, "bottom-left")
-                }
+                val screenItem = ui.owner.wall.getCheckBoxAt(col, row)?.copy(col = col-1, row = row-1)
 
-                if (col == 2 && row ==1) {
-                    background = colorBorderBuilder(ui, Color.RED, "top")
+                if (screenItem != null) {
+                    ui.owner.listLayout.get(1).grpScreen.forEach { grpScreen ->
+                        val position = grpScreen.getPosition(screenItem)
+                        if (position != grpScreen.NOPOS) {
+                            background = colorBorderBuilder(grpScreen.color, position)
+                        }
+                    }
                 }
-                if (col == 2 && row ==2) {
-                    background = colorBorderBuilder(ui, Color.RED, "all")
-                }
-                if (col == 2 && row ==3) {
-                    background = colorBorderBuilder(ui, Color.RED, "bottom")
-                }
-
-                if (col == 3 && row ==1) {
-                    background = colorBorderBuilder(ui, Color.RED, "top-right")
-                }
-                if (col == 3 && row ==2) {
-                    background = colorBorderBuilder(ui, Color.RED, "right")
-                }
-                if (col == 3 && row ==3) {
-                    background = colorBorderBuilder(ui, Color.RED, "bottom-right")
-                }
-
-                if (col == 4 && row in 1..3) {
-                    if (row == 1)
-                        background = colorBorderBuilder(ui, Color.BLUE, "top-only")
-                    if (row == 2)
-                        background = colorBorderBuilder(ui, Color.BLUE, "vertical")
-                    if (row == 3)
-                        background = colorBorderBuilder(ui, Color.BLUE, "bottom-only")
-                }
-
-                if (col in 1..3 && row == 4) {
-                    if (col == 1)
-                        background = colorBorderBuilder(ui, Color.YELLOW, "right-only")
-                    if (col == 2)
-                        background = colorBorderBuilder(ui, Color.YELLOW, "horizontal")
-                    if (col == 3)
-                        background = colorBorderBuilder(ui, Color.YELLOW, "left-only")
-                }
-
-//                if (col == 4 && row == 4)
-//                    background = colorBorderBuilder(ui, Color.GREEN, "all")
 
                 verticalLayout {
                     linearLayout {
-                        val screenItem = ui.owner.wall.getCheckBoxAt(col, row)
                         if (screenItem != null) {
                             screenItem.checkBox == checkBox()
                             backgroundColor = Color.WHITE
@@ -94,7 +53,7 @@ fun _LinearLayout.screenItem(ui: AnkoContext<MainActivity>, col: Int, row: Int) 
         }.lparams(width = matchParent, weight = 1F)
 
 
-private fun colorBorderBuilder(ui: AnkoContext<MainActivity>, color: Int, position: String): LayerDrawable {
+private fun colorBorderBuilder(color: Int, position: String): LayerDrawable {
 
     val overBorder = GradientDrawable()
     overBorder.setShape(GradientDrawable.RECTANGLE);
@@ -115,7 +74,9 @@ private fun colorBorderBuilder(ui: AnkoContext<MainActivity>, color: Int, positi
         "right" -> layerDrawable.setLayerInset(0, 0, 0, 15, 0)
         "left" -> layerDrawable.setLayerInset(0, 15, 0, 0, 0)
         "all" ->layerDrawable.setLayerInset(0, 0, 0, 0, 0)
+
         "vertical" ->layerDrawable.setLayerInset(0, 15, 0, 15, 0)
+        "horizontal" ->layerDrawable.setLayerInset(0, 0, 15, 0, 15)
 
         "bottom-only" -> layerDrawable.setLayerInset(0, 15, 0, 15, 15)
         "top-only" -> layerDrawable.setLayerInset(0, 15, 15, 15, 0)
@@ -123,7 +84,6 @@ private fun colorBorderBuilder(ui: AnkoContext<MainActivity>, color: Int, positi
         "left-only" -> layerDrawable.setLayerInset(0, 0, 15, 15, 15)
         "right-only" -> layerDrawable.setLayerInset(0, 15, 15, 0, 15)
 
-        "horizontal" ->layerDrawable.setLayerInset(0, 0, 15, 0, 15)
     }
 
     return layerDrawable

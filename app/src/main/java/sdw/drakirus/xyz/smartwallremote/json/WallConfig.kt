@@ -32,7 +32,45 @@ data class Layout(
 data class GrpScreen(
         val listScreen: List<Screen>,
         val color: Int
-)
+){
+    val NOPOS = "NOPOS"
+
+    fun getPosition(screen: Screen): String {
+
+        if (listScreen.find { it == screen } == null){
+            return NOPOS
+        }
+
+        val hasOneLeft: Boolean = listScreen.find { it.col-1 == screen.col } != null
+        val hasOneRight: Boolean = listScreen.find { it.col+1 == screen.col } != null
+
+        val hasOneTop: Boolean = listScreen.find { it.row+1 == screen.row } != null
+        val hasOneBottom: Boolean = listScreen.find { it.row-1 == screen.row } != null
+
+        return when (listOf(hasOneLeft, hasOneRight, hasOneTop, hasOneBottom)) {
+            listOf(true, false, false, false) -> "right-only"
+            listOf(false, true, false, false) -> "left-only"
+
+            listOf(false, false, true, false) -> "bottom-only"
+            listOf(false, false, false, true) -> "top-only"
+
+            listOf(true, true, false, false) -> "horizontal"
+            listOf(false, false,true, true) -> "vertical"
+
+            listOf(true, true, true, true) -> "all"
+            listOf(false, true, true, true) -> "right"
+            listOf(true, false, true, true) -> "left"
+            listOf(true, true, false, true) -> "top"
+            listOf(true, true, true, false) -> "bottom"
+            listOf(true, false, true, false) -> "bottom-left"
+            listOf(false, true, false, true) -> "top-right"
+
+            listOf(true, false, false, true) -> "top-left"
+            listOf(false, true, true, false) -> "bottom-right"
+            else -> NOPOS
+        }
+    }
+}
 
 data class Scenario(
 		val name: String,
