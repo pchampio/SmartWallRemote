@@ -60,16 +60,9 @@ public class ScenarioChooserAdapter extends BaseAdapter {
             viewHolder = (ScenarioViewHolder) view.getTag();
         }
 
-        int width = 100;
-        int height = 50;
-        Bitmap bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        Paint paint = new Paint();
-        paint.setColor(Color.RED);
-        canvas.drawRect(0F, 0F, (float) width, (float) height, paint);
         // data bind to viewHolder
 //        viewHolder.imageView.setImageResource(R.drawable.ic_launcher_background);
-        viewHolder.imageView.setImageBitmap(bitmap);
+        viewHolder.imageView.setImageBitmap(scenarioDataList.get(position).getScenarioImage());
         viewHolder.textView.setText(scenarioDataList.get(position).getScenarioName());
 
         return view;
