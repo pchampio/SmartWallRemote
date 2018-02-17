@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <searchable xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/searchable"
-    android:label="@string/search_video">
-</searchable>
+    android:hint="@string/search_video_hint"
+    android:label="@string/search_video" />
