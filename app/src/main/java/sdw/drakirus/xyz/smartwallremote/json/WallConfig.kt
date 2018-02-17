@@ -5,7 +5,10 @@ import android.graphics.Color
 import android.support.v7.widget.CardView
 import android.widget.CheckBox
 import com.google.gson.annotations.SerializedName
-import sdw.drakirus.xyz.smartwallremote.component.colorBorderFromPos
+import sdw.drakirus.xyz.smartwallremote.component.helpers.colorBorderFromPos
+import sdw.drakirus.xyz.smartwallremote.component.helpers.colorBorderReset
+import sdw.drakirus.xyz.smartwallremote.component.helpers.resetColor
+import sdw.drakirus.xyz.smartwallremote.component.helpers.setColor
 
 data class WallConfig(
         val wall: List<WallItem>
@@ -36,21 +39,22 @@ data class Screen(
 ) {
 
     @Transient
-    var color: Int = 0
+    lateinit var checkBox: CheckBox
 
     @Transient
-    var checkBox: CheckBox? = null
-
-    @Transient
-    var cardView: CardView? = null
+    lateinit var cardView: CardView
 
     fun updateColor(layout: Layout) {
+        cardView.colorBorderReset()
+        checkBox.resetColor()
+
         layout.grpScreen.forEach { grpScreen ->
             val position = grpScreen.getPosition(this)
             if (position != grpScreen.NOPOS) {
 //                println("test: $col $row -> $position")
-                color = grpScreen.color
-                cardView?.colorBorderFromPos(grpScreen.color, position)
+
+                checkBox.setColor(grpScreen.color)
+                cardView.colorBorderFromPos(grpScreen.color, position)
             }
         }
     }
@@ -58,9 +62,10 @@ data class Screen(
 }
 
 data class LayoutConfig(
-        val layouts: List<Layout>
+        val layouts: MutableList<Layout>
 ){
     fun getForWall(wall: WallItem) = layouts.filter { it.rows == wall.rows && it.cols == wall.cols }
+    fun isEmpty() = layouts.isEmpty()
 }
 
 data class Layout(
@@ -74,7 +79,7 @@ data class Layout(
 )
 
 data class GrpScreen(
-        val listScreen: List<Screen>, // not a UI screen cannot access Checkbox and CardView
+        val listScreen: MutableList<Screen>, // not a UI screen cannot access Checkbox and CardView!!
         @field:SerializedName("color")
         private val _color: String
 ){
@@ -90,11 +95,11 @@ data class GrpScreen(
             return NOPOS
         }
 
-        val hasOneLeft: Boolean = listScreen.find { it.col-1 == screen.col } != null
-        val hasOneRight: Boolean = listScreen.find { it.col+1 == screen.col } != null
+        val hasOneLeft: Boolean = listScreen.any { it.copy(col = it.col-1) == screen }
+        val hasOneRight: Boolean = listScreen.any { it.copy(col = it.col+1) == screen }
 
-        val hasOneTop: Boolean = listScreen.find { it.row+1 == screen.row } != null
-        val hasOneBottom: Boolean = listScreen.find { it.row-1 == screen.row } != null
+        val hasOneTop: Boolean = listScreen.any { it.copy(row = it.row+1) == screen }
+        val hasOneBottom: Boolean = listScreen.any { it.copy(row = it.row-1) == screen }
 
         return when (listOf(hasOneLeft, hasOneRight, hasOneTop, hasOneBottom)) {
             listOf(true, false, false, false) -> "right-only"

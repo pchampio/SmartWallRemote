@@ -5,6 +5,7 @@ import org.jetbrains.anko.*
 import org.jetbrains.anko.cardview.v7.cardView
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import sdw.drakirus.xyz.smartwallremote.MainActivity
+import sdw.drakirus.xyz.smartwallremote.component.helpers.resetColor
 
 /**
  * Created by drakirus (p.champion) on 12/02/18.
@@ -25,6 +26,7 @@ fun _LinearLayout.screenItem(ui: AnkoContext<MainActivity>, col: Int, row: Int) 
                     linearLayout {
                         if (screenItem != null) {
                             screenItem.checkBox = checkBox()
+                            screenItem.checkBox.resetColor()
                             backgroundColor = Color.WHITE
                         } else {
                             backgroundColor = Color.DKGRAY

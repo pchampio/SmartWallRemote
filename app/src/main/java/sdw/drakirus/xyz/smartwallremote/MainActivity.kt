@@ -1,24 +1,30 @@
 package sdw.drakirus.xyz.smartwallremote
 
 import android.os.Bundle
+import android.support.design.widget.FloatingActionButton
 import android.support.v7.app.AppCompatActivity
+import android.view.View
+import android.widget.Toast
 import com.github.kittinunf.fuel.core.FuelManager
 import com.github.kittinunf.fuel.gson.responseObject
 import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.result.Result
+import es.dmoral.toasty.Toasty
 import org.jetbrains.anko.*
 import org.jetbrains.anko.appcompat.v7.Appcompat
+import petrov.kristiyan.colorpicker.ColorPicker
 import sdw.drakirus.xyz.smartwallremote.component.video.VideoData
-import sdw.drakirus.xyz.smartwallremote.json.LayoutConfig
-import sdw.drakirus.xyz.smartwallremote.json.Screen
-import sdw.drakirus.xyz.smartwallremote.json.WallConfig
-import sdw.drakirus.xyz.smartwallremote.json.WallItem
+import sdw.drakirus.xyz.smartwallremote.json.*
+import java.util.*
 
 
 class MainActivity : AppCompatActivity(), AnkoLogger {
 
     lateinit var wall: WallItem
-    lateinit var layoutConfig: LayoutConfig
+    private var layoutConfig: LayoutConfig? = null
+    var imageSaveLayout: FloatingActionButton? = null
+    private var tmpGrpCreatedByUser = mutableListOf<GrpScreen>()
+
 
     var layoutConfigInUse: Int = 0
 
@@ -53,7 +59,7 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
 
     }
 
-    fun getLayoutConfig() = layoutConfig.getForWall(wall)
+    fun getLayoutConfig() = layoutConfig?.getForWall(wall) ?: listOf<Layout>() // get list of layouts or return an empty one
 
     private fun getLayout() {
         "layout.json".httpGet().responseObject<LayoutConfig> { request, response, result ->
@@ -71,7 +77,7 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
         }
     }
 
-    private fun getAndChooseWall() {
+    fun getAndChooseWall() {
         val getConfigDialog = indeterminateProgressDialog(R.string.get_config)
         getConfigDialog.setCancelable(false)
         getConfigDialog.show()
@@ -81,13 +87,14 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
             when(result) {
                 is Result.Success -> {
                     getConfigDialog.cancel()
+                    wall = result.value.wall[0]
+
                     if (result.value.wall.size > 1) {
                         selector("Multiple Walls are available", result.value.wall.map {it.name}, { _, i ->
                             wall = result.value.wall[i]
                             MainActivityUi().setContentView(this)
                         })
                     } else {
-                        wall = result.value.wall[0]
                         MainActivityUi().setContentView(this)
                     }
                 }
@@ -104,24 +111,113 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
         }
     }
 
-    fun toggleGroup(screen: Screen) {
-        wall.screen.filter { it.color == screen.color }.forEach { println(it.checkBox); it.checkBox?.isChecked = it.checkBox?.isChecked?.not() ?: false }
+    fun createNewLayout(name: String) = Layout(wall.cols, wall.rows, tmpGrpCreatedByUser, name)
 
-//        getLayoutConfig().get(layoutConfigInUse).grpScreen.
-//                forEach { item: GrpScreen ->
-//                    val test = item.listScreen.all { item.color == screen.color }
-//                    println(test)
-//                    if (test)
+    fun saveLayout(name: String) {
 
-//                    if (item.listScreen.get(0).color == screen.color) {
-//                        println("${item.listScreen.get(0).color} == ${screen.color}")
-//                        wall.screen.union(item.listScreen).forEach {
-//                            it.checkBox?.isChecked = !it.checkBox?.isChecked!!
-//                        }
-//                    }
+        val newLayout = createNewLayout(name)
+        if(layoutConfig != null) {
+            layoutConfig?.layouts?.add(newLayout)
+        } else {
+            layoutConfig = LayoutConfig(mutableListOf(newLayout))
+        }
 
-//                }
+        tmpGrpCreatedByUser = mutableListOf<GrpScreen>()
+
+        val config = getLayoutConfig()
+        layoutConfigInUse = config.lastIndex
+        wall.updateColorGroup(config.last())
+
+        Toasty.info(this, "Post to REST API", Toast.LENGTH_SHORT, true).show()
+
+        // simulate a post
+        doAsync {
+            Thread.sleep(1000)
+            uiThread {
+                Toasty.info(it, "Post result to REST API ?", Toast.LENGTH_SHORT, true).show()
+                imageSaveLayout?.visibility = View.GONE
+            }
+        }
+
+
     }
+
+
+    fun createAGroup() {
+        if (wall.screen.none { it.checkBox.isChecked }) {
+            Toasty.info(this, "No screen are selected", Toast.LENGTH_SHORT, true).show()
+            return
+        }
+
+        // create random colors
+        val colors = arrayListOf<String>()
+        val random = Random()
+        for (i in 1..25) {
+            val nextInt = random.nextInt(256 * 256 * 256)
+            colors.add(String.format("#%06x", nextInt))
+        }
+
+        val colorPicker = ColorPicker(this)
+        colorPicker.setColors(colors)
+        colorPicker.show()
+        colorPicker.setOnChooseColorListener(object : ColorPicker.OnChooseColorListener {
+            override fun onChooseColor(position: Int, color: Int) {
+                val selected = wall.screen.filter { it.checkBox.isChecked }.toMutableList()
+
+                tmpGrpCreatedByUser.forEach{ grp -> // delete on other grp
+                        grp.listScreen.removeAll(selected)
+                }
+
+                tmpGrpCreatedByUser.add(GrpScreen(selected, colors.get(position)))
+                val newLayout = Layout(wall.cols, wall.rows, tmpGrpCreatedByUser, "_tmp")
+                wall.updateColorGroup(newLayout)
+                imageSaveLayout?.visibility = View.VISIBLE
+
+                wall.screen.forEach { it.checkBox.isChecked = false }
+
+            }
+
+            override fun onCancel() {
+            }
+        })
+    }
+
+    fun toggleGroup(screen: Screen) {
+
+
+        val listToUse = if (tmpGrpCreatedByUser.isEmpty()) {
+            getLayoutConfig().getOrNull(layoutConfigInUse)?.grpScreen
+        } else {
+            tmpGrpCreatedByUser
+        }
+
+        val hasMakeUpdate = listToUse
+                ?.fold(false) {acc, item: GrpScreen ->
+                    if (item.listScreen.any { it == screen }) {
+                        val uiGrpScreen = wall.screen.intersect(item.listScreen)
+
+                        val allCheck = uiGrpScreen.all { it.checkBox.isChecked }
+                        val someCheck = uiGrpScreen.any { it.checkBox.isChecked }
+
+                        if (!allCheck && someCheck) {
+                            val initSate = screen.checkBox.isChecked
+                            uiGrpScreen.forEach { it.checkBox.isChecked = initSate.not() }
+                        } else {
+                            uiGrpScreen.forEach {
+                                it.checkBox.isChecked = it.checkBox.isChecked.not()
+                            }
+                        }
+                        acc || true
+                    } else acc || false
+                } ?: false
+
+        if (hasMakeUpdate.not()) {
+            screen.checkBox.isChecked = screen.checkBox.isChecked.not()
+        }
+
+
+    }
+
 
 }
 

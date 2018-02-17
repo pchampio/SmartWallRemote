@@ -1,4 +1,4 @@
-package sdw.drakirus.xyz.smartwallremote.component
+package sdw.drakirus.xyz.smartwallremote.component.helpers
 
 import android.graphics.drawable.GradientDrawable
 import android.graphics.drawable.LayerDrawable
@@ -10,6 +10,10 @@ import android.support.v7.widget.CardView
 
 
 // extension function to update the border of a card from a position
+
+fun CardView.colorBorderReset() {
+    this.background = null
+}
 
 fun CardView.colorBorderFromPos(color: Int, position: String) {
 

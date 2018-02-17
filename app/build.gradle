@@ -8,7 +8,7 @@ android {
     compileSdkVersion 26
     defaultConfig {
         applicationId "sdw.drakirus.xyz.smartwallremote"
-        minSdkVersion 22
+        minSdkVersion 23
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -52,9 +52,15 @@ dependencies {
     // RecyclerView-v7
     compile "org.jetbrains.anko:anko-recyclerview-v7:$anko_version"
     compile "org.jetbrains.anko:anko-recyclerview-v7-coroutines:$anko_version"
+
     compile 'com.orhanobut:dialogplus:1.11@aar'
 
 	compile 'com.github.GrenderG:Toasty:1.2.8'
+
+    compile 'petrov.kristiyan:colorpicker-library:1.1.8'
+
+    implementation "org.jetbrains.anko:anko-design:$anko_version"
+
 }
 
 kotlin {
