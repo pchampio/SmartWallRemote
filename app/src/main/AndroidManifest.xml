@@ -22,7 +22,7 @@
         </activity>
 
         <!-- searchable RB -->
-        <activity android:name=".VideoActivityNew"
+        <activity android:name=".component.video.VideoChooserFragment"
             android:label="@string/search_video"
             android:launchMode="singleTop">
 

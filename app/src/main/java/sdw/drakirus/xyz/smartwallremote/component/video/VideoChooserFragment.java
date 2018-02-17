@@ -1,47 +1,72 @@
-package sdw.drakirus.xyz.smartwallremote;
+package sdw.drakirus.xyz.smartwallremote.component.video;
 
+import android.app.Fragment;
 import android.app.SearchManager;
 import android.content.Context;
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Toast;
+import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import sdw.drakirus.xyz.smartwallremote.component.videoNew.VideoModel;
-import sdw.drakirus.xyz.smartwallremote.component.videoNew.VideosAdapter;
+import sdw.drakirus.xyz.smartwallremote.R;
 
-public class VideoActivityNew extends AppCompatActivity implements VideosAdapter.VideosAdapterListener {
+public class VideoChooserFragment extends Fragment implements VideoAdapter.VideosAdapterListener {
+
+    private List<VideoModel> videoList;
+    private VideoAdapter videosAdapter;
 
     private RecyclerView recyclerView;
-    private List<VideoModel> videoList;
-    private VideosAdapter videosAdapter;
-    private SearchView searchView;
+    private Runnable onCreate;
+    private OnClick onClick;
+
+    public void setOnCreateEvent(Runnable runnable) {
+        onCreate = runnable;
+    }
+
+    public static class OnClick implements Runnable {
+        protected VideoModel videoModel;
+
+        void setVideoModel(VideoModel videoModel) {
+            this.videoModel = videoModel;
+        }
+
+        @Override
+        public void run() {
+
+        }
+    }
+    public void setOnClick(OnClick runnable) { onClick = runnable; }
+
+    public RecyclerView getRecyclerView() {
+        return recyclerView;
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_video_new);
 
-        recyclerView = findViewById(R.id.recycler_view);
+        View v =  inflater.inflate(R.layout.activity_video_new, container, false);
+
+        recyclerView = v.findViewById(R.id.recycler_view);
         videoList = new ArrayList<>();
-        videosAdapter = new VideosAdapter(this,videoList, this);
+        videosAdapter = new VideoAdapter(videoList, this);
         recyclerView.setAdapter(videosAdapter);
 
         //GridLayout with 2 column
-        recyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(),2));
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
 
         //associate searchable configuration with the SearchView
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        searchView = findViewById(R.id.search_view);
+        SearchManager searchManager = (SearchManager) getContext().getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = v.findViewById(R.id.search_view);
         //setup the manager
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        assert searchManager != null;
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
 
         //open the searchView by default
         searchView.setIconified(false);
@@ -83,18 +108,13 @@ public class VideoActivityNew extends AppCompatActivity implements VideosAdapter
         });
 
 
-
-        //get the initial search ..
-        Intent intent = getIntent();
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            String query = intent.getStringExtra(SearchManager.QUERY);
-            videosAdapter.getFilter().filter(query);
-        }
+        onCreate.run();
+        return v;
     }
 
     private void initializeVideos(){
 
-        final List<VideoModel> listVideo = new ArrayList<VideoModel>();
+        final List<VideoModel> listVideo = new ArrayList<>();
 
         listVideo.add(new VideoModel("name 1", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg",1000));
         listVideo.add(new VideoModel("name 2",  "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg",1000));
@@ -117,8 +137,10 @@ public class VideoActivityNew extends AppCompatActivity implements VideosAdapter
         videosAdapter.notifyDataSetChanged();
     }
 
+    // bind to parent for the onclick
     @Override
     public void onContactSelected(VideoModel videoModel) {
-        Toast.makeText(getApplicationContext(), "Selected: "+ videoModel.getTitle(), Toast.LENGTH_SHORT).show();
+        onClick.setVideoModel(videoModel);
+        onClick.run();
     }
 }

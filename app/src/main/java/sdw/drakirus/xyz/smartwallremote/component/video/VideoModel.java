@@ -1,4 +1,4 @@
-package sdw.drakirus.xyz.smartwallremote.component.videoNew;
+package sdw.drakirus.xyz.smartwallremote.component.video;
 
 import android.graphics.Bitmap;
 

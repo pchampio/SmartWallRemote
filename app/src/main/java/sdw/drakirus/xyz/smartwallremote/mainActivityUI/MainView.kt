@@ -1,11 +1,9 @@
-package sdw.drakirus.xyz.smartwallremote.component
+package sdw.drakirus.xyz.smartwallremote.mainActivityUI
 
-import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.content.ContextCompat
-import android.support.v4.content.ContextCompat.startActivity
 import android.view.Gravity
 import android.view.View
 import android.widget.Toast
@@ -16,7 +14,7 @@ import org.jetbrains.anko.design.floatingActionButton
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import sdw.drakirus.xyz.smartwallremote.MainActivity
 import sdw.drakirus.xyz.smartwallremote.R
-import sdw.drakirus.xyz.smartwallremote.VideoActivityNew
+import sdw.drakirus.xyz.smartwallremote.component.scenario.UtilsLayout
 
 /**
  * Created by drakirus (p.champion) on 12/02/18.
@@ -90,15 +88,6 @@ fun SlidingUpPanelLayout.mainView(ui: AnkoContext<MainActivity>) =
                         }
                     }
                 }
-
-                button("Video Search Test") {
-                    onClick {
-                        val intent = Intent(ui.ctx, VideoActivityNew::class.java);
-                        startActivity(ui.ctx,intent,null);
-
-                    }
-                }
-
             }.lparams(width = matchParent, height = wrapContent)
 
 
@@ -175,3 +164,4 @@ fun askForLayoutName(ui: AnkoContext<MainActivity>, onAdd: (name :String) -> Uni
                 }
             }
         }.show()
+

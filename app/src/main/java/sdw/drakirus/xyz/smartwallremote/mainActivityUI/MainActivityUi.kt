@@ -1,4 +1,4 @@
-package sdw.drakirus.xyz.smartwallremote
+package sdw.drakirus.xyz.smartwallremote.mainActivityUI
 
 import android.content.Context
 import android.graphics.Color
@@ -9,8 +9,7 @@ import org.jetbrains.anko.AnkoComponent
 import org.jetbrains.anko.AnkoContext
 import org.jetbrains.anko.backgroundColor
 import org.jetbrains.anko.custom.ankoView
-import sdw.drakirus.xyz.smartwallremote.component.mainView
-import sdw.drakirus.xyz.smartwallremote.component.slideView
+import sdw.drakirus.xyz.smartwallremote.MainActivity
 
 
 /**
@@ -29,6 +28,7 @@ class MainActivityUi() : AnkoComponent<MainActivity> {
         // https://github.com/umano/AndroidSlidingUpPanel
         slidingUpPanelLayout(ctx) {
 
+            ui.owner.slidingUpPanelLayout = this
             // config the sliding Panel
             setGravity(Gravity.BOTTOM)
             backgroundColor = Color.WHITE

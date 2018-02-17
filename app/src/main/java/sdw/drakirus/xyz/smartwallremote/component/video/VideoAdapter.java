@@ -1,6 +1,5 @@
-package sdw.drakirus.xyz.smartwallremote.component.videoNew;
+package sdw.drakirus.xyz.smartwallremote.component.video;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,21 +18,20 @@ import sdw.drakirus.xyz.smartwallremote.R;
  * Created by remi on 17/02/18.
  */
 
-public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.MyViewHolder>
+public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.MyViewHolder>
         implements Filterable{
 
-    private Context context;
     private List<VideoModel> videoList;
     private List<VideoModel> videoListFiltered;
     private VideosAdapterListener listener;
 
     //ViewHolder
-    public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView titleView, durationView;
-        public ImageView imageView;
+    class MyViewHolder extends RecyclerView.ViewHolder {
+        TextView titleView, durationView;
+        ImageView imageView;
 
         //constructor just bind all the view
-        public MyViewHolder(View itemView) {
+        MyViewHolder(View itemView) {
             super(itemView);
 
             //Bind view
@@ -53,8 +51,7 @@ public class VideosAdapter extends RecyclerView.Adapter<VideosAdapter.MyViewHold
     }
 
     //Constructor of the adapter
-    public VideosAdapter(Context context, List<VideoModel> videoList, VideosAdapterListener listener){
-        this.context = context;
+    VideoAdapter(List<VideoModel> videoList, VideosAdapterListener listener){
         this.listener = listener;
         this.videoList = videoList;
         this.videoListFiltered = videoList;

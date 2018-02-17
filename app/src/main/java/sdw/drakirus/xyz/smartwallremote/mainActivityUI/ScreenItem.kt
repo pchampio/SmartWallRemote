@@ -1,4 +1,4 @@
-package sdw.drakirus.xyz.smartwallremote.component
+package sdw.drakirus.xyz.smartwallremote.mainActivityUI
 
 import android.graphics.Color
 import org.jetbrains.anko.*

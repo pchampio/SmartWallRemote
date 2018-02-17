@@ -1,52 +1,39 @@
 package sdw.drakirus.xyz.smartwallremote
 
+import android.app.Activity
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.v7.app.AppCompatActivity
 import android.view.Gravity
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import com.github.kittinunf.fuel.core.FuelManager
 import com.github.kittinunf.fuel.gson.responseObject
 import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.result.Result
 import com.orhanobut.dialogplus.DialogPlus
+import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import es.dmoral.toasty.Toasty
 import org.jetbrains.anko.*
 import org.jetbrains.anko.appcompat.v7.Appcompat
 import petrov.kristiyan.colorpicker.ColorPicker
 import sdw.drakirus.xyz.smartwallremote.component.scenario.ScenarioChooserAdapter
-import sdw.drakirus.xyz.smartwallremote.component.video.VideoData
 import sdw.drakirus.xyz.smartwallremote.json.*
+import sdw.drakirus.xyz.smartwallremote.mainActivityUI.MainActivityUi
 import java.util.*
 
 
 class MainActivity : AppCompatActivity(), AnkoLogger {
 
     lateinit var wall: WallItem
-    private var layoutConfig: LayoutConfig? = null
-    var imageSaveLayout: FloatingActionButton? = null
     private var tmpGrpCreatedByUser = mutableListOf<GrpScreen>()
 
+    private var layoutConfig: LayoutConfig? = null
+    var imageSaveLayout: FloatingActionButton? = null
+    var slidingUpPanelLayout: SlidingUpPanelLayout? = null
 
     var layoutConfigInUse: Int = 0
-
-    val videoList =
-            listOf(
-                    VideoData("name 1", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
-                    VideoData("name 2", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
-                    VideoData("name 3", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
-                    VideoData("name 4", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
-                    VideoData("name 5 extrèmement ; ccdd,dc,dc,d,ckldckdc,kdc,kdct", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
-                    VideoData("name 6", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
-                    VideoData("name 7", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
-                    VideoData("name 8", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
-                    VideoData("name 9", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
-                    VideoData("name 10", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
-                    VideoData("name 11", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
-                    VideoData("name 12", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg"),
-                    VideoData("name 13", "00:00:00", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg")
-            )
 
 
     companion object {
@@ -205,7 +192,6 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
 
     fun toggleGroup(screen: Screen) {
 
-
         val listToUse = if (tmpGrpCreatedByUser.isEmpty()) {
             getLayoutConfig().getOrNull(layoutConfigInUse)?.grpScreen
         } else {
@@ -237,6 +223,29 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
         }
 
 
+    }
+
+    override fun onBackPressed() {
+        slidingUpPanelLayout?.let {
+            if (it.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED
+                    || it.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED) {
+
+            }
+            it.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+            return
+        }
+        super.onBackPressed()
+    }
+
+    fun hideKeyboard(activity: Activity = this) {
+        val imm = activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        //Find the currently focused view, so we can grab the correct window token from it.
+        var view = activity.currentFocus
+        //If no view currently has focus, create a new one, just so we can grab a window token from it
+        if (view == null) {
+            view = View(activity)
+        }
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
 }
