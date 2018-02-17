@@ -3,16 +3,19 @@ package sdw.drakirus.xyz.smartwallremote
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.v7.app.AppCompatActivity
+import android.view.Gravity
 import android.view.View
 import android.widget.Toast
 import com.github.kittinunf.fuel.core.FuelManager
 import com.github.kittinunf.fuel.gson.responseObject
 import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.result.Result
+import com.orhanobut.dialogplus.DialogPlus
 import es.dmoral.toasty.Toasty
 import org.jetbrains.anko.*
 import org.jetbrains.anko.appcompat.v7.Appcompat
 import petrov.kristiyan.colorpicker.ColorPicker
+import sdw.drakirus.xyz.smartwallremote.component.scenario.ScenarioChooserAdapter
 import sdw.drakirus.xyz.smartwallremote.component.video.VideoData
 import sdw.drakirus.xyz.smartwallremote.json.*
 import java.util.*
@@ -47,7 +50,7 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
 
 
     companion object {
-        const val baseUrl = "https://gif.drakirus.xyz"
+        var baseUrl = "https://gif.drakirus.xyz"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,7 +58,7 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
         FuelManager.instance.basePath = baseUrl
 
         getLayout()
-        getAndChooseWall()
+        getAndChooseWall(firstRun = true)
 
     }
 
@@ -77,7 +80,7 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
         }
     }
 
-    fun getAndChooseWall() {
+    fun getAndChooseWall(firstRun: Boolean = false) {
         val getConfigDialog = indeterminateProgressDialog(R.string.get_config)
         getConfigDialog.setCancelable(false)
         getConfigDialog.show()
@@ -89,14 +92,12 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
                     getConfigDialog.cancel()
                     wall = result.value.wall[0]
 
-                    if (result.value.wall.size > 1) {
-                        selector("Multiple Walls are available", result.value.wall.map {it.name}, { _, i ->
-                            wall = result.value.wall[i]
-                            MainActivityUi().setContentView(this)
-                        })
-                    } else {
+                    selector("Multiple Walls are available", result.value.wall.map {it.name}, { _, i ->
+                        wall = result.value.wall[i]
                         MainActivityUi().setContentView(this)
-                    }
+                    })
+                    if (firstRun)
+                        MainActivityUi().setContentView(this)
                 }
                 is Result.Failure -> {
                     Thread.sleep(500) // less spam
@@ -165,7 +166,7 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
                 val selected = wall.screen.filter { it.checkBox.isChecked }.toMutableList()
 
                 tmpGrpCreatedByUser.forEach{ grp -> // delete on other grp
-                        grp.listScreen.removeAll(selected)
+                    grp.listScreen.removeAll(selected)
                 }
 
                 tmpGrpCreatedByUser.add(GrpScreen(selected, colors.get(position)))
@@ -180,6 +181,26 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
             override fun onCancel() {
             }
         })
+    }
+
+
+    // https://github.com/orhanobut/dialogplus
+    val dialog_scenario = DialogPlus.newDialog(this)
+            .setGravity(Gravity.CENTER)
+            .setOnItemClickListener { dialog, item, view, position ->
+                wall.updateColorGroup(getLayoutConfig().get(position))
+                layoutConfigInUse = position
+                tmpGrpCreatedByUser.clear()
+                imageSaveLayout?.visibility = View.GONE
+                dialog.dismiss()
+            }
+            .setHeader(R.layout.scenario_header)
+            .setExpanded(false)
+
+    fun dialogChooseGrp() {
+        dialog_scenario.setAdapter(ScenarioChooserAdapter(this, getLayoutConfig()))
+        dialog_scenario.create().show()
+
     }
 
     fun toggleGroup(screen: Screen) {
@@ -217,7 +238,6 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
 
 
     }
-
 
 }
 

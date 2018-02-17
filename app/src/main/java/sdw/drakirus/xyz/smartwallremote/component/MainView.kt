@@ -7,7 +7,6 @@ import android.support.v4.content.ContextCompat
 import android.view.Gravity
 import android.view.View
 import android.widget.Toast
-import com.orhanobut.dialogplus.DialogPlus
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import es.dmoral.toasty.Toasty
 import org.jetbrains.anko.*
@@ -15,7 +14,6 @@ import org.jetbrains.anko.design.floatingActionButton
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import sdw.drakirus.xyz.smartwallremote.MainActivity
 import sdw.drakirus.xyz.smartwallremote.R
-import sdw.drakirus.xyz.smartwallremote.component.scenario.ScenarioChooserAdapter
 import sdw.drakirus.xyz.smartwallremote.component.scenario.UtilsLayout
 
 /**
@@ -81,24 +79,12 @@ fun SlidingUpPanelLayout.mainView(ui: AnkoContext<MainActivity>) =
 
                 }
 
-                // https://github.com/orhanobut/dialogplus
-                val dialog_scenario = DialogPlus.newDialog(ui.ctx)
-                        .setGravity(Gravity.CENTER)
-                        .setOnItemClickListener { dialog, item, view, position ->
-                            wall.updateColorGroup(ui.owner.getLayoutConfig().get(position))
-                            ui.owner.layoutConfigInUse = position
-                            dialog.dismiss()
-                        }
-                        .setHeader(R.layout.scenario_header)
-                        .setExpanded(false)
-
                 button("Choose a regroupement") {
                     onClick {
                         if (ui.owner.getLayoutConfig().isEmpty()) {
                             Toasty.error(ui.ctx, "Il n'y a pas de re-groupement\npour cette disposition", Toast.LENGTH_LONG, true).show();
                         } else {
-                            dialog_scenario.setAdapter(ScenarioChooserAdapter(ui.ctx, ui.owner.getLayoutConfig()))
-                            dialog_scenario.create().show()
+                            ui.owner.dialogChooseGrp()
                         }
                     }
                 }
