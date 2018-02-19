@@ -5,11 +5,10 @@ import android.graphics.Color
 import android.view.Gravity
 import android.view.ViewManager
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
-import org.jetbrains.anko.AnkoComponent
-import org.jetbrains.anko.AnkoContext
-import org.jetbrains.anko.backgroundColor
+import org.jetbrains.anko.*
 import org.jetbrains.anko.custom.ankoView
 import sdw.drakirus.xyz.smartwallremote.MainActivity
+import sdw.drakirus.xyz.smartwallremote.R
 
 
 /**
@@ -42,4 +41,20 @@ class MainActivityUi() : AnkoComponent<MainActivity> {
 
 
     }
+
+    fun initLayout(ui: MainActivity) = with(ui) {
+        verticalLayout {
+            backgroundResource = R.drawable.bg
+            toolbar {
+                horizontalPadding = 10
+                overflowIcon.setTint(Color.WHITE)
+                menu.add("Choose a Wall").setOnMenuItemClickListener {
+                    ui.getAndChooseWall()
+                    true
+                }
+            }
+        }
+    }
 }
+
+

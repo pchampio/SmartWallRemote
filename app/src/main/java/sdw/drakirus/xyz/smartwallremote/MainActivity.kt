@@ -30,7 +30,8 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
     private var tmpGrpCreatedByUser = mutableListOf<GrpScreen>()
 
     private var layoutConfig: LayoutConfig? = null
-    var imageSaveLayout: FloatingActionButton? = null
+    var saveFAB: FloatingActionButton? = null
+    var paintFAB: FloatingActionButton? = null
     var slidingUpPanelLayout: SlidingUpPanelLayout? = null
 
     var layoutConfigInUse: Int = 0
@@ -44,22 +45,23 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
         super.onCreate(savedInstanceState)
         FuelManager.instance.basePath = baseUrl
 
+        setContentView(MainActivityUi().initLayout(this))
+
         getLayout()
-        getAndChooseWall(firstRun = true)
+        getAndChooseWall()
 
     }
 
-    fun getLayoutConfig() = layoutConfig?.getForWall(wall) ?: listOf<Layout>() // get list of layouts or return an empty one
+    fun getLayoutConfig() = layoutConfig?.getForWall(wall) ?: listOf() // get list of layouts or return an empty one
 
     private fun getLayout() {
-        "layout.json".httpGet().responseObject<LayoutConfig> { request, response, result ->
+        "layout.json".httpGet().responseObject<LayoutConfig> { _, _, result ->
             when(result) {
                 is Result.Success -> {
                     layoutConfig = result.value
-                    info(result.value)
                 }
                 is Result.Failure -> {
-                    toast("Error while fetching the layout information!")
+                    Toasty.warning(this, "Error while fetching the layout information!", Toast.LENGTH_SHORT, true).show()
                     error(result.error)
                 }
             }
@@ -67,13 +69,13 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
         }
     }
 
-    fun getAndChooseWall(firstRun: Boolean = false) {
+    fun getAndChooseWall() {
         val getConfigDialog = indeterminateProgressDialog(R.string.get_config)
         getConfigDialog.setCancelable(false)
         getConfigDialog.show()
 
         "wall.json".
-                httpGet().responseObject<WallConfig> { request, response, result ->
+                httpGet().responseObject<WallConfig> { _, _, result ->
             when(result) {
                 is Result.Success -> {
                     getConfigDialog.cancel()
@@ -83,8 +85,6 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
                         wall = result.value.wall[i]
                         MainActivityUi().setContentView(this)
                     })
-                    if (firstRun)
-                        MainActivityUi().setContentView(this)
                 }
                 is Result.Failure -> {
                     Thread.sleep(500) // less spam
@@ -110,7 +110,7 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
             layoutConfig = LayoutConfig(mutableListOf(newLayout))
         }
 
-        tmpGrpCreatedByUser = mutableListOf<GrpScreen>()
+        tmpGrpCreatedByUser = mutableListOf()
 
         val config = getLayoutConfig()
         layoutConfigInUse = config.lastIndex
@@ -123,7 +123,7 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
             Thread.sleep(1000)
             uiThread {
                 Toasty.info(it, "Post result to REST API ?", Toast.LENGTH_SHORT, true).show()
-                imageSaveLayout?.visibility = View.GONE
+                saveFAB?.hide()
             }
         }
 
@@ -159,9 +159,10 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
                 tmpGrpCreatedByUser.add(GrpScreen(selected, colors.get(position)))
                 val newLayout = Layout(wall.cols, wall.rows, tmpGrpCreatedByUser, "_tmp")
                 wall.updateColorGroup(newLayout)
-                imageSaveLayout?.visibility = View.VISIBLE
+                saveFAB?.show()
 
                 wall.screen.forEach { it.checkBox.isChecked = false }
+                paintFAB?.hide()
 
             }
 
@@ -172,20 +173,21 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
 
 
     // https://github.com/orhanobut/dialogplus
-    val dialog_scenario = DialogPlus.newDialog(this)
+    private val dialog_scenario = DialogPlus.newDialog(this)
             .setGravity(Gravity.CENTER)
-            .setOnItemClickListener { dialog, item, view, position ->
+            .setOnItemClickListener { dialog, _, _, position ->
                 wall.updateColorGroup(getLayoutConfig().get(position))
                 layoutConfigInUse = position
                 tmpGrpCreatedByUser.clear()
-                imageSaveLayout?.visibility = View.GONE
+                saveFAB?.hide()
+                paintFAB?.hide()
                 dialog.dismiss()
             }
             .setHeader(R.layout.scenario_header)
-            .setExpanded(false)
+            .setExpanded(false)!!
 
     fun dialogChooseGrp() {
-        dialog_scenario.setAdapter(ScenarioChooserAdapter(this, getLayoutConfig()))
+        dialog_scenario.adapter = ScenarioChooserAdapter(this, getLayoutConfig())
         dialog_scenario.create().show()
 
     }
@@ -221,17 +223,24 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
         if (hasMakeUpdate.not()) {
             screen.checkBox.isChecked = screen.checkBox.isChecked.not()
         }
+        hideShowPaintFAB()
+    }
 
-
+    fun hideShowPaintFAB(){
+        if (wall.screen.any { it.checkBox.isChecked }) {
+            paintFAB?.show()
+        } else {
+            paintFAB?.hide()
+        }
     }
 
     override fun onBackPressed() {
         slidingUpPanelLayout?.let {
-            if (it.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED
-                    || it.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED) {
+            if (it.panelState == SlidingUpPanelLayout.PanelState.EXPANDED
+                    || it.panelState == SlidingUpPanelLayout.PanelState.ANCHORED) {
 
             }
-            it.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+            it.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
             return
         }
         super.onBackPressed()
@@ -247,6 +256,7 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
         }
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
+
 
 }
 

@@ -25,7 +25,11 @@ fun _LinearLayout.screenItem(ui: AnkoContext<MainActivity>, col: Int, row: Int) 
                 verticalLayout {
                     linearLayout {
                         if (screenItem != null) {
-                            screenItem.checkBox = checkBox()
+                            screenItem.checkBox = checkBox() {
+                                onClick {
+                                   ui.owner.hideShowPaintFAB()
+                                }
+                            }
                             screenItem.checkBox.resetColor()
                             backgroundColor = Color.WHITE
                         } else {
