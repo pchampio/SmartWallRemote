@@ -129,15 +129,15 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
         layoutConfigInUse = config.lastIndex
         wall.updateColorGroup(config.last())
 
-        Toasty.info(this, "Post to REST API", Toast.LENGTH_SHORT, true).show()
-
         // simulate a post
+//        Toasty.info(this, "Post to REST API", Toast.LENGTH_SHORT, true).show()
+
         saveFAB?.showProgress(true)
         saveFAB?.isClickable = false
         doAsync {
             Thread.sleep(1400)
             uiThread {
-                Toasty.info(it, "Post result to REST API ?", Toast.LENGTH_SHORT, true).show()
+//                Toasty.info(it, "Post result to REST API ?", Toast.LENGTH_SHORT, true).show()
                 saveFAB?.showEndBitmap = true
                 saveFAB?.showProgress(false)
                 saveFAB?.onProgressCompleted()
