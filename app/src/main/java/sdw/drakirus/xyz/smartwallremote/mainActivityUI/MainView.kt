@@ -1,10 +1,10 @@
 package sdw.drakirus.xyz.smartwallremote.mainActivityUI
 
-import android.content.res.ColorStateList
 import android.graphics.Color
-import android.support.design.widget.FloatingActionButton
 import android.support.v4.content.ContextCompat
 import android.view.Gravity
+import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import es.dmoral.toasty.Toasty
@@ -81,11 +81,17 @@ fun SlidingUpPanelLayout.mainView(ui: AnkoContext<MainActivity>) =
                 height = wrapContent
             }
 
-            ui.owner.saveFAB = floatingActionButton() {
-                size = FloatingActionButton.SIZE_MINI
-                imageResource = R.drawable.save
-                this.hide()
-                backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.colorSecond))
+            ui.owner.saveFAB = FabButtonLoader(ui.ctx) {
+
+                ring.setProgressColor(resources.getColor(R.color.colorSecondLoading))
+                circle.setShowEndBitmap(true)
+                showShadow(true)
+                setIcon(R.drawable.save, R.drawable.ok)
+                setColor(resources.getColor(R.color.colorSecond))
+                setIndeterminate(true)
+
+                visibility = View.GONE
+
                 onClick {
                     askForLayoutName(ui) { text ->
                         ui.owner.saveLayout(text)
@@ -93,8 +99,10 @@ fun SlidingUpPanelLayout.mainView(ui: AnkoContext<MainActivity>) =
                 }
             }.lparams {
                 margin = dip(15)
+                height = dip(50)
+                width = dip(50)
 
-                bottomMargin = 250
+                bottomMargin = 240
                 alignParentBottom()
                 alignParentEnd()
                 alignParentRight()
@@ -149,7 +157,7 @@ fun askForLayoutName(ui: AnkoContext<MainActivity>, onAdd: (name :String) -> Uni
                         imageBitmap = UtilsLayout.makeBitmap(newLayout)
                     }
                     val task = editText {
-                        hint = "Name"
+                        setText(ui.owner.faker?.commerce?.productName(), TextView.BufferType.EDITABLE)
                         padding = dip(20)
                     }
                     positiveButton("Save") {

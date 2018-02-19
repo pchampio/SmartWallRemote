@@ -15,9 +15,12 @@ import com.github.kittinunf.result.Result
 import com.orhanobut.dialogplus.DialogPlus
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import es.dmoral.toasty.Toasty
+import io.bloco.faker.Faker
 import org.jetbrains.anko.*
 import org.jetbrains.anko.appcompat.v7.Appcompat
+import org.jetbrains.anko.design.longSnackbar
 import petrov.kristiyan.colorpicker.ColorPicker
+import sdw.drakirus.xyz.smartwallremote.component.helpers.FabButtonPerso
 import sdw.drakirus.xyz.smartwallremote.component.scenario.ScenarioChooserAdapter
 import sdw.drakirus.xyz.smartwallremote.json.*
 import sdw.drakirus.xyz.smartwallremote.mainActivityUI.MainActivityUi
@@ -30,11 +33,13 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
     private var tmpGrpCreatedByUser = mutableListOf<GrpScreen>()
 
     private var layoutConfig: LayoutConfig? = null
-    var saveFAB: FloatingActionButton? = null
+    var saveFAB: FabButtonPerso? = null
     var paintFAB: FloatingActionButton? = null
     var slidingUpPanelLayout: SlidingUpPanelLayout? = null
 
-    var layoutConfigInUse: Int = 0
+    var faker: Faker? = null
+
+    var layoutConfigInUse: Int = -1
 
 
     companion object {
@@ -47,8 +52,11 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
 
         setContentView(MainActivityUi().initLayout(this))
 
-        getLayout()
         getAndChooseWall()
+
+        doAsync {
+            faker = Faker()
+        }
 
     }
 
@@ -61,7 +69,10 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
                     layoutConfig = result.value
                 }
                 is Result.Failure -> {
-                    Toasty.warning(this, "Error while fetching the layout information!", Toast.LENGTH_SHORT, true).show()
+                    Thread.sleep(100)
+                    longSnackbar(findViewById(android.R.id.content), "Error while fetching the layout information!", "Retry") {
+                        getLayout()
+                    }
                     error(result.error)
                 }
             }
@@ -81,9 +92,11 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
                     getConfigDialog.cancel()
                     wall = result.value.wall[0]
 
-                    selector("Multiple Walls are available", result.value.wall.map {it.name}, { _, i ->
+                    selector("Multiple Walls are available", result.value.wall.map { "(${it.rows}x${it.cols}) - " + it.name }, { _, i ->
                         wall = result.value.wall[i]
                         MainActivityUi().setContentView(this)
+                        getLayout()
+
                     })
                 }
                 is Result.Failure -> {
@@ -119,12 +132,24 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
         Toasty.info(this, "Post to REST API", Toast.LENGTH_SHORT, true).show()
 
         // simulate a post
-//        saveFAB?.imageResource
+        saveFAB?.showProgress(true)
+        saveFAB?.isClickable = false
         doAsync {
-            Thread.sleep(1000)
+            Thread.sleep(1400)
             uiThread {
                 Toasty.info(it, "Post result to REST API ?", Toast.LENGTH_SHORT, true).show()
-                saveFAB?.hide()
+                saveFAB?.showEndBitmap = true
+                saveFAB?.showProgress(false)
+                saveFAB?.onProgressCompleted()
+                doAsync {
+                    Thread.sleep(1400)
+                    uiThread {
+                        saveFAB?.animate()?.alpha(0f)?.setDuration(400)?.withEndAction {
+                            saveFAB?.isClickable = true
+                            saveFAB?.visibility = View.GONE
+                        }
+                    }
+                }
             }
         }
 
@@ -151,6 +176,7 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
         colorPicker.show()
         colorPicker.setOnChooseColorListener(object : ColorPicker.OnChooseColorListener {
             override fun onChooseColor(position: Int, color: Int) {
+                if (position == -1) return
                 val selected = wall.screen.filter { it.checkBox.isChecked }.toMutableList()
 
                 tmpGrpCreatedByUser.forEach{ grp -> // delete on other grp
@@ -160,7 +186,7 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
                 tmpGrpCreatedByUser.add(GrpScreen(selected, colors.get(position)))
                 val newLayout = Layout(wall.cols, wall.rows, tmpGrpCreatedByUser, "_tmp")
                 wall.updateColorGroup(newLayout)
-                saveFAB?.show()
+                saveFAB?.visibility = View.VISIBLE
 
                 wall.screen.forEach { it.checkBox.isChecked = false }
                 paintFAB?.hide()
@@ -180,7 +206,7 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
                 wall.updateColorGroup(getLayoutConfig().get(position))
                 layoutConfigInUse = position
                 tmpGrpCreatedByUser.clear()
-                saveFAB?.hide()
+                saveFAB?.visibility = View.GONE
                 paintFAB?.hide()
                 dialog.dismiss()
             }

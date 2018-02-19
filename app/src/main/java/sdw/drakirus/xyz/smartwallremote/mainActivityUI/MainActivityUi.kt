@@ -9,6 +9,7 @@ import org.jetbrains.anko.*
 import org.jetbrains.anko.custom.ankoView
 import sdw.drakirus.xyz.smartwallremote.MainActivity
 import sdw.drakirus.xyz.smartwallremote.R
+import sdw.drakirus.xyz.smartwallremote.component.helpers.FabButtonPerso
 
 
 /**
@@ -18,6 +19,10 @@ import sdw.drakirus.xyz.smartwallremote.R
 // needed to make the slidingUpPanelLayout work with anko (map xml dsl to the anko dsl ;) )
 inline fun ViewManager.slidingUpPanelLayout(ctx: Context, init: SlidingUpPanelLayout.() -> Unit): SlidingUpPanelLayout {
     return ankoView({ SlidingUpPanelLayout(it) }, theme = 0, init = init)
+}
+
+inline fun ViewManager.FabButtonLoader(ctx: Context, init: FabButtonPerso.() -> Unit): FabButtonPerso {
+    return ankoView({ FabButtonPerso(it) }, theme = 0, init = init)
 }
 
 class MainActivityUi() : AnkoComponent<MainActivity> {
