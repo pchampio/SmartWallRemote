@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.content.ContextCompat
 import android.view.Gravity
-import android.view.View
 import android.widget.Toast
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import es.dmoral.toasty.Toasty
@@ -32,17 +31,6 @@ fun SlidingUpPanelLayout.mainView(ui: AnkoContext<MainActivity>) =
 
                     horizontalPadding = 10
                     overflowIcon.setTint(Color.WHITE)
-
-//                    ui.owner.imageSaveLayout = imageButton(R.drawable.save) {
-//                        backgroundColor = Color.TRANSPARENT
-//                        onClick {
-//                            askForLayoutName(ui) { text ->
-//                                ui.owner.saveLayout(text)
-//                            }
-//                        }
-//                        visibility = View.GONE
-//                    }
-
 
                     textView(wall.name) {
                         textColor = Color.WHITE
@@ -82,19 +70,21 @@ fun SlidingUpPanelLayout.mainView(ui: AnkoContext<MainActivity>) =
                 button("Choose a regroupement") {
                     onClick {
                         if (ui.owner.getLayoutConfig().isEmpty()) {
-                            Toasty.error(ui.ctx, "Il n'y a pas de re-groupement\npour cette disposition", Toast.LENGTH_LONG, true).show();
+                            Toasty.info(ui.ctx, "Il n'y a pas de re-groupement\npour cette disposition", Toast.LENGTH_LONG, true).show();
                         } else {
                             ui.owner.dialogChooseGrp()
                         }
                     }
                 }
-            }.lparams(width = matchParent, height = wrapContent)
+            }.lparams{
+                width = matchParent;
+                height = wrapContent
+            }
 
-
-            ui.owner.imageSaveLayout = floatingActionButton() {
+            ui.owner.saveFAB = floatingActionButton() {
                 size = FloatingActionButton.SIZE_MINI
                 imageResource = R.drawable.save
-                visibility = View.GONE
+                this.hide()
                 backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.colorSecond))
                 onClick {
                     askForLayoutName(ui) { text ->
@@ -112,13 +102,24 @@ fun SlidingUpPanelLayout.mainView(ui: AnkoContext<MainActivity>) =
                 gravity = Gravity.BOTTOM or Gravity.END
             }
 
-            floatingActionButton() {
+            ui.owner.paintFAB = floatingActionButton() {
                 imageResource = R.drawable.brush
+                this.hide()
                 onClick {
                     ui.owner.createAGroup()
                 }
-            }.lparams {
+            }.lparams{
                 //setting button to bottom right of the screen
+                margin = dip(15)
+
+                alignParentBottom()
+                alignParentEnd()
+                alignParentRight()
+
+                gravity = Gravity.BOTTOM or Gravity.END
+            }
+
+            space().lparams {
                 margin = dip(15)
 
                 alignParentBottom()
@@ -154,7 +155,7 @@ fun askForLayoutName(ui: AnkoContext<MainActivity>, onAdd: (name :String) -> Uni
                     }
                     positiveButton("Save") {
                         if(task.text.toString().isEmpty()) {
-                            ui.ctx.toast("Oops!! Your name is empty")
+                            Toasty.info(ui.ctx, "Oops!! Your name is empty", Toast.LENGTH_LONG, true).show();
                         }
                         else {
                             onAdd(task.text.toString())
@@ -164,4 +165,5 @@ fun askForLayoutName(ui: AnkoContext<MainActivity>, onAdd: (name :String) -> Uni
                 }
             }
         }.show()
+
 

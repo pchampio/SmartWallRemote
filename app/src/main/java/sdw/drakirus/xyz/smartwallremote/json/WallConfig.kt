@@ -144,4 +144,3 @@ data class Video(
         val departure: String,
         val state: String
 )
-
