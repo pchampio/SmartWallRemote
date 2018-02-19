@@ -18,7 +18,7 @@ import es.dmoral.toasty.Toasty
 import org.jetbrains.anko.*
 import org.jetbrains.anko.appcompat.v7.Appcompat
 import petrov.kristiyan.colorpicker.ColorPicker
-import sdw.drakirus.xyz.smartwallremote.component.scenario.ScenarioChooserAdapter
+import sdw.drakirus.xyz.smartwallremote.component.layout.LayoutChooserAdapter
 import sdw.drakirus.xyz.smartwallremote.json.*
 import sdw.drakirus.xyz.smartwallremote.mainActivityUI.MainActivityUi
 import java.util.*
@@ -187,7 +187,7 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
             .setExpanded(false)!!
 
     fun dialogChooseGrp() {
-        dialog_scenario.adapter = ScenarioChooserAdapter(this, getLayoutConfig())
+        dialog_scenario.adapter = LayoutChooserAdapter(this, getLayoutConfig())
         dialog_scenario.create().show()
 
     }

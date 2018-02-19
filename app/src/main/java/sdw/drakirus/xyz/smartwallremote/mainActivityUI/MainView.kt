@@ -13,7 +13,7 @@ import org.jetbrains.anko.design.floatingActionButton
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import sdw.drakirus.xyz.smartwallremote.MainActivity
 import sdw.drakirus.xyz.smartwallremote.R
-import sdw.drakirus.xyz.smartwallremote.component.scenario.UtilsLayout
+import sdw.drakirus.xyz.smartwallremote.component.layout.UtilsLayout
 
 /**
  * Created by drakirus (p.champion) on 12/02/18.

@@ -1,4 +1,4 @@
-package sdw.drakirus.xyz.smartwallremote.component.scenario;
+package sdw.drakirus.xyz.smartwallremote.component.layout;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
