@@ -119,6 +119,7 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
         Toasty.info(this, "Post to REST API", Toast.LENGTH_SHORT, true).show()
 
         // simulate a post
+//        saveFAB?.imageResource
         doAsync {
             Thread.sleep(1000)
             uiThread {
