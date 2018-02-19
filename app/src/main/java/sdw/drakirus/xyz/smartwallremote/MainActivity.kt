@@ -21,7 +21,7 @@ import org.jetbrains.anko.appcompat.v7.Appcompat
 import org.jetbrains.anko.design.longSnackbar
 import petrov.kristiyan.colorpicker.ColorPicker
 import sdw.drakirus.xyz.smartwallremote.component.helpers.FabButtonPerso
-import sdw.drakirus.xyz.smartwallremote.component.scenario.ScenarioChooserAdapter
+import sdw.drakirus.xyz.smartwallremote.component.layout.LayoutChooserAdapter
 import sdw.drakirus.xyz.smartwallremote.json.*
 import sdw.drakirus.xyz.smartwallremote.mainActivityUI.MainActivityUi
 import java.util.*
@@ -200,10 +200,10 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
 
 
     // https://github.com/orhanobut/dialogplus
-    private val dialog_scenario = DialogPlus.newDialog(this)
+    private val dialogPlusBuilder = DialogPlus.newDialog(this)
             .setGravity(Gravity.CENTER)
             .setOnItemClickListener { dialog, _, _, position ->
-                wall.updateColorGroup(getLayoutConfig().get(position))
+                wall.updateColorGroup(getLayoutConfig()[position])
                 layoutConfigInUse = position
                 tmpGrpCreatedByUser.clear()
                 saveFAB?.visibility = View.GONE
@@ -213,10 +213,9 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
             .setHeader(R.layout.scenario_header)
             .setExpanded(false)!!
 
-    fun dialogChooseGrp() {
-        dialog_scenario.adapter = ScenarioChooserAdapter(this, getLayoutConfig())
-        dialog_scenario.create().show()
-
+    fun dialogChooseLayout() {
+        dialogPlusBuilder.adapter = LayoutChooserAdapter(this, getLayoutConfig())
+        dialogPlusBuilder.create().show()
     }
 
     fun toggleGroup(screen: Screen) {

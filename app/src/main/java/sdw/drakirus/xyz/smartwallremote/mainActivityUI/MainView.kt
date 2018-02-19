@@ -13,7 +13,7 @@ import org.jetbrains.anko.design.floatingActionButton
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import sdw.drakirus.xyz.smartwallremote.MainActivity
 import sdw.drakirus.xyz.smartwallremote.R
-import sdw.drakirus.xyz.smartwallremote.component.scenario.UtilsLayout
+import sdw.drakirus.xyz.smartwallremote.component.layout.UtilsLayout
 
 /**
  * Created by drakirus (p.champion) on 12/02/18.
@@ -72,7 +72,16 @@ fun SlidingUpPanelLayout.mainView(ui: AnkoContext<MainActivity>) =
                         if (ui.owner.getLayoutConfig().isEmpty()) {
                             Toasty.info(ui.ctx, "Il n'y a pas de re-groupement\npour cette disposition", Toast.LENGTH_LONG, true).show();
                         } else {
-                            ui.owner.dialogChooseGrp()
+                            ui.owner.dialogChooseLayout()
+                        }
+                    }
+                }
+                button("Choose a scenario") {
+                    onClick {
+                        if (ui.owner.getLayoutConfig().isEmpty()) {
+                            Toasty.info(ui.ctx, "Il n'y a pas de scenario\npour cette disposition", Toast.LENGTH_LONG, true).show();
+                        } else {
+                            ui.owner.dialogChooseLayout()
                         }
                     }
                 }

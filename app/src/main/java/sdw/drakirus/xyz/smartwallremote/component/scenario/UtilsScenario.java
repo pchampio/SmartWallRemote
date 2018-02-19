@@ -13,7 +13,7 @@ import sdw.drakirus.xyz.smartwallremote.json.Screen;
  * Created by Hactogeek on 14/02/2018.
  */
 
-public class UtilsLayout {
+public class UtilsScenario {
     public static Bitmap makeBitmap(Layout layout){
 
         int widthTotal = 125 * layout.getCols();

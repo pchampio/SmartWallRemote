@@ -9,19 +9,35 @@
         android:padding="@dimen/margin">
 
     <ImageView
-            android:id="@+id/image_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_launcher_background"
-            android:layout_marginRight="@dimen/margin"
-            android:layout_marginLeft="@dimen/margin"/>
+        android:id="@+id/image_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin"
+        android:layout_marginRight="@dimen/margin"
+        android:src="@drawable/ic_launcher_background" />
 
-    <TextView
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="start"
+        android:gravity="center_vertical"
+        android:padding="@dimen/margin">>
+        <TextView
             android:id="@+id/text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
+            android:gravity="start"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/title_text_size" />
+
+        <TextView
+            android:id="@+id/text_view2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="bottom"
             android:textColor="@android:color/black"
             android:textSize="@dimen/title_text_size"/>
-
+    </LinearLayout>
 </LinearLayout>
