@@ -72,7 +72,16 @@ fun SlidingUpPanelLayout.mainView(ui: AnkoContext<MainActivity>) =
                         if (ui.owner.getLayoutConfig().isEmpty()) {
                             Toasty.info(ui.ctx, "Il n'y a pas de re-groupement\npour cette disposition", Toast.LENGTH_LONG, true).show();
                         } else {
-                            ui.owner.dialogChooseGrp()
+                            ui.owner.dialogChooseLayout()
+                        }
+                    }
+                }
+                button("Choose a scenario") {
+                    onClick {
+                        if (ui.owner.getLayoutConfig().isEmpty()) {
+                            Toasty.info(ui.ctx, "Il n'y a pas de scenario\npour cette disposition", Toast.LENGTH_LONG, true).show();
+                        } else {
+                            ui.owner.dialogChooseScenario()
                         }
                     }
                 }

@@ -49,7 +49,7 @@ public class LayoutChooserAdapter extends BaseAdapter {
         View view = convertView;
 
         if (view == null) {
-            view = layoutInflater.inflate(R.layout.list_scenario, parent, false);
+            view = layoutInflater.inflate(R.layout.list_layout, parent, false);
             viewHolder = new LayoutViewHolder();
             viewHolder.textView = (TextView) view.findViewById(R.id.text_view);
             viewHolder.imageView = (ImageView) view.findViewById(R.id.image_view);
