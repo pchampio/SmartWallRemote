@@ -16,15 +16,18 @@ import sdw.drakirus.xyz.smartwallremote.json.Screen;
 public class UtilsLayout {
     public static Bitmap makeBitmap(Layout layout){
 
-        Bitmap scenarioImage = Bitmap.createBitmap(500, 350, Bitmap.Config.ARGB_8888);
+        int widthTotal = 125 * layout.getCols();
+        int heightTotal = 75 * layout.getRows();
+
+        Bitmap scenarioImage = Bitmap.createBitmap(widthTotal, heightTotal, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(scenarioImage);
 
-        int width = 500;
-        int height = 350;
+        int width = widthTotal - 5;
+        int height = heightTotal - 5;
         int widthScreen = (width - layout.getCols()) / layout.getCols();
         int heightScreen = (height - layout.getRows()) / layout.getRows();
         Paint paintBackground = new Paint();
-        paintBackground.setColor(Color.WHITE);
+        paintBackground.setColor(Color.GRAY);
         canvas.drawRect(0F, 0F, (float) width, (float) height, paintBackground);
 
         Paint paint = new Paint();
@@ -34,7 +37,7 @@ public class UtilsLayout {
             paint.setAlpha(210);
 
             for (Screen screen : grpScreen.getListScreen()){
-                canvas.drawRect((float)(widthScreen * screen.getCol()),(float)(heightScreen * screen.getRow()), (float)(widthScreen * (screen.getCol()+1)), (float)(heightScreen * (screen.getRow()+1)), paint);
+                canvas.drawRect((float)(widthScreen * screen.getCol()+5),(float)(heightScreen * screen.getRow()+5), (float)(widthScreen * (screen.getCol()+1)), (float)(heightScreen * (screen.getRow()+1)), paint);
             }
 
         }
