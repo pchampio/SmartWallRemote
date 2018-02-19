@@ -5,6 +5,7 @@ package sdw.drakirus.xyz.smartwallremote.component.scenario;
  */
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,11 +58,11 @@ public class ScenarioChooserAdapter extends BaseAdapter {
             viewHolder = (ScenarioViewHolder) view.getTag();
         }
 
-        UtilsLayout.makeBitmap(layoutList.get(position));
+        Bitmap bitmap = UtilsLayout.makeBitmap(layoutList.get(position));
 
         // data bind to viewHolder
-//        viewHolder.imageView.setImageResource(R.drawable.ic_launcher_background);
-        viewHolder.imageView.setImageBitmap(layoutList.get(position).getBitmap());
+        // viewHolder.imageView.setImageResource(R.drawable.ic_launcher_background);
+        viewHolder.imageView.setImageBitmap(bitmap);
         viewHolder.textView.setText(layoutList.get(position).getName());
 
 

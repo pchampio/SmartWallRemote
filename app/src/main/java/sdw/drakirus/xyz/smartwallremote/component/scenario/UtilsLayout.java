@@ -14,13 +14,13 @@ import sdw.drakirus.xyz.smartwallremote.json.Screen;
  */
 
 public class UtilsLayout {
-    public static void makeBitmap(Layout layout){
+    public static Bitmap makeBitmap(Layout layout){
 
-        Bitmap scenarioImage = Bitmap.createBitmap(500, 500, Bitmap.Config.ARGB_8888);
+        Bitmap scenarioImage = Bitmap.createBitmap(500, 350, Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(scenarioImage);
 
         int width = 500;
-        int height = 500;
+        int height = 350;
         int widthScreen = (width - layout.getCols()) / layout.getCols();
         int heightScreen = (height - layout.getRows()) / layout.getRows();
         Paint paintBackground = new Paint();
@@ -39,8 +39,6 @@ public class UtilsLayout {
 
         }
 
-        layout.setBitmap(scenarioImage);
-
-        return;
+        return scenarioImage;
     }
 }

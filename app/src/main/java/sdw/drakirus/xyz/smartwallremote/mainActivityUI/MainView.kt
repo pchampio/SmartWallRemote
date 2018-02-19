@@ -145,8 +145,7 @@ fun askForLayoutName(ui: AnkoContext<MainActivity>, onAdd: (name :String) -> Uni
                         verticalPadding = 20
 
                         val newLayout = ui.owner.createNewLayout("_tmp")
-                        UtilsLayout.makeBitmap(newLayout)
-                        imageBitmap = newLayout.bitmap
+                        imageBitmap = UtilsLayout.makeBitmap(newLayout)
                     }
                     val task = editText {
                         hint = "Name"
