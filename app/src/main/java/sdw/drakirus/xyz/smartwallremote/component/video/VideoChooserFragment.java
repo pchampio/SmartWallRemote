@@ -16,6 +16,10 @@ import java.util.List;
 
 import sdw.drakirus.xyz.smartwallremote.R;
 
+/**
+ * Created by remi on 17/02/18.
+ */
+
 public class VideoChooserFragment extends Fragment implements VideoAdapter.VideosAdapterListener {
 
     private List<VideoModel> videoList;
@@ -51,7 +55,7 @@ public class VideoChooserFragment extends Fragment implements VideoAdapter.Video
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        View v =  inflater.inflate(R.layout.activity_video_new, container, false);
+        View v =  inflater.inflate(R.layout.activity_video, container, false);
 
         recyclerView = v.findViewById(R.id.recycler_view);
         videoList = new ArrayList<>();
@@ -97,10 +101,7 @@ public class VideoChooserFragment extends Fragment implements VideoAdapter.Video
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
-                //open the searchView by default
-                //searchView.setIconified(false);
-                //close the keyboard
-                //searchView.clearFocus();
+                //just do nothing
 
                 //true to override completely
                 return true;
@@ -139,7 +140,7 @@ public class VideoChooserFragment extends Fragment implements VideoAdapter.Video
 
     // bind to parent for the onclick
     @Override
-    public void onContactSelected(VideoModel videoModel) {
+    public void onVideoSelected(VideoModel videoModel) {
         onClick.setVideoModel(videoModel);
         onClick.run();
     }
