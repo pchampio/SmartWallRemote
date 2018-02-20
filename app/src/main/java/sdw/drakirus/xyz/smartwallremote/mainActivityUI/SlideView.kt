@@ -7,6 +7,7 @@ import org.jetbrains.anko.AnkoContext
 import org.jetbrains.anko.linearLayout
 import org.jetbrains.anko.toast
 import sdw.drakirus.xyz.smartwallremote.MainActivity
+import sdw.drakirus.xyz.smartwallremote.component.helpers.KeyboardUtils
 import sdw.drakirus.xyz.smartwallremote.component.video.VideoChooserFragment
 
 
@@ -16,18 +17,19 @@ import sdw.drakirus.xyz.smartwallremote.component.video.VideoChooserFragment
 
 fun SlidingUpPanelLayout.slideView(ui: AnkoContext<MainActivity>) =
         linearLayout {
-            val idReplace = 44
-            id = idReplace
+            val idlayout = 44
+            id = idlayout
+
+
 
             val fragment = VideoChooserFragment()
 
             // bind the on click
             fragment.setOnClick (object : VideoChooserFragment.OnClick() {
                 override fun run() {
+                    ui.ctx.toast("Selected: " + videoModel.getTitle())
                     panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
-                    ui.ctx.toast("Selected: "+ videoModel.getTitle())
-                    ui.owner.hideKeyboard()
-
+                    KeyboardUtils.hideKeyboard(ui.owner)
                 }
             } )
 
@@ -58,7 +60,7 @@ fun SlidingUpPanelLayout.slideView(ui: AnkoContext<MainActivity>) =
             // replace the current layout with the fragment
             ui.owner.fragmentManager
                     .beginTransaction()
-                    .replace(idReplace, fragment)
+                    .add(idlayout, fragment)
                     .commit()
         }
 

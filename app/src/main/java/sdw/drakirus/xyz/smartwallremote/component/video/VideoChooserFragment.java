@@ -25,6 +25,8 @@ public class VideoChooserFragment extends Fragment implements VideoAdapter.Video
     private List<VideoModel> videoList;
     private VideoAdapter videosAdapter;
 
+    private SearchView searchView;
+
     private RecyclerView recyclerView;
     private Runnable onCreate;
     private OnClick onClick;
@@ -55,7 +57,7 @@ public class VideoChooserFragment extends Fragment implements VideoAdapter.Video
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        View v =  inflater.inflate(R.layout.activity_video, container, false);
+        View v =  inflater.inflate(R.layout.component_video, container, false);
 
         recyclerView = v.findViewById(R.id.recycler_view);
         videoList = new ArrayList<>();
@@ -67,7 +69,7 @@ public class VideoChooserFragment extends Fragment implements VideoAdapter.Video
 
         //associate searchable configuration with the SearchView
         SearchManager searchManager = (SearchManager) getContext().getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = v.findViewById(R.id.search_view);
+        searchView = v.findViewById(R.id.search_view);
         //setup the manager
         assert searchManager != null;
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
@@ -141,6 +143,7 @@ public class VideoChooserFragment extends Fragment implements VideoAdapter.Video
     // bind to parent for the onclick
     @Override
     public void onVideoSelected(VideoModel videoModel) {
+        searchView.clearFocus();
         onClick.setVideoModel(videoModel);
         onClick.run();
     }

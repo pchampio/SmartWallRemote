@@ -97,20 +97,20 @@ fun SlidingUpPanelLayout.mainView(ui: AnkoContext<MainActivity>) =
                 setIcon(R.drawable.save, R.drawable.ok)
                 setColor(resources.getColor(R.color.colorSecond))
                 setIndeterminate(true)
-                isClickable = false
                 alpha = 0F
 
                 onClick {
-                    askForLayoutName(ui) { text ->
-                        ui.owner.saveLayout(text)
-                    }
+                    if (isShow)
+                        askForLayoutName(ui) { text ->
+                            ui.owner.saveLayout(text)
+                        }
                 }
             }.lparams {
                 margin = dip(15)
                 height = dip(50)
                 width = dip(50)
 
-                bottomMargin = 240
+                bottomMargin = 225
                 alignParentBottom()
                 alignParentEnd()
                 alignParentRight()

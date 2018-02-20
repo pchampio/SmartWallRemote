@@ -9,7 +9,7 @@ package sdw.drakirus.xyz.smartwallremote.component.helpers;
 // (powered by Fernflower decompiler)
 //
 
-import android.animation.ValueAnimator;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
@@ -46,6 +46,7 @@ public class FabButtonPerso extends FrameLayout implements OnFabViewListener {
     public int endBitmapResource;
     public boolean showEndBitmap;
     private boolean hideProgressOnComplete;
+    public boolean isShow = false;
 
     public FabButtonPerso(Context context) {
         super(context);
@@ -58,26 +59,22 @@ public class FabButtonPerso extends FrameLayout implements OnFabViewListener {
     }
 
     public void hide() {
+        this.isShow = false;
         this.setClickable(false);
-        ValueAnimator a = new ValueAnimator();
-        a.setFloatValues(100, 0);
-        a.setDuration(1000);
-        a.addUpdateListener(valueAnimator -> {
-           this.setAlpha((Float) valueAnimator.getAnimatedValue());
-        });
-        a.start();
+
+        ObjectAnimator anim = ObjectAnimator.ofFloat(this, "alpha", 1, 0.0f, 0.0f);
+        anim.setDuration(500);
+        anim.start();
     }
 
     public void show() {
+        this.isShow = true;
         this.setClickable(true);
         this.resetIcon();
-        ValueAnimator a = new ValueAnimator();
-        a.setFloatValues(0, 100);
-        a.setDuration(1000);
-        a.addUpdateListener(valueAnimator -> {
-            this.setAlpha((Float) valueAnimator.getAnimatedValue());
-        });
-        a.start();
+
+        ObjectAnimator anim = ObjectAnimator.ofFloat(this, "alpha", 0.0f, 1, 1);
+        anim.setDuration(500);
+        anim.start();
     }
 
     public FabButtonPerso(Context context, AttributeSet attrs, int defStyle) {
