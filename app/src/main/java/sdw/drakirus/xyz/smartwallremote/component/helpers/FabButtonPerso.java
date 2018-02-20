@@ -9,6 +9,7 @@ package sdw.drakirus.xyz.smartwallremote.component.helpers;
 // (powered by Fernflower decompiler)
 //
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
@@ -54,6 +55,29 @@ public class FabButtonPerso extends FrameLayout implements OnFabViewListener {
     public FabButtonPerso(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.init(context, attrs, 0);
+    }
+
+    public void hide() {
+        this.setClickable(false);
+        ValueAnimator a = new ValueAnimator();
+        a.setFloatValues(100, 0);
+        a.setDuration(1000);
+        a.addUpdateListener(valueAnimator -> {
+           this.setAlpha((Float) valueAnimator.getAnimatedValue());
+        });
+        a.start();
+    }
+
+    public void show() {
+        this.setClickable(true);
+        this.resetIcon();
+        ValueAnimator a = new ValueAnimator();
+        a.setFloatValues(0, 100);
+        a.setDuration(1000);
+        a.addUpdateListener(valueAnimator -> {
+            this.setAlpha((Float) valueAnimator.getAnimatedValue());
+        });
+        a.start();
     }
 
     public FabButtonPerso(Context context, AttributeSet attrs, int defStyle) {

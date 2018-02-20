@@ -3,7 +3,6 @@ package sdw.drakirus.xyz.smartwallremote.mainActivityUI
 import android.graphics.Color
 import android.support.v4.content.ContextCompat
 import android.view.Gravity
-import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
@@ -98,8 +97,8 @@ fun SlidingUpPanelLayout.mainView(ui: AnkoContext<MainActivity>) =
                 setIcon(R.drawable.save, R.drawable.ok)
                 setColor(resources.getColor(R.color.colorSecond))
                 setIndeterminate(true)
-
-                visibility = View.GONE
+                isClickable = false
+                alpha = 0F
 
                 onClick {
                     askForLayoutName(ui) { text ->

@@ -144,10 +144,7 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
                 doAsync {
                     Thread.sleep(1400)
                     uiThread {
-                        saveFAB?.animate()?.alpha(0f)?.setDuration(400)?.withEndAction {
-                            saveFAB?.isClickable = true
-                            saveFAB?.visibility = View.GONE
-                        }
+                        saveFAB?.hide()
                     }
                 }
             }
@@ -186,7 +183,7 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
                 tmpGrpCreatedByUser.add(GrpScreen(selected, colors.get(position)))
                 val newLayout = Layout(wall.cols, wall.rows, tmpGrpCreatedByUser, "_tmp")
                 wall.updateColorGroup(newLayout)
-                saveFAB?.visibility = View.VISIBLE
+                saveFAB?.show()
 
                 wall.screen.forEach { it.checkBox.isChecked = false }
                 paintFAB?.hide()
@@ -206,7 +203,7 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
                 wall.updateColorGroup(getLayoutConfig()[position])
                 layoutConfigInUse = position
                 tmpGrpCreatedByUser.clear()
-                saveFAB?.visibility = View.GONE
+                saveFAB?.hide()
                 paintFAB?.hide()
                 dialog.dismiss()
             }
