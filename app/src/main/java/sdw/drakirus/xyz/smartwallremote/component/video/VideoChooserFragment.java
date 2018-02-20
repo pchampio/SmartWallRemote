@@ -26,6 +26,7 @@ public class VideoChooserFragment extends Fragment implements VideoAdapter.Video
     private VideoAdapter videosAdapter;
 
     private RecyclerView recyclerView;
+    private SearchView searchView;
     private Runnable onCreate;
     private OnClick onClick;
 
@@ -67,13 +68,14 @@ public class VideoChooserFragment extends Fragment implements VideoAdapter.Video
 
         //associate searchable configuration with the SearchView
         SearchManager searchManager = (SearchManager) getContext().getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = v.findViewById(R.id.search_view);
+        searchView = v.findViewById(R.id.search_view);
         //setup the manager
         assert searchManager != null;
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
 
         //open the searchView by default
         searchView.setIconified(false);
+
         //close the keyboard
         searchView.clearFocus();
 
@@ -137,6 +139,17 @@ public class VideoChooserFragment extends Fragment implements VideoAdapter.Video
         //refresh the view
         videosAdapter.notifyDataSetChanged();
     }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();  // Always call the superclass method first
+
+        //close the keyboard
+        searchView.clearFocus();
+
+    }
+
 
     // bind to parent for the onclick
     @Override
