@@ -5,11 +5,11 @@ import android.graphics.Color
 import android.view.Gravity
 import android.view.ViewManager
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
-import org.jetbrains.anko.AnkoComponent
-import org.jetbrains.anko.AnkoContext
-import org.jetbrains.anko.backgroundColor
+import org.jetbrains.anko.*
 import org.jetbrains.anko.custom.ankoView
 import sdw.drakirus.xyz.smartwallremote.MainActivity
+import sdw.drakirus.xyz.smartwallremote.R
+import sdw.drakirus.xyz.smartwallremote.component.helpers.FabButtonPerso
 
 
 /**
@@ -19,6 +19,10 @@ import sdw.drakirus.xyz.smartwallremote.MainActivity
 // needed to make the slidingUpPanelLayout work with anko (map xml dsl to the anko dsl ;) )
 inline fun ViewManager.slidingUpPanelLayout(ctx: Context, init: SlidingUpPanelLayout.() -> Unit): SlidingUpPanelLayout {
     return ankoView({ SlidingUpPanelLayout(it) }, theme = 0, init = init)
+}
+
+inline fun ViewManager.FabButtonLoader(ctx: Context, init: FabButtonPerso.() -> Unit): FabButtonPerso {
+    return ankoView({ FabButtonPerso(it) }, theme = 0, init = init)
 }
 
 class MainActivityUi() : AnkoComponent<MainActivity> {
@@ -42,4 +46,20 @@ class MainActivityUi() : AnkoComponent<MainActivity> {
 
 
     }
+
+    fun initLayout(ui: MainActivity) = with(ui) {
+        verticalLayout {
+            backgroundResource = R.drawable.bg
+            toolbar {
+                horizontalPadding = 10
+                overflowIcon.setTint(Color.WHITE)
+                menu.add("Choose a Wall").setOnMenuItemClickListener {
+                    ui.getAndChooseWall()
+                    true
+                }
+            }
+        }
+    }
 }
+
+

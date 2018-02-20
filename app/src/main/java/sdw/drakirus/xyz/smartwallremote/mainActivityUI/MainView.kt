@@ -1,11 +1,9 @@
 package sdw.drakirus.xyz.smartwallremote.mainActivityUI
 
-import android.content.res.ColorStateList
 import android.graphics.Color
-import android.support.design.widget.FloatingActionButton
 import android.support.v4.content.ContextCompat
 import android.view.Gravity
-import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import es.dmoral.toasty.Toasty
@@ -14,7 +12,7 @@ import org.jetbrains.anko.design.floatingActionButton
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import sdw.drakirus.xyz.smartwallremote.MainActivity
 import sdw.drakirus.xyz.smartwallremote.R
-import sdw.drakirus.xyz.smartwallremote.component.scenario.UtilsLayout
+import sdw.drakirus.xyz.smartwallremote.component.layout.UtilsLayout
 
 /**
  * Created by drakirus (p.champion) on 12/02/18.
@@ -32,17 +30,6 @@ fun SlidingUpPanelLayout.mainView(ui: AnkoContext<MainActivity>) =
 
                     horizontalPadding = 10
                     overflowIcon.setTint(Color.WHITE)
-
-//                    ui.owner.imageSaveLayout = imageButton(R.drawable.save) {
-//                        backgroundColor = Color.TRANSPARENT
-//                        onClick {
-//                            askForLayoutName(ui) { text ->
-//                                ui.owner.saveLayout(text)
-//                            }
-//                        }
-//                        visibility = View.GONE
-//                    }
-
 
                     textView(wall.name) {
                         textColor = Color.WHITE
@@ -82,20 +69,37 @@ fun SlidingUpPanelLayout.mainView(ui: AnkoContext<MainActivity>) =
                 button("Choose a regroupement") {
                     onClick {
                         if (ui.owner.getLayoutConfig().isEmpty()) {
-                            Toasty.error(ui.ctx, "Il n'y a pas de re-groupement\npour cette disposition", Toast.LENGTH_LONG, true).show();
+                            Toasty.info(ui.ctx, "Il n'y a pas de re-groupement\npour cette disposition", Toast.LENGTH_LONG, true).show();
                         } else {
-                            ui.owner.dialogChooseGrp()
+                            ui.owner.dialogChooseLayout()
                         }
                     }
                 }
-            }.lparams(width = matchParent, height = wrapContent)
+                button("Choose a scenario") {
+                    onClick {
+                        if (ui.owner.getLayoutConfig().isEmpty()) {
+                            Toasty.info(ui.ctx, "Il n'y a pas de scenario\npour cette disposition", Toast.LENGTH_LONG, true).show();
+                        } else {
+                            ui.owner.dialogChooseLayout()
+                        }
+                    }
+                }
+            }.lparams{
+                width = matchParent;
+                height = wrapContent
+            }
 
+            ui.owner.saveFAB = FabButtonLoader(ui.ctx) {
 
-            ui.owner.imageSaveLayout = floatingActionButton() {
-                size = FloatingActionButton.SIZE_MINI
-                imageResource = R.drawable.save
-                visibility = View.GONE
-                backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.colorSecond))
+                ring.setProgressColor(resources.getColor(R.color.colorSecondLoading))
+                circle.setShowEndBitmap(true)
+                showShadow(true)
+                setIcon(R.drawable.save, R.drawable.ok)
+                setColor(resources.getColor(R.color.colorSecond))
+                setIndeterminate(true)
+                isClickable = false
+                alpha = 0F
+
                 onClick {
                     askForLayoutName(ui) { text ->
                         ui.owner.saveLayout(text)
@@ -103,8 +107,10 @@ fun SlidingUpPanelLayout.mainView(ui: AnkoContext<MainActivity>) =
                 }
             }.lparams {
                 margin = dip(15)
+                height = dip(50)
+                width = dip(50)
 
-                bottomMargin = 250
+                bottomMargin = 240
                 alignParentBottom()
                 alignParentEnd()
                 alignParentRight()
@@ -112,13 +118,24 @@ fun SlidingUpPanelLayout.mainView(ui: AnkoContext<MainActivity>) =
                 gravity = Gravity.BOTTOM or Gravity.END
             }
 
-            floatingActionButton() {
+            ui.owner.paintFAB = floatingActionButton() {
                 imageResource = R.drawable.brush
+                this.hide()
                 onClick {
                     ui.owner.createAGroup()
                 }
-            }.lparams {
+            }.lparams{
                 //setting button to bottom right of the screen
+                margin = dip(15)
+
+                alignParentBottom()
+                alignParentEnd()
+                alignParentRight()
+
+                gravity = Gravity.BOTTOM or Gravity.END
+            }
+
+            space().lparams {
                 margin = dip(15)
 
                 alignParentBottom()
@@ -145,16 +162,15 @@ fun askForLayoutName(ui: AnkoContext<MainActivity>, onAdd: (name :String) -> Uni
                         verticalPadding = 20
 
                         val newLayout = ui.owner.createNewLayout("_tmp")
-                        UtilsLayout.makeBitmap(newLayout)
-                        imageBitmap = newLayout.bitmap
+                        imageBitmap = UtilsLayout.makeBitmap(newLayout)
                     }
                     val task = editText {
-                        hint = "Name"
+                        setText(ui.owner.faker?.commerce?.productName(), TextView.BufferType.EDITABLE)
                         padding = dip(20)
                     }
                     positiveButton("Save") {
                         if(task.text.toString().isEmpty()) {
-                            ui.ctx.toast("Oops!! Your name is empty")
+                            Toasty.info(ui.ctx, "Oops!! Your name is empty", Toast.LENGTH_LONG, true).show();
                         }
                         else {
                             onAdd(task.text.toString())
@@ -164,4 +180,5 @@ fun askForLayoutName(ui: AnkoContext<MainActivity>, onAdd: (name :String) -> Uni
                 }
             }
         }.show()
+
 

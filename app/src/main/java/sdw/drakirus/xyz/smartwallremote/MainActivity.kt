@@ -15,10 +15,13 @@ import com.github.kittinunf.result.Result
 import com.orhanobut.dialogplus.DialogPlus
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import es.dmoral.toasty.Toasty
+import io.bloco.faker.Faker
 import org.jetbrains.anko.*
 import org.jetbrains.anko.appcompat.v7.Appcompat
+import org.jetbrains.anko.design.longSnackbar
 import petrov.kristiyan.colorpicker.ColorPicker
-import sdw.drakirus.xyz.smartwallremote.component.scenario.ScenarioChooserAdapter
+import sdw.drakirus.xyz.smartwallremote.component.helpers.FabButtonPerso
+import sdw.drakirus.xyz.smartwallremote.component.layout.LayoutChooserAdapter
 import sdw.drakirus.xyz.smartwallremote.json.*
 import sdw.drakirus.xyz.smartwallremote.mainActivityUI.MainActivityUi
 import java.util.*
@@ -30,10 +33,13 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
     private var tmpGrpCreatedByUser = mutableListOf<GrpScreen>()
 
     private var layoutConfig: LayoutConfig? = null
-    var imageSaveLayout: FloatingActionButton? = null
+    var saveFAB: FabButtonPerso? = null
+    var paintFAB: FloatingActionButton? = null
     var slidingUpPanelLayout: SlidingUpPanelLayout? = null
 
-    var layoutConfigInUse: Int = 0
+    var faker: Faker? = null
+
+    var layoutConfigInUse: Int = -1
 
 
     companion object {
@@ -44,22 +50,29 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
         super.onCreate(savedInstanceState)
         FuelManager.instance.basePath = baseUrl
 
-        getLayout()
-        getAndChooseWall(firstRun = true)
+        setContentView(MainActivityUi().initLayout(this))
+
+        getAndChooseWall()
+
+        doAsync {
+            faker = Faker()
+        }
 
     }
 
-    fun getLayoutConfig() = layoutConfig?.getForWall(wall) ?: listOf<Layout>() // get list of layouts or return an empty one
+    fun getLayoutConfig() = layoutConfig?.getForWall(wall) ?: listOf() // get list of layouts or return an empty one
 
     private fun getLayout() {
-        "layout.json".httpGet().responseObject<LayoutConfig> { request, response, result ->
+        "layout.json".httpGet().responseObject<LayoutConfig> { _, _, result ->
             when(result) {
                 is Result.Success -> {
                     layoutConfig = result.value
-                    info(result.value)
                 }
                 is Result.Failure -> {
-                    toast("Error while fetching the layout information!")
+                    Thread.sleep(100)
+                    longSnackbar(findViewById(android.R.id.content), "Error while fetching the layout information!", "Retry") {
+                        getLayout()
+                    }
                     error(result.error)
                 }
             }
@@ -67,24 +80,24 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
         }
     }
 
-    fun getAndChooseWall(firstRun: Boolean = false) {
+    fun getAndChooseWall() {
         val getConfigDialog = indeterminateProgressDialog(R.string.get_config)
         getConfigDialog.setCancelable(false)
         getConfigDialog.show()
 
         "wall.json".
-                httpGet().responseObject<WallConfig> { request, response, result ->
+                httpGet().responseObject<WallConfig> { _, _, result ->
             when(result) {
                 is Result.Success -> {
                     getConfigDialog.cancel()
                     wall = result.value.wall[0]
 
-                    selector("Multiple Walls are available", result.value.wall.map {it.name}, { _, i ->
+                    selector("Multiple Walls are available", result.value.wall.map { "(${it.rows}x${it.cols}) - " + it.name }, { _, i ->
                         wall = result.value.wall[i]
                         MainActivityUi().setContentView(this)
+                        getLayout()
+
                     })
-                    if (firstRun)
-                        MainActivityUi().setContentView(this)
                 }
                 is Result.Failure -> {
                     Thread.sleep(500) // less spam
@@ -110,20 +123,30 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
             layoutConfig = LayoutConfig(mutableListOf(newLayout))
         }
 
-        tmpGrpCreatedByUser = mutableListOf<GrpScreen>()
+        tmpGrpCreatedByUser = mutableListOf()
 
         val config = getLayoutConfig()
         layoutConfigInUse = config.lastIndex
         wall.updateColorGroup(config.last())
 
-        Toasty.info(this, "Post to REST API", Toast.LENGTH_SHORT, true).show()
-
         // simulate a post
+//        Toasty.info(this, "Post to REST API", Toast.LENGTH_SHORT, true).show()
+
+        saveFAB?.showProgress(true)
+        saveFAB?.isClickable = false
         doAsync {
-            Thread.sleep(1000)
+            Thread.sleep(1400)
             uiThread {
-                Toasty.info(it, "Post result to REST API ?", Toast.LENGTH_SHORT, true).show()
-                imageSaveLayout?.visibility = View.GONE
+//                Toasty.info(it, "Post result to REST API ?", Toast.LENGTH_SHORT, true).show()
+                saveFAB?.showEndBitmap = true
+                saveFAB?.showProgress(false)
+                saveFAB?.onProgressCompleted()
+                doAsync {
+                    Thread.sleep(1400)
+                    uiThread {
+                        saveFAB?.hide()
+                    }
+                }
             }
         }
 
@@ -150,6 +173,7 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
         colorPicker.show()
         colorPicker.setOnChooseColorListener(object : ColorPicker.OnChooseColorListener {
             override fun onChooseColor(position: Int, color: Int) {
+                if (position == -1) return
                 val selected = wall.screen.filter { it.checkBox.isChecked }.toMutableList()
 
                 tmpGrpCreatedByUser.forEach{ grp -> // delete on other grp
@@ -159,9 +183,10 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
                 tmpGrpCreatedByUser.add(GrpScreen(selected, colors.get(position)))
                 val newLayout = Layout(wall.cols, wall.rows, tmpGrpCreatedByUser, "_tmp")
                 wall.updateColorGroup(newLayout)
-                imageSaveLayout?.visibility = View.VISIBLE
+                saveFAB?.show()
 
                 wall.screen.forEach { it.checkBox.isChecked = false }
+                paintFAB?.hide()
 
             }
 
@@ -172,22 +197,22 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
 
 
     // https://github.com/orhanobut/dialogplus
-    val dialog_scenario = DialogPlus.newDialog(this)
+    private val dialogPlusBuilder = DialogPlus.newDialog(this)
             .setGravity(Gravity.CENTER)
-            .setOnItemClickListener { dialog, item, view, position ->
-                wall.updateColorGroup(getLayoutConfig().get(position))
+            .setOnItemClickListener { dialog, _, _, position ->
+                wall.updateColorGroup(getLayoutConfig()[position])
                 layoutConfigInUse = position
                 tmpGrpCreatedByUser.clear()
-                imageSaveLayout?.visibility = View.GONE
+                saveFAB?.hide()
+                paintFAB?.hide()
                 dialog.dismiss()
             }
             .setHeader(R.layout.scenario_header)
-            .setExpanded(false)
+            .setExpanded(false)!!
 
-    fun dialogChooseGrp() {
-        dialog_scenario.setAdapter(ScenarioChooserAdapter(this, getLayoutConfig()))
-        dialog_scenario.create().show()
-
+    fun dialogChooseLayout() {
+        dialogPlusBuilder.adapter = LayoutChooserAdapter(this, getLayoutConfig())
+        dialogPlusBuilder.create().show()
     }
 
     fun toggleGroup(screen: Screen) {
@@ -221,17 +246,24 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
         if (hasMakeUpdate.not()) {
             screen.checkBox.isChecked = screen.checkBox.isChecked.not()
         }
+        hideShowPaintFAB()
+    }
 
-
+    fun hideShowPaintFAB(){
+        if (wall.screen.any { it.checkBox.isChecked }) {
+            paintFAB?.show()
+        } else {
+            paintFAB?.hide()
+        }
     }
 
     override fun onBackPressed() {
         slidingUpPanelLayout?.let {
-            if (it.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED
-                    || it.getPanelState() == SlidingUpPanelLayout.PanelState.ANCHORED) {
+            if (it.panelState == SlidingUpPanelLayout.PanelState.EXPANDED
+                    || it.panelState == SlidingUpPanelLayout.PanelState.ANCHORED) {
 
             }
-            it.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+            it.panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
             return
         }
         super.onBackPressed()
@@ -247,6 +279,7 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
         }
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
+
 
 }
 

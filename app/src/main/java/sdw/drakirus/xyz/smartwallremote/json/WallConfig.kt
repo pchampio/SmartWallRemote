@@ -72,10 +72,7 @@ data class Layout(
         val cols: Int,
         val rows: Int,
         val grpScreen: List<GrpScreen>,
-        val name: String,
-
-        @Transient
-        var bitmap: Bitmap? = null
+        val name: String
 )
 
 data class GrpScreen(
@@ -144,4 +141,3 @@ data class Video(
         val departure: String,
         val state: String
 )
-
