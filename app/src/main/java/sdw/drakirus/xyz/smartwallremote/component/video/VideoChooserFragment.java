@@ -50,6 +50,7 @@ public class VideoChooserFragment extends Fragment implements VideoAdapter.Video
 
         }
     }
+
     public void setOnClick(OnClick runnable) { onClick = runnable; }
 
     public RecyclerView getRecyclerView() {
