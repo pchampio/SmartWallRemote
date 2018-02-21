@@ -93,9 +93,10 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.MyViewHolder
 
         new Thread(() -> {
             try {
-                URL url = new URL(video.getImageUrl());
-                final Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
+                //getImage throw exception
+                final Bitmap bmp = video.getImage();
                 new Handler(Looper.getMainLooper()).post(() -> {
+                    holder.errorTextView.setVisibility(View.GONE);
                     holder.imageView.setImageBitmap(bmp);
                     holder.imageView.setVisibility(View.VISIBLE);
                     holder.progressBar.setVisibility(View.GONE);
@@ -103,6 +104,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.MyViewHolder
             } catch (Exception e) {
                 new Handler(Looper.getMainLooper()).post(() -> {
                     holder.progressBar.setVisibility(View.GONE);
+                    holder.imageView.setVisibility(View.GONE);
                     holder.errorTextView.setText("Oops, preview couldn't load.");
                     holder.errorTextView.setVisibility(View.VISIBLE);
                 });
