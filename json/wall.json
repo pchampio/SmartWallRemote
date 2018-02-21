@@ -1,0 +1,165 @@
+{
+  "wall": [
+    {
+      "name": "my_wall1",
+      "rows": 2,
+      "cols": 3,
+
+      "screen": [{
+        "row": 0,
+        "col": 0
+      }, {
+      "row": 0,
+      "col": 1
+      }, {
+      "row": 0,
+      "col": 2
+      }, {
+      "row": 1,
+      "col": 0
+      }, {
+      "row": 1,
+      "col": 1
+      }, {
+      "row": 1,
+      "col": 2
+      }]
+    },
+
+    {
+      "name": "my_wall2",
+      "rows": 1,
+      "cols": 1,
+
+      "screen": [{
+        "row": 0,
+        "col": 0
+      }]
+    },
+
+
+    {
+      "name": "my_wall1 missing",
+      "rows": 2,
+      "cols": 3,
+
+      "screen": [{
+        "row": 0,
+        "col": 0
+      }, {
+      "row": 0,
+      "col": 1
+      }, {
+      "row": 0,
+      "col": 2
+      }, {
+      "row": 1,
+      "col": 2
+      }]
+    },
+
+    {
+      "name": "4x4",
+      "rows": 4,
+      "cols": 4,
+
+      "screen": [
+        {
+          "row": 0,
+          "col": 0
+        }, {
+        "row": 0,
+        "col": 1
+        }, {
+        "row": 0,
+        "col": 2
+        }, {
+        "row": 0,
+        "col": 3
+        }, {
+        "row": 1,
+        "col": 0
+        }, {
+        "row": 1,
+        "col": 1
+        }, {
+        "row": 1,
+        "col": 2
+        }, {
+        "row": 1,
+        "col": 3
+        }, {
+        "row": 2,
+        "col": 0
+        }, {
+        "row": 2,
+        "col": 1
+        }, {
+        "row": 2,
+        "col": 2
+        }, {
+        "row": 2,
+        "col": 3
+        }, {
+        "row": 3,
+        "col": 0
+        }, {
+        "row": 3,
+        "col": 1
+        }, {
+        "row": 3,
+        "col": 2
+        }, {
+        "row": 3,
+        "col": 3
+        }
+
+
+      ],
+
+      "scenario": [{
+        "name": "scxc1",
+        "video": [
+          {
+            "idv": "v1",
+            "file": "my_video.mp3",
+            "screens": [
+              { "row": 3, "col": 3 }
+            ],
+            "distributed": 1,
+            "volume": 2,
+            "mute": 0,
+            "departure": "00.00",
+            "state": "play",
+            "loop": 1
+          },
+          {
+            "idv": "v2",
+            "file": "my_video3.mp3",
+            "screens": [
+              { "row": 0, "col": 0 },
+              { "row": 1, "col": 0 },
+              { "row": 2, "col": 0 },
+
+              { "row": 0, "col": 1 },
+              { "row": 1, "col": 1 },
+              { "row": 2, "col": 1 },
+
+              { "row": 0, "col": 2 },
+              { "row": 1, "col": 2 },
+              { "row": 2, "col": 2 }
+            ],
+            "distributed": 0,
+            "volume": 2,
+            "mute": 0,
+            "departure": "00.00",
+            "state": "play",
+            "loop": 1
+          }
+        ]
+      }]
+
+    }
+  ]
+
+}

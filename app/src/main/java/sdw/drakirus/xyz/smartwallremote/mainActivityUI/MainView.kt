@@ -41,7 +41,7 @@ fun SlidingUpPanelLayout.mainView(ui: AnkoContext<MainActivity>) =
                     }
 
                     menu.add("Choose Another Wall").setOnMenuItemClickListener {
-                        ui.owner.getAndChooseWall()
+                        ui.owner.getWallAllConfig()
                         true
                     }
 
@@ -209,7 +209,7 @@ fun askForBaseUrl(ui: MainActivity, onAdd: (name :String) -> Unit) =
                         if(task.text.toString().isEmpty()) {
                             Toasty.info(ui.ctx, "Oops!! Your name is empty", Toast.LENGTH_LONG, true).show();
                         }
-                        if(!URLUtil.isValidUrl(task.text.toString())) {
+                        else if(!URLUtil.isValidUrl(task.text.toString())) {
                             Toasty.warning(ui.ctx, "Oops!! Your URL is not valid", Toast.LENGTH_LONG, true).show();
                         }
                         else {

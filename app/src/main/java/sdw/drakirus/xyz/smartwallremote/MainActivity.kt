@@ -1,10 +1,8 @@
 package sdw.drakirus.xyz.smartwallremote
 
-import android.graphics.Color
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.design.widget.FloatingActionButton
-import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.view.Gravity
 import android.widget.Toast
@@ -56,7 +54,7 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
 
         setContentView(MainActivityUi().initLayout(this))
 
-        getAndChooseWall()
+        getWallAllConfig()
 
         doAsync {
             faker = Faker()
@@ -75,13 +73,10 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
                 is Result.Failure -> {
                     Thread.sleep(100)
 
-                    val snackbar = Snackbar.make(findViewById(android.R.id.content), "Error while fetching the layout information!", 5000)
-                            .setAction("RETRY") {
-                                getLayout()
-                            }
-
-                    snackbar.setActionTextColor(Color.RED);
-                    snackbar.show();
+                    alert(Appcompat, "\nWould you like to try again ?\n" , "Error while fetching the layout information!") {
+                        positiveButton("Yes") { getLayout() }
+                        negativeButton("no") { }
+                    }.show()
 
                     error(result.error)
                 }
@@ -89,10 +84,12 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
         }
     }
 
-    fun getAndChooseWall() {
+    fun getWallAllConfig() {
         val getConfigDialog = indeterminateProgressDialog(R.string.get_config)
         getConfigDialog.setCancelable(false)
         getConfigDialog.show()
+        getVideos()
+        getLayout()
 
         wallUrl.httpGet().responseObject<WallConfig> { _, _, result ->
             when(result) {
@@ -103,8 +100,6 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
                     selector("Multiple Walls are available", result.value.wall.map { "(${it.rows}x${it.cols}) - " + it.name }, { _, i ->
                         wall = result.value.wall[i]
                         MainActivityUi().setContentView(this)
-                        getLayout()
-                        getVideos()
                     })
                 }
                 is Result.Failure -> {
@@ -112,7 +107,7 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
                     getConfigDialog.cancel()
                     warn(result.error)
                     alert(Appcompat, "\nWould you like to try again ?\n" , result.error.exception.message) {
-                        positiveButton("Yes") { getAndChooseWall() }
+                        positiveButton("Yes") { getWallAllConfig() }
                         negativeButton("Exit") { finish() }
                     }.show()
                 }
@@ -129,13 +124,10 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
                 is Result.Failure -> {
                     Thread.sleep(100)
 
-                    val snackbar = Snackbar.make(findViewById(android.R.id.content), "Error while fetching the videos!", 5000)
-                            .setAction("RETRY") {
-                                getVideos()
-                            }
-
-                    snackbar.setActionTextColor(Color.RED);
-                    snackbar.show();
+                    alert(Appcompat, "\nWould you like to try again ?\n" , "Error while fetching the videos!") {
+                        positiveButton("Yes") { getVideos() }
+                        negativeButton("no") { }
+                    }.show()
 
                     error(result.error)
                 }

@@ -53,7 +53,7 @@ class MainActivityUi() : AnkoComponent<MainActivity> {
                 horizontalPadding = 10
                 overflowIcon.setTint(Color.WHITE)
                 menu.add("Choose a Wall").setOnMenuItemClickListener {
-                    ui.getAndChooseWall()
+                    ui.getWallAllConfig()
                     true
                 }
 
