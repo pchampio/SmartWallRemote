@@ -3,9 +3,12 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#0f82d2</color>
     <color name="colorAccent">#1d4e93</color>
+
     <color name="colorSecond">#ef7b63</color>
     <color name="colorSecondLoading">#ca445d</color>
     <color name="overlay_light">#F8F8F8</color>
     <color name="colorPrimaryDarkTransparent">#800f82d2</color>
+
+    <color name="twenty_percent_black_overlay">#34000000</color>
 </resources>
 
