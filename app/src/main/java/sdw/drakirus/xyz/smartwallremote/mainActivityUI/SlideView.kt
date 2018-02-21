@@ -1,6 +1,7 @@
 package sdw.drakirus.xyz.smartwallremote.mainActivityUI
 
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.View
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import org.jetbrains.anko.AnkoContext
@@ -41,9 +42,9 @@ fun SlidingUpPanelLayout.slideView(ui: AnkoContext<MainActivity>) =
             // bind the on click
             fragmentChooser.setOnClick (object : VideoChooserFragment.OnClick() {
                 override fun run() {
+                    Log.e("SlideViewOnClick", "SlideViewOnClick")
                     ui.ctx.toast("Selected: " + videoModel.getTitle())
                     panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
-                    KeyboardUtils.hideKeyboard(ui.owner)
                 }
             } )
 

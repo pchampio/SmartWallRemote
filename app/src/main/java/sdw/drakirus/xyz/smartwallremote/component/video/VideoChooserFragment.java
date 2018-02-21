@@ -7,9 +7,11 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +48,7 @@ public class VideoChooserFragment extends Fragment implements VideoAdapter.Video
 
         }
     }
+
     public void setOnClick(OnClick runnable) { onClick = runnable; }
 
     public RecyclerView getRecyclerView() {
@@ -154,8 +157,10 @@ public class VideoChooserFragment extends Fragment implements VideoAdapter.Video
     // bind to parent for the onclick
     @Override
     public void onVideoSelected(VideoModel videoModel) {
+        Log.e("onVideoSelected", "onVideoSelected");
         searchView.clearFocus();
         onClick.setVideoModel(videoModel);
         onClick.run();
+        searchView.clearFocus();
     }
 }
