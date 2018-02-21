@@ -7,7 +7,6 @@ import org.jetbrains.anko.AnkoContext
 import org.jetbrains.anko.frameLayout
 import org.jetbrains.anko.toast
 import sdw.drakirus.xyz.smartwallremote.MainActivity
-import sdw.drakirus.xyz.smartwallremote.component.helpers.KeyboardUtils
 import sdw.drakirus.xyz.smartwallremote.component.miniPlayer.MiniPlayerFragment
 import sdw.drakirus.xyz.smartwallremote.component.video.VideoChooserFragment
 
@@ -43,7 +42,6 @@ fun SlidingUpPanelLayout.slideView(ui: AnkoContext<MainActivity>) =
                 override fun run() {
                     ui.ctx.toast("Selected: " + videoModel.getTitle())
                     panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
-                    KeyboardUtils.hideKeyboard(ui.owner)
                 }
             } )
 

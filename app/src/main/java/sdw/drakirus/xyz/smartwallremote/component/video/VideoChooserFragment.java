@@ -4,12 +4,16 @@ import android.app.Fragment;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -154,8 +158,21 @@ public class VideoChooserFragment extends Fragment implements VideoAdapter.Video
     // bind to parent for the onclick
     @Override
     public void onVideoSelected(VideoModel videoModel) {
-        searchView.clearFocus();
-        onClick.setVideoModel(videoModel);
-        onClick.run();
+        if (KeyboardVisibilityEvent.isKeyboardVisible(getActivity())) {
+            searchView.clearFocus();
+            new Thread(() -> {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                new Handler(Looper.getMainLooper()).post(() -> {
+                    onVideoSelected(videoModel);
+                });
+            }).start();
+        } else {
+            onClick.setVideoModel(videoModel);
+            onClick.run();
+        }
     }
 }

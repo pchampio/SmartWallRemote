@@ -73,6 +73,7 @@ dependencies {
 
     compile 'mbanje.kurt:fabbutton:1.2.4@aar'
     compile 'com.github.blocoio:faker:1.2.7'
+    compile 'net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:2.1.0'
 }
 
 kotlin {
