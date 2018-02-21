@@ -15,12 +15,12 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
 import sdw.drakirus.xyz.smartwallremote.R;
+import sdw.drakirus.xyz.smartwallremote.model.VideoModel;
 
 /**
  * Created by remi on 17/02/18.

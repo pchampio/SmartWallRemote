@@ -1,12 +1,12 @@
 package sdw.drakirus.xyz.smartwallremote
 
-import android.app.Activity
+import android.graphics.Color
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.support.design.widget.FloatingActionButton
+import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.view.Gravity
-import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import com.github.kittinunf.fuel.core.FuelManager
 import com.github.kittinunf.fuel.gson.responseObject
@@ -18,12 +18,11 @@ import es.dmoral.toasty.Toasty
 import io.bloco.faker.Faker
 import org.jetbrains.anko.*
 import org.jetbrains.anko.appcompat.v7.Appcompat
-import org.jetbrains.anko.design.longSnackbar
 import petrov.kristiyan.colorpicker.ColorPicker
 import sdw.drakirus.xyz.smartwallremote.component.helpers.FabButtonPerso
 import sdw.drakirus.xyz.smartwallremote.component.layout.LayoutChooserAdapter
-import sdw.drakirus.xyz.smartwallremote.json.*
 import sdw.drakirus.xyz.smartwallremote.mainActivityUI.MainActivityUi
+import sdw.drakirus.xyz.smartwallremote.model.*
 import java.util.*
 
 
@@ -33,6 +32,8 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
     private var tmpGrpCreatedByUser = mutableListOf<GrpScreen>()
 
     private var layoutConfig: LayoutConfig? = null
+    var videoConfig: VideoConfig? = null
+
     var saveFAB: FabButtonPerso? = null
     var paintFAB: FloatingActionButton? = null
     var slidingUpPanelLayout: SlidingUpPanelLayout? = null
@@ -43,12 +44,15 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
 
 
     companion object {
-        var baseUrl = "https://gif.drakirus.xyz"
+        var baseUrl = "https://raw.githubusercontent.com/Drakirus/SmartWallRemote/master/json/"
+        val layoutUrl = "layout.json"
+        val wallUrl = "wall.json"
+        val videoUrl = "videos.json"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        FuelManager.instance.basePath = baseUrl
+        getBaseUrl()
 
         setContentView(MainActivityUi().initLayout(this))
 
@@ -63,20 +67,25 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
     fun getLayoutConfig() = layoutConfig?.getForWall(wall) ?: listOf() // get list of layouts or return an empty one
 
     private fun getLayout() {
-        "layout.json".httpGet().responseObject<LayoutConfig> { _, _, result ->
+        layoutUrl.httpGet().responseObject<LayoutConfig> { _, _, result ->
             when(result) {
                 is Result.Success -> {
                     layoutConfig = result.value
                 }
                 is Result.Failure -> {
                     Thread.sleep(100)
-                    longSnackbar(findViewById(android.R.id.content), "Error while fetching the layout information!", "Retry") {
-                        getLayout()
-                    }
+
+                    val snackbar = Snackbar.make(findViewById(android.R.id.content), "Error while fetching the layout information!", 5000)
+                            .setAction("RETRY") {
+                                getLayout()
+                            }
+
+                    snackbar.setActionTextColor(Color.RED);
+                    snackbar.show();
+
                     error(result.error)
                 }
             }
-
         }
     }
 
@@ -85,8 +94,7 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
         getConfigDialog.setCancelable(false)
         getConfigDialog.show()
 
-        "wall.json".
-                httpGet().responseObject<WallConfig> { _, _, result ->
+        wallUrl.httpGet().responseObject<WallConfig> { _, _, result ->
             when(result) {
                 is Result.Success -> {
                     getConfigDialog.cancel()
@@ -96,7 +104,7 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
                         wall = result.value.wall[i]
                         MainActivityUi().setContentView(this)
                         getLayout()
-
+                        getVideos()
                     })
                 }
                 is Result.Failure -> {
@@ -107,6 +115,29 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
                         positiveButton("Yes") { getAndChooseWall() }
                         negativeButton("Exit") { finish() }
                     }.show()
+                }
+            }
+        }
+    }
+
+    fun getVideos() {
+        videoUrl.httpGet().responseObject<VideoConfig> { _, _, result ->
+            when(result) {
+                is Result.Success -> {
+                    videoConfig = result.value
+                }
+                is Result.Failure -> {
+                    Thread.sleep(100)
+
+                    val snackbar = Snackbar.make(findViewById(android.R.id.content), "Error while fetching the videos!", 5000)
+                            .setAction("RETRY") {
+                                getVideos()
+                            }
+
+                    snackbar.setActionTextColor(Color.RED);
+                    snackbar.show();
+
+                    error(result.error)
                 }
             }
         }
@@ -137,7 +168,7 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
         doAsync {
             Thread.sleep(1400)
             uiThread {
-//                Toasty.info(it, "Post result to REST API ?", Toast.LENGTH_SHORT, true).show()
+                //                Toasty.info(it, "Post result to REST API ?", Toast.LENGTH_SHORT, true).show()
                 saveFAB?.showEndBitmap = true
                 saveFAB?.showProgress(false)
                 saveFAB?.onProgressCompleted()
@@ -267,6 +298,20 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
             return
         }
         super.onBackPressed()
+    }
+
+    fun getBaseUrl(): String {
+        val settings = PreferenceManager.getDefaultSharedPreferences(this);
+        baseUrl = settings.getString("baseUrl", baseUrl)
+        FuelManager.instance.basePath = baseUrl
+        return baseUrl
+    }
+
+    fun putBaseUrl(url: String) {
+        val edit = PreferenceManager.getDefaultSharedPreferences(this).edit();
+        edit.putString("baseUrl", url);
+        FuelManager.instance.basePath = url
+        edit.apply();
     }
 }
 

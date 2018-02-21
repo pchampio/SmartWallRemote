@@ -5,9 +5,9 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 
-import sdw.drakirus.xyz.smartwallremote.json.GrpScreen;
-import sdw.drakirus.xyz.smartwallremote.json.Layout;
-import sdw.drakirus.xyz.smartwallremote.json.Screen;
+import sdw.drakirus.xyz.smartwallremote.model.GrpScreen;
+import sdw.drakirus.xyz.smartwallremote.model.Layout;
+import sdw.drakirus.xyz.smartwallremote.model.Screen;
 
 /**
  * Created by Hactogeek on 14/02/2018.

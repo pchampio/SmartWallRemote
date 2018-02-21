@@ -13,12 +13,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.Gson;
+
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import sdw.drakirus.xyz.smartwallremote.R;
+import sdw.drakirus.xyz.smartwallremote.model.VideoConfig;
+import sdw.drakirus.xyz.smartwallremote.model.VideoModel;
 
 /**
  * Created by remi on 17/02/18.
@@ -26,13 +30,14 @@ import sdw.drakirus.xyz.smartwallremote.R;
 
 public class VideoChooserFragment extends Fragment implements VideoAdapter.VideosAdapterListener {
 
-    private List<VideoModel> videoList;
+    private List<VideoModel> videoList = new ArrayList<>();
     private VideoAdapter videosAdapter;
 
     private RecyclerView recyclerView;
     private SearchView searchView;
     private Runnable onCreate;
     private OnClick onClick;
+
 
     public void setOnCreateEvent(Runnable runnable) {
         onCreate = runnable;
@@ -61,11 +66,26 @@ public class VideoChooserFragment extends Fragment implements VideoAdapter.Video
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        videoList.clear();
+
+        videosAdapter = new VideoAdapter(videoList, this);
+
+        if (this.getArguments() != null && this.getArguments().get("videos") != null) {
+
+            Gson gson = new Gson();
+            VideoConfig listVideo  = gson.fromJson((String) this.getArguments().get("videos"), VideoConfig.class );
+
+            if (listVideo != null) {
+                videoList.addAll(listVideo.getVideos());
+                //refresh the view
+                videosAdapter.notifyDataSetChanged();
+            }
+        }
+
+
         View v =  inflater.inflate(R.layout.component_video, container, false);
 
         recyclerView = v.findViewById(R.id.recycler_view);
-        videoList = new ArrayList<>();
-        videosAdapter = new VideoAdapter(videoList, this);
         recyclerView.setAdapter(videosAdapter);
 
         //GridLayout with 2 column
@@ -83,9 +103,6 @@ public class VideoChooserFragment extends Fragment implements VideoAdapter.Video
 
         //close the keyboard
         searchView.clearFocus();
-
-        //initialize the data inside the adapter
-        initializeVideos();
 
         // listening to search query text change
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -105,46 +122,17 @@ public class VideoChooserFragment extends Fragment implements VideoAdapter.Video
         });
 
         //disable the closeListener
-        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
-            @Override
-            public boolean onClose() {
-                //just do nothing
+        searchView.setOnCloseListener(() -> {
+            //just do nothing
 
-                //true to override completely
-                return true;
-            }
+            //true to override completely
+            return true;
         });
 
 
         onCreate.run();
         return v;
     }
-
-    private void initializeVideos(){
-
-        final List<VideoModel> listVideo = new ArrayList<>();
-
-        listVideo.add(new VideoModel("name 1", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg",1000));
-        listVideo.add(new VideoModel("name 2",  "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg",1000));
-        listVideo.add(new VideoModel("name 3",  "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg",1000));
-        listVideo.add(new VideoModel("name 4", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg",1000));
-        listVideo.add(new VideoModel("name 5",  "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg",1000));
-        listVideo.add(new VideoModel("name 6", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg",1000));
-        listVideo.add(new VideoModel("name 7",  "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg",1000));
-        listVideo.add(new VideoModel("name 8",  "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg",1000));
-        listVideo.add(new VideoModel("name 9",  "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg",1000));
-        listVideo.add(new VideoModel("name 10",  "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg",1000));
-        listVideo.add(new VideoModel("name 11", "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg",1000));
-        listVideo.add(new VideoModel("name 12",  "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg",1000));
-        listVideo.add(new VideoModel("name 13",  "http://image.jeuxvideo.com/medias-md/151750/1517500592-857-card.jpg",1000));
-
-        videoList.clear();
-        videoList.addAll(listVideo);
-
-        //refresh the view
-        videosAdapter.notifyDataSetChanged();
-    }
-
 
     @Override
     public void onResume() {

@@ -1,9 +1,13 @@
 package sdw.drakirus.xyz.smartwallremote.mainActivityUI
 
+import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.View
+import android.widget.Toast
+import com.google.gson.Gson
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
+import es.dmoral.toasty.Toasty
 import org.jetbrains.anko.AnkoContext
 import org.jetbrains.anko.frameLayout
 import org.jetbrains.anko.toast
@@ -36,13 +40,16 @@ fun SlidingUpPanelLayout.slideView(ui: AnkoContext<MainActivity>) =
 
 
             val fragmentChooser = VideoChooserFragment()
+            val bundle = Bundle()
+            bundle.putString("videos", Gson().toJson(ui.owner.videoConfig))
+            fragmentChooser.arguments = bundle
             val miniPlayerFragment = MiniPlayerFragment()
 
             // bind the on click
             fragmentChooser.setOnClick (object : VideoChooserFragment.OnClick() {
                 override fun run() {
                     Log.e("SlideViewOnClick", "SlideViewOnClick")
-                    ui.ctx.toast("Selected: " + videoModel.getTitle())
+                    ui.ctx.toast("Selected: " + videoModel.title)
                     panelState = SlidingUpPanelLayout.PanelState.COLLAPSED
                 }
             } )
@@ -64,10 +71,17 @@ fun SlidingUpPanelLayout.slideView(ui: AnkoContext<MainActivity>) =
                     override fun onPanelSlide(panel: View?, slideOffset: Float) {
                         frameMiniPlayerFragment.alpha = 1 - slideOffset
                         frameIncide.alpha = slideOffset
+
+                        if (ui.owner.videoConfig?.videos?.isEmpty() ?: true) {
+                            Toasty.warning(ui.ctx, "No Videos are available", Toast.LENGTH_SHORT).show()
+                        }
                     }
                     override fun onPanelStateChanged(_1: View?, _2: SlidingUpPanelLayout.PanelState?, newState: SlidingUpPanelLayout.PanelState?) {
-                        isTouchEnabled = newState != SlidingUpPanelLayout.PanelState.EXPANDED
-                        re.scrollBy(0, 1)
+                        // if the recyclerView is scrollable
+                        if (re.computeHorizontalScrollRange() > re.getWidth() || re.computeVerticalScrollRange() > re.getHeight()) {
+                            isTouchEnabled = newState != SlidingUpPanelLayout.PanelState.EXPANDED
+                            re.scrollBy(0, 1)
+                        }
 
                         if (newState == SlidingUpPanelLayout.PanelState.EXPANDED) {
                             frameMiniPlayerFragment.visibility = View.GONE

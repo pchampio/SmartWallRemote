@@ -1,6 +1,5 @@
-package sdw.drakirus.xyz.smartwallremote.json
+package sdw.drakirus.xyz.smartwallremote.model
 
-import android.graphics.Bitmap
 import android.graphics.Color
 import android.support.v7.widget.CardView
 import android.widget.CheckBox
@@ -123,6 +122,21 @@ data class GrpScreen(
             else -> NOPOS
         }
     }
+}
+
+data class VideoConfig(
+        val videos: List<VideoModel>
+)
+
+data class VideoModel(
+        val title: String,
+        val imageUrl: String,
+        val duration: Int
+) {
+    fun getStringDuration(): String {
+        return String.format("%d:%02d:%02d", duration / 3600, duration % 3600 / 60, duration % 60)
+    }
+
 }
 
 data class Scenario(

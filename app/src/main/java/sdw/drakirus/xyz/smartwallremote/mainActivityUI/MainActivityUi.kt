@@ -1,6 +1,5 @@
 package sdw.drakirus.xyz.smartwallremote.mainActivityUI
 
-import android.content.Context
 import android.graphics.Color
 import android.view.Gravity
 import android.view.ViewManager
@@ -17,11 +16,11 @@ import sdw.drakirus.xyz.smartwallremote.component.helpers.FabButtonPerso
  */
 
 // needed to make the slidingUpPanelLayout work with anko (map xml dsl to the anko dsl ;) )
-inline fun ViewManager.slidingUpPanelLayout(ctx: Context, init: SlidingUpPanelLayout.() -> Unit): SlidingUpPanelLayout {
+inline fun ViewManager.slidingUpPanelLayout(init: SlidingUpPanelLayout.() -> Unit): SlidingUpPanelLayout {
     return ankoView({ SlidingUpPanelLayout(it) }, theme = 0, init = init)
 }
 
-inline fun ViewManager.FabButtonLoader(ctx: Context, init: FabButtonPerso.() -> Unit): FabButtonPerso {
+inline fun ViewManager.FabButtonLoader(init: FabButtonPerso.() -> Unit): FabButtonPerso {
     return ankoView({ FabButtonPerso(it) }, theme = 0, init = init)
 }
 
@@ -30,7 +29,7 @@ class MainActivityUi() : AnkoComponent<MainActivity> {
     override fun createView(ui: AnkoContext<MainActivity>) = with(ui) {
 
         // https://github.com/umano/AndroidSlidingUpPanel
-        slidingUpPanelLayout(ctx) {
+        slidingUpPanelLayout() {
 
             ui.owner.slidingUpPanelLayout = this
             // config the sliding Panel
@@ -55,6 +54,13 @@ class MainActivityUi() : AnkoComponent<MainActivity> {
                 overflowIcon.setTint(Color.WHITE)
                 menu.add("Choose a Wall").setOnMenuItemClickListener {
                     ui.getAndChooseWall()
+                    true
+                }
+
+                menu.add("Edit URL server").setOnMenuItemClickListener {
+                    askForBaseUrl(ui) { url ->
+                        ui.putBaseUrl(url)
+                    }
                     true
                 }
             }
