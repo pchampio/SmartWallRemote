@@ -53,6 +53,7 @@
                 android:layout_height="wrap_content"
                 android:text="TextView"
                 android:layout_gravity="center"
+                android:gravity="center"
                 android:visibility="gone"/>
 
             <LinearLayout
