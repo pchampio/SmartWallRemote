@@ -19,6 +19,7 @@ import org.jetbrains.anko.appcompat.v7.Appcompat
 import petrov.kristiyan.colorpicker.ColorPicker
 import sdw.drakirus.xyz.smartwallremote.component.helpers.FabButtonPerso
 import sdw.drakirus.xyz.smartwallremote.component.layout.LayoutChooserAdapter
+import sdw.drakirus.xyz.smartwallremote.component.miniPlayer.MiniPlayerFragment
 import sdw.drakirus.xyz.smartwallremote.component.scenario.ScenarioChooserAdapter
 import sdw.drakirus.xyz.smartwallremote.mainActivityUI.MainActivityUi
 import sdw.drakirus.xyz.smartwallremote.model.*
@@ -39,6 +40,7 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
     var saveFAB: FabButtonPerso? = null
     var paintFAB: FloatingActionButton? = null
     var slidingUpPanelLayout: SlidingUpPanelLayout? = null
+    var player: MiniPlayerFragment? = null
 
     var faker: Faker? = null
 
@@ -289,6 +291,9 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
                                 it.checkBox.isChecked = it.checkBox.isChecked.not()
                             }
                         }
+
+//                        player?.setColor(item.color)
+
                         acc || true
                     } else acc || false
                 } ?: false

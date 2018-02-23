@@ -3,7 +3,6 @@ package sdw.drakirus.xyz.smartwallremote.component.miniPlayer
 import android.app.Fragment
 import android.content.Context
 import android.content.res.ColorStateList
-import android.graphics.Color
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
@@ -47,9 +46,13 @@ class MiniPlayerFragment : Fragment() {
             onExpand?.run()
         }
         view.setOnTouchListener(FlingPlayBackController(activity))
-        setUpPlayPauseButton()
-        progressBar?.progressTintList = ColorStateList.valueOf(Color.BLACK)
+        setUpMiniPlayer()
         onCreateEvent?.run()
+    }
+
+    private fun setUpMiniPlayer() {
+        setUpPlayPauseButton()
+        progressBar?.progressTintList = ColorStateList.valueOf(resources.getColor(R.color.colorPrimary))
     }
 
     private fun setUpPlayPauseButton() {
@@ -60,12 +63,6 @@ class MiniPlayerFragment : Fragment() {
             onClickPlay?.run()
         }
     }
-
-    fun setColor(color: Int) {
-        progressBar?.progressTintList = ColorStateList.valueOf(color)
-        miniPlayerTitle?.setTextColor(ColorStateList.valueOf(color))
-    }
-
 
     private inner class FlingPlayBackController(context: Context) : View.OnTouchListener {
 

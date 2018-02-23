@@ -63,8 +63,6 @@ fun SlidingUpPanelLayout.slideView(ui: AnkoContext<MainActivity>) =
                         panelState = SlidingUpPanelLayout.PanelState.EXPANDED
                     }
 
-//                    setColor(Color.RED)
-
                     doAsync {
                         while (true) {
                             if (play) {
@@ -85,7 +83,7 @@ fun SlidingUpPanelLayout.slideView(ui: AnkoContext<MainActivity>) =
 
             }
 
-
+            ui.owner.player = miniPlayerFragment
 
 
             val fragmentChooser = VideoChooserFragment()
