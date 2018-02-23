@@ -1,6 +1,7 @@
-package sdw.drakirus.xyz.smartwallremote.json
+package sdw.drakirus.xyz.smartwallremote.model
 
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.support.v7.widget.CardView
 import android.widget.CheckBox
@@ -9,6 +10,8 @@ import sdw.drakirus.xyz.smartwallremote.component.helpers.colorBorderFromPos
 import sdw.drakirus.xyz.smartwallremote.component.helpers.colorBorderReset
 import sdw.drakirus.xyz.smartwallremote.component.helpers.resetColor
 import sdw.drakirus.xyz.smartwallremote.component.helpers.setColor
+import java.net.URL
+
 
 data class WallConfig(
         val wall: List<WallItem>
@@ -123,6 +126,36 @@ data class GrpScreen(
             else -> NOPOS
         }
     }
+}
+
+data class VideoConfig(
+        val videos: List<VideoModel>
+)
+
+data class VideoModel(
+        val title: String,
+        val imageUrl: String,
+        val duration: Int
+) {
+
+    @Transient
+    private var image: Bitmap? = null
+
+    fun getStringDuration(): String {
+        return String.format("%d:%02d:%02d", duration / 3600, duration % 3600 / 60, duration % 60)
+    }
+
+    //throw an exception to indicate the view that we couldn't retrieve the image
+    @Throws(Exception::class)
+    fun getImage(): Bitmap? {
+        if (image == null) {
+            val url = URL(imageUrl)
+            image = BitmapFactory.decodeStream(url.openConnection().getInputStream())
+        }
+        return image
+    }
+
+
 }
 
 data class Scenario(

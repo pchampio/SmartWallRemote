@@ -16,7 +16,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import sdw.drakirus.xyz.smartwallremote.R;
-import sdw.drakirus.xyz.smartwallremote.json.Layout;
+import sdw.drakirus.xyz.smartwallremote.model.Layout;
 
 public class ScenarioChooserAdapter extends BaseAdapter {
 

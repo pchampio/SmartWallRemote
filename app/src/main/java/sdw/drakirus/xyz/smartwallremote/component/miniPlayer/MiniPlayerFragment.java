@@ -111,12 +111,6 @@ public class MiniPlayerFragment extends Fragment {
                     return false;
                 }
 
-                @Override
-                public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-                    System.out.println("distanceX " + distanceX);
-                    System.out.println("distanceY " + distanceY);
-                    return false;
-                }
             });
         }
 

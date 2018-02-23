@@ -3,6 +3,7 @@ package sdw.drakirus.xyz.smartwallremote.mainActivityUI
 import android.graphics.Color
 import android.support.v4.content.ContextCompat
 import android.view.Gravity
+import android.webkit.URLUtil
 import android.widget.TextView
 import android.widget.Toast
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
@@ -40,7 +41,14 @@ fun SlidingUpPanelLayout.mainView(ui: AnkoContext<MainActivity>) =
                     }
 
                     menu.add("Choose Another Wall").setOnMenuItemClickListener {
-                        ui.owner.getAndChooseWall()
+                        ui.owner.getWallAllConfig()
+                        true
+                    }
+
+                    menu.add("Edit URL server").setOnMenuItemClickListener {
+                        askForBaseUrl(ui.owner) { url ->
+                           ui.owner.putBaseUrl(url)
+                        }
                         true
                     }
 
@@ -89,7 +97,7 @@ fun SlidingUpPanelLayout.mainView(ui: AnkoContext<MainActivity>) =
                 height = wrapContent
             }
 
-            ui.owner.saveFAB = FabButtonLoader(ui.ctx) {
+            ui.owner.saveFAB = FabButtonLoader() {
 
                 ring.setProgressColor(resources.getColor(R.color.colorSecondLoading))
                 circle.setShowEndBitmap(true)
@@ -181,4 +189,35 @@ fun askForLayoutName(ui: AnkoContext<MainActivity>, onAdd: (name :String) -> Uni
             }
         }.show()
 
+
+fun askForBaseUrl(ui: MainActivity, onAdd: (name :String) -> Unit) =
+        ui.ctx.alert {
+            customView {
+                verticalLayout {
+                    //Dialog Title
+                    toolbar {
+                        lparams(width = matchParent, height = wrapContent)
+                        backgroundColor = ContextCompat.getColor(ctx, R.color.colorAccent)
+                        title = "What's the server baseURL"
+                        setTitleTextColor(ContextCompat.getColor(ctx, android.R.color.white))
+                    }
+                    val task = editText {
+                        setText(ui.getBaseUrl())
+                        padding = dip(20)
+                    }
+                    positiveButton("Save") {
+                        if(task.text.toString().isEmpty()) {
+                            Toasty.info(ui.ctx, "Oops!! Your name is empty", Toast.LENGTH_LONG, true).show();
+                        }
+                        else if(!URLUtil.isValidUrl(task.text.toString())) {
+                            Toasty.warning(ui.ctx, "Oops!! Your URL is not valid", Toast.LENGTH_LONG, true).show();
+                        }
+                        else {
+                            onAdd(task.text.toString())
+                        }
+                    }
+                    negativeButton("Cancel") {}
+                }
+            }
+        }.show()
 
