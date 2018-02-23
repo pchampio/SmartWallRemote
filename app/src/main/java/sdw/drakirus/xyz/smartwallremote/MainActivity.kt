@@ -91,6 +91,7 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
                                         VideoModel("test 8", "urlImage", 1000))
                                 , timeStart = 0)
                     }
+                    println(toScenario.get(0))
 
                     scenarioConfig = ScenarioConfig(toScenario.toMutableList())
 
@@ -255,7 +256,7 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
                 paintFAB?.hide()
                 dialog.dismiss()
             }
-            .setHeader(R.layout.scenario_header)
+            .setHeader(R.layout.layout_header)
             .setExpanded(false)!!
 
     fun dialogChooseLayout() {
@@ -264,8 +265,15 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
     }
 
     fun dialogChooseScenario() {
-        dialogPlusBuilder.adapter = ScenarioChooserAdapter(this, getScenarioConfig())
-        dialogPlusBuilder.create().show()
+        val dialog = DialogPlus.newDialog(this)
+                .setGravity(Gravity.CENTER)
+                .setOnItemClickListener { dialog, _, _, position ->
+                    dialog.dismiss()
+                }
+                .setAdapter(ScenarioChooserAdapter(this, getScenarioConfig()))
+                .setHeader(R.layout.scenario_header)
+                .setExpanded(false)!!
+        dialog.create().show()
     }
 
     fun toggleGroup(screen: Screen) {

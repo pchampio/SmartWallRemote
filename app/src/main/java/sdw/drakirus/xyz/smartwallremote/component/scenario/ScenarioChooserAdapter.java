@@ -7,6 +7,7 @@ package sdw.drakirus.xyz.smartwallremote.component.scenario;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import sdw.drakirus.xyz.smartwallremote.R;
+import sdw.drakirus.xyz.smartwallremote.model.GrpScreen;
 import sdw.drakirus.xyz.smartwallremote.model.Scenario;
 
 public class ScenarioChooserAdapter extends BaseAdapter {
@@ -67,13 +69,23 @@ public class ScenarioChooserAdapter extends BaseAdapter {
         viewHolder.imageView.setImageBitmap(bitmap);
         viewHolder.textView.setText(scenarioList.get(position).getName());
 
-        for ( int i  = 0 ; i < scenarioList.get(position).getLayout().getGrpScreen().size() ; i++){
+        List<GrpScreen> grpScreen = scenarioList.get(position).getLayout().getGrpScreen();
+
+        Log.i("teest pos", "" + position);
+        Log.i("teest", "" + grpScreen.size());
+        for (int i = 0; i < grpScreen.size(); i++) {
+            System.out.println(scenarioList.get(position).getVideo().get(i).getTitle());
+        }
+
+        viewHolder.textView2.setText("");
+        for ( int i  = 0 ; i < grpScreen.size() ; i++){
             try {
-                System.out.println(scenarioList.get(position).getLayout());
-                System.out.println("\n");
-                viewHolder.textView2.append(Html.fromHtml("<font color=" + scenarioList.get(position).getLayout().getGrpScreen().get(i).getHexColor() + ">" + scenarioList.get(position).getVideo().get(i).getTitle() + "</font><br>"));
+                viewHolder.textView2.append(Html.fromHtml(
+                        "<font color="
+                                + grpScreen.get(i).getHexColor() + ">" +
+                                scenarioList.get(position).getVideo().get(i).getTitle() + "</font><br>"));
             } catch (Exception e) {
-                System.out.print(e);
+                e.printStackTrace();
             }
         }
 
