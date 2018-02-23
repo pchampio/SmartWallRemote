@@ -17,20 +17,21 @@ import java.util.List;
 
 import sdw.drakirus.xyz.smartwallremote.R;
 import sdw.drakirus.xyz.smartwallremote.model.Layout;
+import sdw.drakirus.xyz.smartwallremote.model.Scenario;
 
 public class ScenarioChooserAdapter extends BaseAdapter {
 
-    private final List<Layout> layoutList;
+    private final List<Scenario> scenarioList;
     private LayoutInflater layoutInflater;
 
-    public ScenarioChooserAdapter(Context context, List<Layout> dataList) {
+    public ScenarioChooserAdapter(Context context, List<Scenario> dataList) {
         layoutInflater = LayoutInflater.from(context);
-        this.layoutList = dataList;
+        this.scenarioList = dataList;
     }
 
     @Override
     public int getCount() {
-        return layoutList.size();
+        return scenarioList.size();
     }
 
     @Override
@@ -58,12 +59,12 @@ public class ScenarioChooserAdapter extends BaseAdapter {
             viewHolder = (ScenarioViewHolder) view.getTag();
         }
 
-        Bitmap bitmap = UtilsScenario.makeBitmap(layoutList.get(position));
+        Bitmap bitmap = UtilsScenario.makeBitmap(scenarioList.get(position).getLayout());
 
         // data bind to viewHolder
         // viewHolder.imageView.setImageResource(R.drawable.ic_launcher_background);
         viewHolder.imageView.setImageBitmap(bitmap);
-        viewHolder.textView.setText(layoutList.get(position).getName());
+        viewHolder.textView.setText(scenarioList.get(position).getName());
 
 
         return view;

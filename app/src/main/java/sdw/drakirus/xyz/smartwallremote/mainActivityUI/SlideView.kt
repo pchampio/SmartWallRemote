@@ -25,10 +25,10 @@ fun SlidingUpPanelLayout.slideView(ui: AnkoContext<MainActivity>) =
             val fragment_video_chooser = 15
 
             lateinit var frameMiniPlayerFragment: View
-            lateinit var frameIncide: View
+            lateinit var frameChooser: View
 
 
-            frameIncide = frameLayout {
+            frameChooser = frameLayout {
                 id = fragment_video_chooser
                 alpha = 0F
             }
@@ -37,12 +37,15 @@ fun SlidingUpPanelLayout.slideView(ui: AnkoContext<MainActivity>) =
                 id = fragment_miniPlayer
             }
 
+            val miniPlayerFragment = MiniPlayerFragment()
+
+
+
 
             val fragmentChooser = VideoChooserFragment()
             val bundle = Bundle()
             bundle.putString("videos", Gson().toJson(ui.owner.videoConfig))
             fragmentChooser.arguments = bundle
-            val miniPlayerFragment = MiniPlayerFragment()
 
             // bind the on click
             fragmentChooser.setOnClick (object : VideoChooserFragment.OnClick() {
@@ -68,7 +71,7 @@ fun SlidingUpPanelLayout.slideView(ui: AnkoContext<MainActivity>) =
                 addPanelSlideListener(object : SlidingUpPanelLayout.PanelSlideListener {
                     override fun onPanelSlide(panel: View?, slideOffset: Float) {
                         frameMiniPlayerFragment.alpha = 1 - slideOffset
-                        frameIncide.alpha = slideOffset
+                        frameChooser.alpha = slideOffset
                     }
                     override fun onPanelStateChanged(_1: View?, _2: SlidingUpPanelLayout.PanelState?, newState: SlidingUpPanelLayout.PanelState?) {
 

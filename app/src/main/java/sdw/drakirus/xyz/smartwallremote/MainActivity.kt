@@ -19,6 +19,7 @@ import org.jetbrains.anko.appcompat.v7.Appcompat
 import petrov.kristiyan.colorpicker.ColorPicker
 import sdw.drakirus.xyz.smartwallremote.component.helpers.FabButtonPerso
 import sdw.drakirus.xyz.smartwallremote.component.layout.LayoutChooserAdapter
+import sdw.drakirus.xyz.smartwallremote.component.scenario.ScenarioChooserAdapter
 import sdw.drakirus.xyz.smartwallremote.mainActivityUI.MainActivityUi
 import sdw.drakirus.xyz.smartwallremote.model.*
 import java.util.*
@@ -30,6 +31,9 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
     private var tmpGrpCreatedByUser = mutableListOf<GrpScreen>()
 
     private var layoutConfig: LayoutConfig? = null
+    private var scenarioConfig: ScenarioConfig? = null
+
+
     var videoConfig: VideoConfig? = null
 
     var saveFAB: FabButtonPerso? = null
@@ -63,12 +67,28 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
     }
 
     fun getLayoutConfig() = layoutConfig?.getForWall(wall) ?: listOf() // get list of layouts or return an empty one
+    fun getScenarioConfig() = scenarioConfig?.getForWall(wall) ?: listOf() // get list of layouts or return an empty one
+
 
     private fun getLayout() {
         layoutUrl.httpGet().responseObject<LayoutConfig> { _, _, result ->
             when(result) {
                 is Result.Success -> {
                     layoutConfig = result.value
+
+
+                    val allLayout: MutableList<Layout> = result.value.layouts
+
+                    val toScenario: List<Scenario> = allLayout.map {
+                        Scenario(name = "test", isDistributed = false, layout = it,
+                                video = listOf(
+                                        VideoModel("test", "urlImage", 1000))
+                                , timeStart = 0)
+                    }
+
+                    scenarioConfig = ScenarioConfig(toScenario.toMutableList())
+
+
                 }
                 is Result.Failure -> {
                     Thread.sleep(100)
@@ -235,6 +255,11 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
 
     fun dialogChooseLayout() {
         dialogPlusBuilder.adapter = LayoutChooserAdapter(this, getLayoutConfig())
+        dialogPlusBuilder.create().show()
+    }
+
+    fun dialogChooseScenario() {
+        dialogPlusBuilder.adapter = ScenarioChooserAdapter(this, getScenarioConfig())
         dialogPlusBuilder.create().show()
     }
 
