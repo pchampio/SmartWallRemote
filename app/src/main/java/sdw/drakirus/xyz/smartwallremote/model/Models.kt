@@ -21,8 +21,7 @@ data class WallItem(
         val name: String,
         val screen: List<Screen>,
         val rows: Int,
-        val cols: Int,
-        val scenario: List<Scenario>
+        val cols: Int
 )
 {
     fun getCheckBoxAt(col:Int, row:Int): Screen? =
@@ -154,23 +153,18 @@ data class VideoModel(
         }
         return image
     }
-
-
 }
 
 data class Scenario(
         val name: String,
-        val video: List<Video>
+        val layoutScenario: List<LayoutScenario>
+
 )
 
-data class Video(
-        val volume: Int,
-        val file: String,
-        val screens: List<Screen>,
-        val loop: Int,
-        val distributed: Int,
-        val idv: String,
-        val mute: Int,
-        val departure: String,
-        val state: String
+data class LayoutScenario(
+        val isDistributed: Boolean,
+        val layout: Layout,
+        val video: VideoModel,
+        val timeStart: Int
 )
+

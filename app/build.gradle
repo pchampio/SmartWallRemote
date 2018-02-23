@@ -69,7 +69,7 @@ dependencies {
 
     implementation "org.jetbrains.anko:anko-design:$anko_version"
 
-//    compile group: 'io.reactivex.rxjava2', name: 'rxkotlin', version: '2.0.2'
+    compile group: 'io.reactivex.rxjava2', name: 'rxkotlin', version: '2.0.2'
 
     compile 'mbanje.kurt:fabbutton:1.2.4@aar'
     compile 'com.github.blocoio:faker:1.2.7'
