@@ -156,24 +156,19 @@ data class VideoModel(
 }
 
 data class ScenarioConfig(
-        val scenarioList: List<Scenario>
+        val scenarioList: MutableList<Scenario>
 ){
-    fun getForWall(wall: WallItem) = scenarioList.filter { scenario ->
-       scenario.layoutScenario.any { it.layout.cols == wall.cols && it.layout.rows == wall.rows}
+    fun getForWall(wall: WallItem) = scenarioList.filter {
+        it.layout.cols == wall.cols && it.layout.rows == wall.rows
     }
     fun isEmpty() = scenarioList.isEmpty()
 }
 
 data class Scenario(
         val name: String,
-        val layoutScenario: List<LayoutScenario>
-
-)
-
-data class LayoutScenario(
         val isDistributed: Boolean,
         val layout: Layout,
-        val video: VideoModel,
+        val video: List<VideoModel>,
         val timeStart: Int
 )
 

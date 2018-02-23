@@ -4,16 +4,23 @@ import android.graphics.Color
 import android.support.v4.content.ContextCompat
 import android.view.Gravity
 import android.webkit.URLUtil
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import es.dmoral.toasty.Toasty
 import org.jetbrains.anko.*
+import org.jetbrains.anko.coroutines.experimental.asReference
 import org.jetbrains.anko.design.floatingActionButton
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import sdw.drakirus.xyz.smartwallremote.MainActivity
 import sdw.drakirus.xyz.smartwallremote.R
 import sdw.drakirus.xyz.smartwallremote.component.layout.UtilsLayout
+import android.support.v4.content.ContextCompat.startActivity
+import android.content.Intent
+import android.net.Uri
+import android.view.View
+
 
 /**
  * Created by drakirus (p.champion) on 12/02/18.
@@ -49,6 +56,11 @@ fun SlidingUpPanelLayout.mainView(ui: AnkoContext<MainActivity>) =
                         askForBaseUrl(ui.owner) { url ->
                            ui.owner.putBaseUrl(url)
                         }
+                        true
+                    }
+
+                    menu.add("About").setOnMenuItemClickListener {
+                        aboutTheApp(ui.owner)
                         true
                     }
 
@@ -188,8 +200,6 @@ fun askForLayoutName(ui: AnkoContext<MainActivity>, onAdd: (name :String) -> Uni
                 }
             }
         }.show()
-
-
 fun askForBaseUrl(ui: MainActivity, onAdd: (name :String) -> Unit) =
         ui.ctx.alert {
             customView {
@@ -220,4 +230,47 @@ fun askForBaseUrl(ui: MainActivity, onAdd: (name :String) -> Unit) =
                 }
             }
         }.show()
+
+fun aboutTheApp(ui: MainActivity) =
+        ui.ctx.alert {
+            customView {
+                verticalLayout {
+
+                    backgroundColor = ContextCompat.getColor(ctx, R.color.material_grey_800)
+
+                    //Dialog Title
+                    toolbar {
+                        lparams(width = matchParent, height = wrapContent)
+                        backgroundColor = ContextCompat.getColor(ctx, R.color.colorAccent)
+                        title = "About " + resources.getText(R.string.app_name)
+                        setTitleTextColor(ContextCompat.getColor(ctx, android.R.color.white))
+                    }
+
+                    imageView() {
+                        setImageResource(R.mipmap.ic_launcher)
+                        topPadding = dip(10)
+                    }
+
+                    textView() {
+                        text = "Exemple of description lol omg c,z,zldlzkdz dl:zjlkzdjkz djklzdjkz hjhkhkhj \n ok\nok \nbg"
+                        padding = dip(20)
+                        textColor = ContextCompat.getColor(ctx, R.color.white)
+                    }
+
+                    textView() {
+                        text = "Github repository"
+                        padding = dip(20)
+                        textColor = ContextCompat.getColor(ctx, R.color.lite_blue)
+
+                        onClick {
+                            val browser = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/Drakirus/SmartWallRemote"))
+
+                            startActivity(ui.ctx, browser, null)
+                        }
+                    }
+                    //positiveButton("Close") {}
+                }
+            }
+        }.show()
+
 
