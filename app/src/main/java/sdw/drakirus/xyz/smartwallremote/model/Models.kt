@@ -85,6 +85,9 @@ data class GrpScreen(
     val color: Int
         get() = Color.parseColor(_color)
 
+    val hexColor: String
+        get() = _color
+
     @Transient
     val NOPOS = "NOPOS"
 
@@ -168,7 +171,7 @@ data class Scenario(
         val name: String,
         val isDistributed: Boolean,
         val layout: Layout,
-        val video: List<VideoModel>,
+        val video: List<VideoModel?>,
         val timeStart: Int
 )
 

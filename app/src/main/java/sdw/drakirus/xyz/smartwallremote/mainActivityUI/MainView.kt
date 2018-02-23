@@ -85,10 +85,10 @@ fun SlidingUpPanelLayout.mainView(ui: AnkoContext<MainActivity>) =
                 }
                 button("Choose a scenario") {
                     onClick {
-                        if (ui.owner.getLayoutConfig().isEmpty()) {
+                        if (ui.owner.getScenarioConfig().isEmpty()) {
                             Toasty.info(ui.ctx, "Il n'y a pas de scenario\npour cette disposition", Toast.LENGTH_LONG, true).show();
                         } else {
-                            ui.owner.dialogChooseLayout()
+                            ui.owner.dialogChooseScenario()
                         }
                     }
                 }

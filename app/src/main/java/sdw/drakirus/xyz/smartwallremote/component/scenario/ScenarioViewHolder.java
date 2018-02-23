@@ -1,6 +1,7 @@
 package sdw.drakirus.xyz.smartwallremote.component.scenario;
 
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 /**
@@ -9,5 +10,6 @@ import android.widget.TextView;
 
 public class ScenarioViewHolder {
     TextView textView;
+    TextView textView2;
     ImageView imageView;
 }

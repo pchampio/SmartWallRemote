@@ -51,7 +51,7 @@ public class LayoutChooserAdapter extends BaseAdapter {
         if (view == null) {
             view = layoutInflater.inflate(R.layout.list_layout, parent, false);
             viewHolder = new LayoutViewHolder();
-            viewHolder.textView = (TextView) view.findViewById(R.id.text_view);
+            viewHolder.textView = (TextView) view.findViewById(R.id.title);
             viewHolder.imageView = (ImageView) view.findViewById(R.id.image_view);
             view.setTag(viewHolder);
         } else {
