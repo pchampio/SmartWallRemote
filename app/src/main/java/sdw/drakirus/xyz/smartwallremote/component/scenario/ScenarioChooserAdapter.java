@@ -6,6 +6,7 @@ package sdw.drakirus.xyz.smartwallremote.component.scenario;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +17,6 @@ import android.widget.TextView;
 import java.util.List;
 
 import sdw.drakirus.xyz.smartwallremote.R;
-import sdw.drakirus.xyz.smartwallremote.model.Layout;
 import sdw.drakirus.xyz.smartwallremote.model.Scenario;
 
 public class ScenarioChooserAdapter extends BaseAdapter {
@@ -52,7 +52,8 @@ public class ScenarioChooserAdapter extends BaseAdapter {
         if (view == null) {
             view = layoutInflater.inflate(R.layout.list_scenario, parent, false);
             viewHolder = new ScenarioViewHolder();
-            viewHolder.textView = (TextView) view.findViewById(R.id.text_view);
+            viewHolder.textView = (TextView) view.findViewById(R.id.title);
+            viewHolder.textView2 = (TextView) view.findViewById(R.id.videoList);
             viewHolder.imageView = (ImageView) view.findViewById(R.id.image_view);
             view.setTag(viewHolder);
         } else {
@@ -64,7 +65,15 @@ public class ScenarioChooserAdapter extends BaseAdapter {
         // data bind to viewHolder
         // viewHolder.imageView.setImageResource(R.drawable.ic_launcher_background);
         viewHolder.imageView.setImageBitmap(bitmap);
-        viewHolder.textView.setText(scenarioList.get(position).getName());
+        viewHolder.textView.setText("T"+scenarioList.get(position).getName());
+
+        for ( int i  = 0 ; i < scenarioList.get(position).getLayout().getGrpScreen().size() ; i++){
+            try {
+                viewHolder.textView2.append(Html.fromHtml("<font color=" + scenarioList.get(position).getLayout().getGrpScreen().get(i).getHexColor() + ">" + scenarioList.get(position).getVideo().get(i).getTitle() + "</font><br>"));
+            } catch (Exception e) {
+                System.out.print(e);
+            }
+        }
 
 
         return view;
