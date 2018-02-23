@@ -155,6 +155,15 @@ data class VideoModel(
     }
 }
 
+data class ScenarioConfig(
+        val scenarioList: List<Scenario>
+){
+    fun getForWall(wall: WallItem) = scenarioList.filter { scenario ->
+       scenario.layoutScenario.any { it.layout.cols == wall.cols && it.layout.rows == wall.rows}
+    }
+    fun isEmpty() = scenarioList.isEmpty()
+}
+
 data class Scenario(
         val name: String,
         val layoutScenario: List<LayoutScenario>

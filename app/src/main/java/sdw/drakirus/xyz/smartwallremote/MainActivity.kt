@@ -30,6 +30,9 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
     private var tmpGrpCreatedByUser = mutableListOf<GrpScreen>()
 
     private var layoutConfig: LayoutConfig? = null
+    private var scenarioConfig: ScenarioConfig? = null
+
+
     var videoConfig: VideoConfig? = null
 
     var saveFAB: FabButtonPerso? = null
@@ -69,6 +72,22 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
             when(result) {
                 is Result.Success -> {
                     layoutConfig = result.value
+
+
+                    val allLayout: MutableList<Layout> = result.value.layouts
+
+                    val toScenario: List<LayoutScenario> = allLayout.map {
+                        LayoutScenario(isDistributed = false, layout = it,
+                                video = VideoModel("test", "urlImage", 1000), timeStart = 0)
+                    }
+
+                    val toScenarioConfig: List<Scenario> = toScenario.map {
+                        Scenario("tes", toScenario)
+                    }
+
+                    scenarioConfig = ScenarioConfig(toScenarioConfig)
+
+
                 }
                 is Result.Failure -> {
                     Thread.sleep(100)
