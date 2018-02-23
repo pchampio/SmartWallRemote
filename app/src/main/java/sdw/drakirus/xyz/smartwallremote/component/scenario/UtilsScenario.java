@@ -27,7 +27,7 @@ public class UtilsScenario {
         int widthScreen = (width - layout.getCols()) / layout.getCols();
         int heightScreen = (height - layout.getRows()) / layout.getRows();
         Paint paintBackground = new Paint();
-        paintBackground.setColor(Color.GRAY);
+        paintBackground.setColor(Color.parseColor("#d6d6d4"));
         canvas.drawRect(0F, 0F, (float) width, (float) height, paintBackground);
 
         Paint paint = new Paint();

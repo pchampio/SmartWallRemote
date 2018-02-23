@@ -65,7 +65,7 @@ public class ScenarioChooserAdapter extends BaseAdapter {
         // data bind to viewHolder
         // viewHolder.imageView.setImageResource(R.drawable.ic_launcher_background);
         viewHolder.imageView.setImageBitmap(bitmap);
-        viewHolder.textView.setText("T"+scenarioList.get(position).getName());
+        viewHolder.textView.setText(scenarioList.get(position).getName());
 
         for ( int i  = 0 ; i < scenarioList.get(position).getLayout().getGrpScreen().size() ; i++){
             try {
