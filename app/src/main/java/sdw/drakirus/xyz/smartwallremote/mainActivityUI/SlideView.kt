@@ -7,9 +7,7 @@ import android.widget.Toast
 import com.google.gson.Gson
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import es.dmoral.toasty.Toasty
-import org.jetbrains.anko.AnkoContext
-import org.jetbrains.anko.frameLayout
-import org.jetbrains.anko.toast
+import org.jetbrains.anko.*
 import sdw.drakirus.xyz.smartwallremote.MainActivity
 import sdw.drakirus.xyz.smartwallremote.component.miniPlayer.MiniPlayerFragment
 import sdw.drakirus.xyz.smartwallremote.component.video.VideoChooserFragment
@@ -38,6 +36,54 @@ fun SlidingUpPanelLayout.slideView(ui: AnkoContext<MainActivity>) =
             }
 
             val miniPlayerFragment = MiniPlayerFragment()
+            miniPlayerFragment.onCreateEvent = Runnable {
+                miniPlayerFragment.apply {
+
+                    miniPlayerPlayPauseDrawable?.setPlay(false)
+
+                    var time = 0
+                    var play = false
+
+                    onNext = Runnable {
+                        time += 10
+                        progressBar?.progress = time
+                    }
+
+                    onPrevious = Runnable {
+                        time -= 10
+                        progressBar?.progress = time
+                    }
+
+                    onClickPlay = Runnable {
+                        miniPlayerPlayPauseDrawable?.togglePlayPause()
+                        play = play.not()
+                    }
+
+                    onExpand = Runnable {
+                        panelState = SlidingUpPanelLayout.PanelState.EXPANDED
+                    }
+
+//                    setColor(Color.RED)
+
+                    doAsync {
+                        while (true) {
+                            if (play) {
+                                time = time.inc().rem(100)
+                                runOnUiThread {
+                                    if (progressBar == null) {
+                                        println("NOPE")
+                                    }
+                                    progressBar?.progress = time
+                                }
+                            }
+                            Thread.sleep(1000)
+                        }
+                    }
+
+                    miniPlayerTitle?.setText("Video Name")
+                }
+
+            }
 
 
 

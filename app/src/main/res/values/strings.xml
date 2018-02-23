@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SDW Remote</string>
+    <string name="app_name">SmartWallRemote</string>
     <string name="name">UserName</string>
     <string name="password">PassWord</string>
 

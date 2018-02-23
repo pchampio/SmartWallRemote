@@ -77,18 +77,20 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
                     layoutConfig = result.value
 
 
-                    val allLayout: MutableList<Layout> = result.value.layouts
+//                    TODO
+                    doAsync {
+                        Thread.sleep(1000)
 
-                    val toScenario: List<Scenario> = allLayout.map {
-                        Scenario(name = "test", isDistributed = false, layout = it,
-                                video = listOf(
-                                        VideoModel("test", "urlImage", 1000))
-                                , timeStart = 0)
+                        val toScenario: List<Scenario> = result.value.getForWall(wall).map {
+                            Scenario(name = "test", isDistributed = false, layout = it,
+                                    video = listOf(
+                                            VideoModel("test", "urlImage", 1000))
+                                    , timeStart = 0)
+                        }
+
+                        scenarioConfig = ScenarioConfig(toScenario.toMutableList())
+
                     }
-
-                    scenarioConfig = ScenarioConfig(toScenario.toMutableList())
-
-
                 }
                 is Result.Failure -> {
                     Thread.sleep(100)

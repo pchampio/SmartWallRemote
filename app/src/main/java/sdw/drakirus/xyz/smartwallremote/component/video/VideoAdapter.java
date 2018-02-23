@@ -86,11 +86,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.MyViewHolder
         holder.imageView.setVisibility(View.GONE);
         holder.progressBar.setVisibility(View.VISIBLE);
 
-
-        //TODO: init image
-        //holder.imageView.setImageResource(R.drawable.loading);
-
-
+        //Init image
         new Thread(() -> {
             try {
                 //getImage throw exception
