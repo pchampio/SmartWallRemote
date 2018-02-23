@@ -69,6 +69,8 @@ public class ScenarioChooserAdapter extends BaseAdapter {
 
         for ( int i  = 0 ; i < scenarioList.get(position).getLayout().getGrpScreen().size() ; i++){
             try {
+                System.out.println(scenarioList.get(position).getLayout());
+                System.out.println("\n");
                 viewHolder.textView2.append(Html.fromHtml("<font color=" + scenarioList.get(position).getLayout().getGrpScreen().get(i).getHexColor() + ">" + scenarioList.get(position).getVideo().get(i).getTitle() + "</font><br>"));
             } catch (Exception e) {
                 System.out.print(e);

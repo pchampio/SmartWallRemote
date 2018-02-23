@@ -78,12 +78,17 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
                 is Result.Success -> {
                     layoutConfig = result.value
 
-
-
-                    val toScenario: List<Scenario> = result.value.layouts.filter { it.rows == 4 && it.cols == 4}.map {
-                        Scenario(name = "test", isDistributed = false, layout = it,
+                    val toScenario: List<Scenario> = result.value.layouts.map {
+                        Scenario(name = it.name, isDistributed = false, layout = it,
                                 video = listOf(
-                                        VideoModel("test", "urlImage", 1000))
+                                        VideoModel("test 1", "urlImage", 1000),
+                                        VideoModel("test 2", "urlImage", 1000),
+                                        VideoModel("test 3", "urlImage", 1000),
+                                        VideoModel("test 4", "urlImage", 1000),
+                                        VideoModel("test 5", "urlImage", 1000),
+                                        VideoModel("test 6", "urlImage", 1000),
+                                        VideoModel("test 7", "urlImage", 1000),
+                                        VideoModel("test 8", "urlImage", 1000))
                                 , timeStart = 0)
                     }
 
