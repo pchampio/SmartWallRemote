@@ -79,20 +79,16 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
                     layoutConfig = result.value
 
 
-//                    TODO
-                    doAsync {
-                        Thread.sleep(1000)
 
-                        val toScenario: List<Scenario> = result.value.getForWall(wall).map {
-                            Scenario(name = "test", isDistributed = false, layout = it,
-                                    video = listOf(
-                                            VideoModel("test", "urlImage", 1000))
-                                    , timeStart = 0)
-                        }
-
-                        scenarioConfig = ScenarioConfig(toScenario.toMutableList())
-
+                    val toScenario: List<Scenario> = result.value.layouts.filter { it.rows == 4 && it.cols == 4}.map {
+                        Scenario(name = "test", isDistributed = false, layout = it,
+                                video = listOf(
+                                        VideoModel("test", "urlImage", 1000))
+                                , timeStart = 0)
                     }
+
+                    scenarioConfig = ScenarioConfig(toScenario.toMutableList())
+
                 }
                 is Result.Failure -> {
                     Thread.sleep(100)
@@ -300,6 +296,7 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
 
         if (hasMakeUpdate.not()) {
             screen.checkBox.isChecked = screen.checkBox.isChecked.not()
+//            player?.setColor(Color.BLACK)
         }
         hideShowPaintFAB()
     }
