@@ -6,8 +6,6 @@
 > A wall of images is capable of projecting different scenarios of video animations.
 > A scenario is based on the definition of a certain number of videos and their positioning on the wall of images.
 
-Signature key: 123456
-
 <p align="center">
   <a href="./screen.png">
     <img alt="ScreenShot~ prompt" src="./screen.png">
