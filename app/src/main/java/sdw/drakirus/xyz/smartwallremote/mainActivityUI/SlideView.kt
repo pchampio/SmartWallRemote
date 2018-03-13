@@ -9,6 +9,7 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import es.dmoral.toasty.Toasty
 import org.jetbrains.anko.*
 import sdw.drakirus.xyz.smartwallremote.MainActivity
+import sdw.drakirus.xyz.smartwallremote.R
 import sdw.drakirus.xyz.smartwallremote.component.miniPlayer.MiniPlayerFragment
 import sdw.drakirus.xyz.smartwallremote.component.video.VideoChooserFragment
 
@@ -120,7 +121,7 @@ fun SlidingUpPanelLayout.slideView(ui: AnkoContext<MainActivity>) =
                     override fun onPanelStateChanged(_1: View?, _2: SlidingUpPanelLayout.PanelState?, newState: SlidingUpPanelLayout.PanelState?) {
 
                         if (ui.owner.videoConfig?.videos?.isEmpty() ?: true) {
-                            Toasty.warning(ui.ctx, "No Videos are available", Toast.LENGTH_SHORT).show()
+                            Toasty.warning(ui.ctx, ui.ctx.getString(R.string.no_videos), Toast.LENGTH_SHORT).show()
                         }
 
                         // if the recyclerView is scrollable

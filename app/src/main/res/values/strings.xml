@@ -18,4 +18,19 @@
     <string name="search_video_hint">Search video</string>
     <string name="title_activity_video">VideoActivity</string>
     <string name="title_activity_video_new">VideoActivityNew</string>
+    <string name="no_videos">No Videos are available</string>
+    <string name="error_load_preview">Oops, preview couldn\'t load.</string>
+    <string name="edit_url_server">Edit URL server</string>
+    <string name="choose_wall">Choose a Wall</string>
+    <string name="choose_grp">Choose a regroupement</string>
+    <string name="about">About</string>
+    <string name="no_grp">Il n\'y a pas de re-groupement\npour cette disposition</string>
+    <string name="no_sce">Il n\'y a pas de scenario\npour cette disposition</string>
+    <string name="choose_sce">Choose a scenario</string>
+    <string name="ask_name_layout">What\'s the name of this layout</string>
+    <string name="save">Save</string>
+    <string name="no_name">Oops!! Your name is empty</string>
+    <string name="cancel">Cancel</string>
+    <string name="ask_server_name">What\'s the server baseURL</string>
+    <string name="oops_url">Oops!! Your URL is not valid</string>
 </resources>

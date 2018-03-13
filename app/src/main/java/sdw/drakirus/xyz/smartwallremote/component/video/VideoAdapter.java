@@ -1,7 +1,6 @@
 package sdw.drakirus.xyz.smartwallremote.component.video;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.widget.RecyclerView;
@@ -15,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -101,7 +99,7 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.MyViewHolder
                 new Handler(Looper.getMainLooper()).post(() -> {
                     holder.progressBar.setVisibility(View.GONE);
                     holder.imageView.setVisibility(View.GONE);
-                    holder.errorTextView.setText("Oops, preview couldn't load.");
+                    holder.errorTextView.setText(R.string.error_load_preview);
                     holder.errorTextView.setVisibility(View.VISIBLE);
                 });
                 Log.e("VideoException", "ImageVideo couldn't load",e);

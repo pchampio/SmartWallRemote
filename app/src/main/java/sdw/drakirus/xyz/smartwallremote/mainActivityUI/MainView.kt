@@ -1,25 +1,22 @@
 package sdw.drakirus.xyz.smartwallremote.mainActivityUI
 
+import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.support.v4.content.ContextCompat
+import android.support.v4.content.ContextCompat.startActivity
 import android.view.Gravity
 import android.webkit.URLUtil
-import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import com.sothree.slidinguppanel.SlidingUpPanelLayout
 import es.dmoral.toasty.Toasty
 import org.jetbrains.anko.*
-import org.jetbrains.anko.coroutines.experimental.asReference
 import org.jetbrains.anko.design.floatingActionButton
 import org.jetbrains.anko.sdk25.coroutines.onClick
 import sdw.drakirus.xyz.smartwallremote.MainActivity
 import sdw.drakirus.xyz.smartwallremote.R
 import sdw.drakirus.xyz.smartwallremote.component.layout.UtilsLayout
-import android.support.v4.content.ContextCompat.startActivity
-import android.content.Intent
-import android.net.Uri
-import android.view.View
 
 
 /**
@@ -47,19 +44,19 @@ fun SlidingUpPanelLayout.mainView(ui: AnkoContext<MainActivity>) =
                         gravity = Gravity.CENTER
                     }
 
-                    menu.add("Choose Another Wall").setOnMenuItemClickListener {
+                    menu.add(context.getString(R.string.choose_wall)).setOnMenuItemClickListener {
                         ui.owner.getWallAllConfig()
                         true
                     }
 
-                    menu.add("Edit URL server").setOnMenuItemClickListener {
+                    menu.add(context.getString(R.string.edit_url_server)).setOnMenuItemClickListener {
                         askForBaseUrl(ui.owner) { url ->
                            ui.owner.putBaseUrl(url)
                         }
                         true
                     }
 
-                    menu.add("About").setOnMenuItemClickListener {
+                    menu.add(context.getString(R.string.about)).setOnMenuItemClickListener {
                         aboutTheApp(ui.owner)
                         true
                     }
@@ -86,19 +83,19 @@ fun SlidingUpPanelLayout.mainView(ui: AnkoContext<MainActivity>) =
 
                 }
 
-                button("Choose a regroupement") {
+                button(context.getString(R.string.choose_grp)) {
                     onClick {
                         if (ui.owner.getLayoutConfig().isEmpty()) {
-                            Toasty.info(ui.ctx, "Il n'y a pas de re-groupement\npour cette disposition", Toast.LENGTH_LONG, true).show();
+                            Toasty.info(ui.ctx, ui.ctx.getString(R.string.no_grp), Toast.LENGTH_LONG, true).show();
                         } else {
                             ui.owner.dialogChooseLayout()
                         }
                     }
                 }
-                button("Choose a scenario") {
+                button(context.getString(R.string.choose_sce)) {
                     onClick {
                         if (ui.owner.getScenarioConfig().isEmpty()) {
-                            Toasty.info(ui.ctx, "Il n'y a pas de scenario\npour cette disposition", Toast.LENGTH_LONG, true).show();
+                            Toasty.info(ui.ctx, ui.ctx.getString(R.string.no_sce), Toast.LENGTH_LONG, true).show();
                         } else {
                             ui.owner.dialogChooseScenario()
                         }
@@ -175,7 +172,7 @@ fun askForLayoutName(ui: AnkoContext<MainActivity>, onAdd: (name :String) -> Uni
                     toolbar {
                         lparams(width = matchParent, height = wrapContent)
                         backgroundColor = ContextCompat.getColor(ctx, R.color.colorAccent)
-                        title = "What's the name of this layout"
+                        title = context.getString(R.string.ask_name_layout)
                         setTitleTextColor(ContextCompat.getColor(ctx, android.R.color.white))
                     }
                     imageView() {
@@ -188,15 +185,15 @@ fun askForLayoutName(ui: AnkoContext<MainActivity>, onAdd: (name :String) -> Uni
                         setText(ui.owner.faker?.commerce?.productName(), TextView.BufferType.EDITABLE)
                         padding = dip(20)
                     }
-                    positiveButton("Save") {
+                    positiveButton(context.getString(R.string.save)) {
                         if(task.text.toString().isEmpty()) {
-                            Toasty.info(ui.ctx, "Oops!! Your name is empty", Toast.LENGTH_LONG, true).show();
+                            Toasty.info(ui.ctx, context.getString(R.string.no_name), Toast.LENGTH_LONG, true).show();
                         }
                         else {
                             onAdd(task.text.toString())
                         }
                     }
-                    negativeButton("Cancel") {}
+                    negativeButton(context.getString(R.string.cancel)) {}
                 }
             }
         }.show()
@@ -208,25 +205,25 @@ fun askForBaseUrl(ui: MainActivity, onAdd: (name :String) -> Unit) =
                     toolbar {
                         lparams(width = matchParent, height = wrapContent)
                         backgroundColor = ContextCompat.getColor(ctx, R.color.colorAccent)
-                        title = "What's the server baseURL"
+                        title = context.getString(R.string.ask_server_name)
                         setTitleTextColor(ContextCompat.getColor(ctx, android.R.color.white))
                     }
                     val task = editText {
                         setText(ui.getBaseUrl())
                         padding = dip(20)
                     }
-                    positiveButton("Save") {
+                    positiveButton(context.getString(R.string.save)) {
                         if(task.text.toString().isEmpty()) {
-                            Toasty.info(ui.ctx, "Oops!! Your name is empty", Toast.LENGTH_LONG, true).show();
+                            Toasty.info(ui.ctx, ui.ctx.getString(R.string.no_name), Toast.LENGTH_LONG, true).show();
                         }
                         else if(!URLUtil.isValidUrl(task.text.toString())) {
-                            Toasty.warning(ui.ctx, "Oops!! Your URL is not valid", Toast.LENGTH_LONG, true).show();
+                            Toasty.warning(ui.ctx, ui.ctx.getString(R.string.oops_url), Toast.LENGTH_LONG, true).show();
                         }
                         else {
                             onAdd(task.text.toString())
                         }
                     }
-                    negativeButton("Cancel") {}
+                    negativeButton(context.getString(R.string.cancel)) {}
                 }
             }
         }.show()

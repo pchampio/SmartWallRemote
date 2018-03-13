@@ -52,12 +52,12 @@ class MainActivityUi() : AnkoComponent<MainActivity> {
             toolbar {
                 horizontalPadding = 10
                 overflowIcon.setTint(Color.WHITE)
-                menu.add("Choose a Wall").setOnMenuItemClickListener {
+                menu.add(context.getString(R.string.choose_wall)).setOnMenuItemClickListener {
                     ui.getWallAllConfig()
                     true
                 }
 
-                menu.add("Edit URL server").setOnMenuItemClickListener {
+                menu.add(context.getString(R.string.edit_url_server)).setOnMenuItemClickListener {
                     askForBaseUrl(ui) { url ->
                         ui.putBaseUrl(url)
                     }
