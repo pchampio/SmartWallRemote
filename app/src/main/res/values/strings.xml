@@ -44,4 +44,5 @@
     <string name="exit">Exit</string>
     <string name="error_fetch_videos">Error while fetching the videos!</string>
     <string name="no_screen_selected">No screen are selected</string>
+    <string name="url_github">https://github.com/Drakirus/SmartWallRemote</string>
 </resources>

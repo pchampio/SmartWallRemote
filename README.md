@@ -1,8 +1,12 @@
-# SmartWallRemote
-:iphone: Une télécommande permettant de contrôler un mur d’images.
+![logo](./app/src/main/res/mipmap-mdpi/ic_launcher.png) SmartWallRemote [Download APK](app/build/outputs/apk/debug)
+==
 
-> Un mur d’images est capable de projeter différents scénarios d’animations vidéos.  
-> Un scénario repose sur la définition d’un certain nombre de vidéos et de leur positionnement sur le mur d’images.
+:iphone: A remote control to interact with a wall of images.
+
+> A wall of images is capable of projecting different scenarios of video animations.
+> A scenario is based on the definition of a certain number of videos and their positioning on the wall of images.
+
+Signature key: 123456
 
 <p align="center">
   <a href="./screen.png">

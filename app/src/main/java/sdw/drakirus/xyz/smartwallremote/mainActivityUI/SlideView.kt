@@ -69,9 +69,6 @@ fun SlidingUpPanelLayout.slideView(ui: AnkoContext<MainActivity>) =
                             if (play) {
                                 time = time.inc().rem(100)
                                 runOnUiThread {
-                                    if (progressBar == null) {
-                                        println("NOPE")
-                                    }
                                     progressBar?.progress = time
                                 }
                             }

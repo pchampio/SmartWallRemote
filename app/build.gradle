@@ -28,8 +28,8 @@ android {
         preDexLibraries true
     }
     compileOptions {
-        targetCompatibility 1.8
-        sourceCompatibility 1.8
+        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_1_8
     }
 }
 
@@ -60,17 +60,11 @@ dependencies {
     // RecyclerView-v7
     compile "org.jetbrains.anko:anko-recyclerview-v7:$anko_version"
     compile "org.jetbrains.anko:anko-recyclerview-v7-coroutines:$anko_version"
-
     compile 'com.orhanobut:dialogplus:1.11@aar'
-
     compile 'com.github.GrenderG:Toasty:1.2.8'
-
     compile 'petrov.kristiyan:colorpicker-library:1.1.8'
-
     implementation "org.jetbrains.anko:anko-design:$anko_version"
-
-    compile group: 'io.reactivex.rxjava2', name: 'rxkotlin', version: '2.0.2'
-
+    compile 'io.reactivex.rxjava2:rxkotlin:2.0.2'
     compile 'mbanje.kurt:fabbutton:1.2.4@aar'
     compile 'com.github.blocoio:faker:1.2.7'
     compile 'net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:2.1.0'

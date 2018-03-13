@@ -260,7 +260,7 @@ fun aboutTheApp(ui: MainActivity) =
                         textColor = ContextCompat.getColor(ctx, R.color.lite_blue)
 
                         onClick {
-                            val browser = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/Drakirus/SmartWallRemote"))
+                            val browser = Intent(Intent.ACTION_VIEW, Uri.parse(ui.ctx.getString(R.string.url_github)))
 
                             startActivity(ui.ctx, browser, null)
                         }
