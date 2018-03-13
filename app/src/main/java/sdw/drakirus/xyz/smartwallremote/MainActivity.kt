@@ -78,6 +78,7 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
                 is Result.Success -> {
                     layoutConfig = result.value
 
+                    // TODO: api get on scenario.json
                     val toScenario: List<Scenario> = result.value.layouts.map {
                         Scenario(name = it.name, isDistributed = false, layout = it,
                                 video = listOf(
@@ -99,9 +100,9 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
                 is Result.Failure -> {
                     Thread.sleep(100)
 
-                    alert(Appcompat, "\nWould you like to try again ?\n" , "Error while fetching the layout information!") {
-                        positiveButton("Yes") { getLayout() }
-                        negativeButton("no") { }
+                    alert(Appcompat, getString(R.string.ask_try_again) , getString(R.string.error_fetching)) {
+                        positiveButton(getString(R.string.yes)) { getLayout() }
+                        negativeButton(getString(R.string.no)) { }
                     }.show()
 
                     error(result.error)
@@ -123,7 +124,7 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
                     getConfigDialog.cancel()
                     wall = result.value.wall[0]
 
-                    selector("Multiple Walls are available", result.value.wall.map { "(${it.rows}x${it.cols}) - " + it.name }, { _, i ->
+                    selector(getString(R.string.prompt_multiple_wall), result.value.wall.map { "(${it.rows}x${it.cols}) - " + it.name }, { _, i ->
                         wall = result.value.wall[i]
                         MainActivityUi().setContentView(this)
                     })
@@ -132,9 +133,9 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
                     Thread.sleep(500) // less spam
                     getConfigDialog.cancel()
                     warn(result.error)
-                    alert(Appcompat, "\nWould you like to try again ?\n" , result.error.exception.message) {
-                        positiveButton("Yes") { getWallAllConfig() }
-                        negativeButton("Exit") { finish() }
+                    alert(Appcompat, getString(R.string.ask_try_again) , result.error.exception.message) {
+                        positiveButton(getString(R.string.yes)) { getWallAllConfig() }
+                        negativeButton(getString(R.string.exit)) { finish() }
                     }.show()
                 }
             }
@@ -150,9 +151,9 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
                 is Result.Failure -> {
                     Thread.sleep(100)
 
-                    alert(Appcompat, "\nWould you like to try again ?\n" , "Error while fetching the videos!") {
-                        positiveButton("Yes") { getVideos() }
-                        negativeButton("no") { }
+                    alert(Appcompat, getString(R.string.ask_try_again) , getString(R.string.error_fetch_videos)) {
+                        positiveButton(getString(R.string.yes)) { getVideos() }
+                        negativeButton(getString(R.string.no)) { }
                     }.show()
 
                     error(result.error)
@@ -205,7 +206,7 @@ class MainActivity : AppCompatActivity(), AnkoLogger {
 
     fun createAGroup() {
         if (wall.screen.none { it.checkBox.isChecked }) {
-            Toasty.info(this, "No screen are selected", Toast.LENGTH_SHORT, true).show()
+            Toasty.info(this, getString(R.string.no_screen_selected), Toast.LENGTH_SHORT, true).show()
             return
         }
 
