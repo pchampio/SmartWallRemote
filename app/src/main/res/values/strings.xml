@@ -33,4 +33,6 @@
     <string name="cancel">Cancel</string>
     <string name="ask_server_name">What\'s the server baseURL</string>
     <string name="oops_url">Oops!! Your URL is not valid</string>
+    <string name="github_repository">Github repository</string>
+    <string name="about_description">Create by: \n Tony Marteau \n Pierre Champion \n Rémi Bouvet</string>
 </resources>

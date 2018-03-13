@@ -249,13 +249,13 @@ fun aboutTheApp(ui: MainActivity) =
                     }
 
                     textView() {
-                        text = "Exemple of description lol omg c,z,zldlzkdz dl:zjlkzdjkz djklzdjkz hjhkhkhj \n ok\nok \nbg"
+                        text = context.getString(R.string.about_description)
                         padding = dip(20)
                         textColor = ContextCompat.getColor(ctx, R.color.white)
                     }
 
                     textView() {
-                        text = "Github repository"
+                        text = context.getString(R.string.github_repository)
                         padding = dip(20)
                         textColor = ContextCompat.getColor(ctx, R.color.lite_blue)
 
