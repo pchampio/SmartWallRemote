@@ -3,7 +3,7 @@
 
 :iphone: A remote control to interact with a wall of screens.
 
-> A wall of images is capable of projecting different scenarios of video animations.
+> A wall of images is capable of projecting different scenarios of video animations.  
 > A scenario is based on the definition of a certain number of videos and their positioning on the wall of images.
 
 <p align="center">
