@@ -7,7 +7,7 @@
 > A scenario is based on the definition of a certain number of videos and their positioning on the wall of images.
 
 <p align="center">
-  <a href="./screen.png">
-    <img alt="ScreenShot~ prompt" src="./screen.png">
-  </a>
+	<img alt="ScreenShot~ prompt" src="./screenshot/screen_2.png">
+	<img alt="ScreenShot~ prompt" src="./screenshot/screen_4.png">
+	<img alt="ScreenShot~ prompt" src="./screenshot/screen_3.png">
 </p>
