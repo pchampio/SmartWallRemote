@@ -1,4 +1,4 @@
-![logo](./app/src/main/res/mipmap-mdpi/ic_launcher.png) SmartWallRemote [Download APK](app/build/outputs/apk/debug)
+![logo](./app/src/main/res/mipmap-mdpi/ic_launcher.png) SmartWallRemote [Download APK](https://github.com/Drakirus/SmartWallRemote/blob/master/app/build/outputs/apk/debug/app-debug.apk?raw=true)
 ==
 
 :iphone: A remote control to interact with a wall of screens.
